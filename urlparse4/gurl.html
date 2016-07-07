@@ -302,7 +302,7 @@ body.cython { font-family: courier; font-size: 12; }
     Click on a line that starts with a "<code>+</code>" to see the C code that Cython generated for it.
 </p>
 <p>Raw output: <a href="gurl.cpp">gurl.cpp</a></p>
-<div class="cython"><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">001</span>: from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL</pre>
+<div class="cython"><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">001</span>: from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL</pre>
 <pre class='cython code score-11 '>  __pyx_t_1 = <span class='py_c_api'>PyDict_New</span>(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_test, __pyx_t_1) &lt; 0) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -475,12 +475,30 @@ static int __pyx_pf_9urlparse4_4gurl_11SplitResult___cinit__(struct __pyx_obj_9u
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;pyurl);
   __pyx_v_self-&gt;pyurl = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
-</pre><pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">032</span>:         ParseStandardURL(url, len(url), &amp;self.parsed)</pre>
-<pre class='cython code score-0 '>  __pyx_t_2 = strlen(__pyx_v_url); 
-  url::ParseStandardURL(__pyx_v_url, __pyx_t_2, (&amp;__pyx_v_self-&gt;parsed));
-</pre><pre class="cython line score-0">&#xA0;<span class="">033</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">034</span>:     property scheme:</pre>
-<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">035</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-5" onclick='toggleDiv(this)'>+<span class="">032</span>:         if url[0:5] == b"file:":</pre>
+<pre class='cython code score-5 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyBytes_FromStringAndSize</span>(__pyx_v_url + 0, 5 - 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
+  <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
+  __pyx_t_2 = (<span class='pyx_c_api'>__Pyx_PyBytes_Equals</span>(__pyx_t_1, __pyx_kp_b_file, Py_EQ)); if (unlikely(__pyx_t_2 &lt; 0)) __PYX_ERR(0, 32, __pyx_L1_error)
+  <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  if (__pyx_t_3) {
+/* … */
+    goto __pyx_L3;
+  }
+</pre><pre class="cython line score-0">&#xA0;<span class="">033</span>:         # if self.pyurl.startswith(b"file:"):</pre>
+<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">034</span>:             ParseFileURL(url, len(url), &amp;self.parsed)</pre>
+<pre class='cython code score-0 '>    __pyx_t_4 = strlen(__pyx_v_url); 
+    url::ParseFileURL(__pyx_v_url, __pyx_t_4, (&amp;__pyx_v_self-&gt;parsed));
+</pre><pre class="cython line score-0">&#xA0;<span class="">035</span>:         else:</pre>
+<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">036</span>:             ParseStandardURL(url, len(url), &amp;self.parsed)</pre>
+<pre class='cython code score-0 '>  /*else*/ {
+    __pyx_t_4 = strlen(__pyx_v_url); 
+    url::ParseStandardURL(__pyx_v_url, __pyx_t_4, (&amp;__pyx_v_self-&gt;parsed));
+  }
+  __pyx_L3:;
+</pre><pre class="cython line score-0">&#xA0;<span class="">037</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">038</span>:     property scheme:</pre>
+<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">039</span>:         def __get__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_6scheme_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_6scheme_1__get__(PyObject *__pyx_v_self) {
@@ -510,19 +528,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_6scheme___get__(struct 
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">036</span>:             return slice_component(self.pyurl, self.parsed.scheme)</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">040</span>:             return slice_component(self.pyurl, self.parsed.scheme)</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = __pyx_v_self-&gt;pyurl;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.scheme); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.scheme); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">037</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">038</span>:     property path:</pre>
-<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">039</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">041</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">042</span>:     property path:</pre>
+<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">043</span>:         def __get__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_4path_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_4path_1__get__(PyObject *__pyx_v_self) {
@@ -552,19 +570,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_4path___get__(struct __
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">040</span>:             return slice_component(self.pyurl, self.parsed.path)</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">044</span>:             return slice_component(self.pyurl, self.parsed.path)</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = __pyx_v_self-&gt;pyurl;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.path); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.path); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">041</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">042</span>:     property query:</pre>
-<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">043</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">045</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">046</span>:     property query:</pre>
+<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">047</span>:         def __get__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_5query_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_5query_1__get__(PyObject *__pyx_v_self) {
@@ -594,19 +612,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_5query___get__(struct _
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">044</span>:             return slice_component(self.pyurl, self.parsed.query)</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">048</span>:             return slice_component(self.pyurl, self.parsed.query)</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = __pyx_v_self-&gt;pyurl;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.query); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.query); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">045</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">046</span>:     property fragment:</pre>
-<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">047</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">049</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">050</span>:     property fragment:</pre>
+<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">051</span>:         def __get__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_8fragment_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_8fragment_1__get__(PyObject *__pyx_v_self) {
@@ -636,19 +654,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_8fragment___get__(struc
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">048</span>:             return slice_component(self.pyurl, self.parsed.ref)</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">052</span>:             return slice_component(self.pyurl, self.parsed.ref)</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = __pyx_v_self-&gt;pyurl;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.ref); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.ref); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">049</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">050</span>:     property username:</pre>
-<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">051</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">053</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">054</span>:     property username:</pre>
+<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">055</span>:         def __get__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_8username_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_8username_1__get__(PyObject *__pyx_v_self) {
@@ -678,19 +696,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_8username___get__(struc
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">052</span>:             return slice_component(self.pyurl, self.parsed.username)</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">056</span>:             return slice_component(self.pyurl, self.parsed.username)</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = __pyx_v_self-&gt;pyurl;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.username); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.username); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">053</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">054</span>:     property password:</pre>
-<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">055</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">057</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">058</span>:     property password:</pre>
+<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">059</span>:         def __get__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_8password_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_8password_1__get__(PyObject *__pyx_v_self) {
@@ -720,19 +738,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_8password___get__(struc
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">056</span>:             return slice_component(self.pyurl, self.parsed.password)</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">060</span>:             return slice_component(self.pyurl, self.parsed.password)</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = __pyx_v_self-&gt;pyurl;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.password); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.password); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">057</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">058</span>:     property port:</pre>
-<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">059</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">061</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">062</span>:     property port:</pre>
+<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">063</span>:         def __get__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_4port_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_4port_1__get__(PyObject *__pyx_v_self) {
@@ -762,20 +780,20 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_4port___get__(struct __
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">060</span>:             return slice_component(self.pyurl, self.parsed.port)</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">064</span>:             return slice_component(self.pyurl, self.parsed.port)</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = __pyx_v_self-&gt;pyurl;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.port); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.port); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">061</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">062</span>:     # Not in regular urlsplit() !</pre>
-<pre class="cython line score-0">&#xA0;<span class="">063</span>:     property host:</pre>
-<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">064</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">065</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">066</span>:     # Not in regular urlsplit() !</pre>
+<pre class="cython line score-0">&#xA0;<span class="">067</span>:     property host:</pre>
+<pre class="cython line score-4" onclick='toggleDiv(this)'>+<span class="">068</span>:         def __get__(self):</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_4host_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_4host_1__get__(PyObject *__pyx_v_self) {
@@ -805,19 +823,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_4host___get__(struct __
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">065</span>:             return slice_component(self.pyurl, self.parsed.host)</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">069</span>:             return slice_component(self.pyurl, self.parsed.host)</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_1 = __pyx_v_self-&gt;pyurl;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.host); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_9urlparse4_4gurl_slice_component(((PyObject*)__pyx_t_1), __pyx_v_self-&gt;parsed.host); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">066</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">067</span>:     property netloc:</pre>
-<pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">068</span>:         def __get__(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">070</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">071</span>:     property netloc:</pre>
+<pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">072</span>:         def __get__(self):</pre>
 <pre class='cython code score-3 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_6netloc_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_9urlparse4_4gurl_11SplitResult_6netloc_1__get__(PyObject *__pyx_v_self) {
@@ -846,9 +864,9 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_6netloc___get__(struct 
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">069</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">070</span>:             # Nothing at all</pre>
-<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">071</span>:             if self.parsed.username.len &lt;= 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &lt;= 0:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">073</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">074</span>:             # Nothing at all</pre>
+<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">075</span>:             if self.parsed.username.len &lt;= 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &lt;= 0:</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.username.len &lt;= 0) != 0);
   if (__pyx_t_2) {
   } else {
@@ -867,16 +885,16 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_6netloc___get__(struct 
   if (__pyx_t_1) {
 /* … */
   }
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">072</span>:                 return self.host</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">076</span>:                 return self.host</pre>
 <pre class='cython code score-3 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-    __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_host); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)__pyx_v_self), __pyx_n_s_host); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">073</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">074</span>:             # Only port</pre>
-<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">075</span>:             elif self.parsed.username.len &lt;= 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &gt; 0:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">077</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">078</span>:             # Only port</pre>
+<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">079</span>:             elif self.parsed.username.len &lt;= 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &gt; 0:</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.username.len &lt;= 0) != 0);
   if (__pyx_t_2) {
   } else {
@@ -895,20 +913,20 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_6netloc___get__(struct 
   if (__pyx_t_1) {
 /* … */
   }
-</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">076</span>:                 return self.pyurl[self.parsed.host.begin: self.parsed.host.begin + self.parsed.host.len + 1 + self.parsed.port.len]</pre>
+</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">080</span>:                 return self.pyurl[self.parsed.host.begin: self.parsed.host.begin + self.parsed.host.len + 1 + self.parsed.port.len]</pre>
 <pre class='cython code score-11 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
     if (unlikely(__pyx_v_self-&gt;pyurl == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 76, __pyx_L1_error)
+      __PYX_ERR(0, 80, __pyx_L1_error)
     }
-    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.host.begin, (((__pyx_v_self-&gt;parsed.host.begin + __pyx_v_self-&gt;parsed.host.len) + 1) + __pyx_v_self-&gt;parsed.port.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.host.begin, (((__pyx_v_self-&gt;parsed.host.begin + __pyx_v_self-&gt;parsed.host.len) + 1) + __pyx_v_self-&gt;parsed.port.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">077</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">078</span>:             # Only username</pre>
-<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">079</span>:             elif self.parsed.username.len &gt; 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &lt;= 0:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">081</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">082</span>:             # Only username</pre>
+<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">083</span>:             elif self.parsed.username.len &gt; 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &lt;= 0:</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.username.len &gt; 0) != 0);
   if (__pyx_t_2) {
   } else {
@@ -927,27 +945,27 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_6netloc___get__(struct 
   if (__pyx_t_1) {
 /* … */
   }
-</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">080</span>:                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 1 + self.parsed.username.len]</pre>
+</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">084</span>:                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 1 + self.parsed.username.len]</pre>
 <pre class='cython code score-11 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
     if (unlikely(__pyx_v_self-&gt;pyurl == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 80, __pyx_L1_error)
+      __PYX_ERR(0, 84, __pyx_L1_error)
     }
-    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.username.begin, (((__pyx_v_self-&gt;parsed.username.begin + __pyx_v_self-&gt;parsed.host.len) + 1) + __pyx_v_self-&gt;parsed.username.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.username.begin, (((__pyx_v_self-&gt;parsed.username.begin + __pyx_v_self-&gt;parsed.host.len) + 1) + __pyx_v_self-&gt;parsed.username.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">081</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">082</span>:             # Username + password</pre>
-<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">083</span>:             elif self.parsed.username.len &gt; 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &lt;= 0:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">085</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">086</span>:             # Username + password</pre>
+<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">087</span>:             elif self.parsed.username.len &gt; 0 and self.parsed.password.len &gt; 0 and self.parsed.port.len &lt;= 0:</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.username.len &gt; 0) != 0);
   if (__pyx_t_2) {
   } else {
     __pyx_t_1 = __pyx_t_2;
     goto __pyx_L13_bool_binop_done;
   }
-  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.password.len &lt;= 0) != 0);
+  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.password.len &gt; 0) != 0);
   if (__pyx_t_2) {
   } else {
     __pyx_t_1 = __pyx_t_2;
@@ -959,20 +977,20 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_6netloc___get__(struct 
   if (__pyx_t_1) {
 /* … */
   }
-</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">084</span>:                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 2 + self.parsed.username.len + self.parsed.password.len]</pre>
+</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">088</span>:                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 2 + self.parsed.username.len + self.parsed.password.len]</pre>
 <pre class='cython code score-11 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
     if (unlikely(__pyx_v_self-&gt;pyurl == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 84, __pyx_L1_error)
+      __PYX_ERR(0, 88, __pyx_L1_error)
     }
-    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.username.begin, ((((__pyx_v_self-&gt;parsed.username.begin + __pyx_v_self-&gt;parsed.host.len) + 2) + __pyx_v_self-&gt;parsed.username.len) + __pyx_v_self-&gt;parsed.password.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.username.begin, ((((__pyx_v_self-&gt;parsed.username.begin + __pyx_v_self-&gt;parsed.host.len) + 2) + __pyx_v_self-&gt;parsed.username.len) + __pyx_v_self-&gt;parsed.password.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">085</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">086</span>:             # Username + port</pre>
-<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">087</span>:             elif self.parsed.username.len &gt; 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &lt;= 0:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">089</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">090</span>:             # Username + port</pre>
+<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">091</span>:             elif self.parsed.username.len &gt; 0 and self.parsed.password.len &lt;= 0 and self.parsed.port.len &gt; 0:</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.username.len &gt; 0) != 0);
   if (__pyx_t_2) {
   } else {
@@ -985,26 +1003,26 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_6netloc___get__(struct 
     __pyx_t_1 = __pyx_t_2;
     goto __pyx_L16_bool_binop_done;
   }
-  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.port.len &lt;= 0) != 0);
+  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.port.len &gt; 0) != 0);
   __pyx_t_1 = __pyx_t_2;
   __pyx_L16_bool_binop_done:;
   if (__pyx_t_1) {
 /* … */
   }
-</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">088</span>:                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 2 + self.parsed.username.len + self.parsed.port.len]</pre>
+</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">092</span>:                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 2 + self.parsed.username.len + self.parsed.port.len]</pre>
 <pre class='cython code score-11 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
     if (unlikely(__pyx_v_self-&gt;pyurl == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 88, __pyx_L1_error)
+      __PYX_ERR(0, 92, __pyx_L1_error)
     }
-    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.username.begin, ((((__pyx_v_self-&gt;parsed.username.begin + __pyx_v_self-&gt;parsed.host.len) + 2) + __pyx_v_self-&gt;parsed.username.len) + __pyx_v_self-&gt;parsed.port.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.username.begin, ((((__pyx_v_self-&gt;parsed.username.begin + __pyx_v_self-&gt;parsed.host.len) + 2) + __pyx_v_self-&gt;parsed.username.len) + __pyx_v_self-&gt;parsed.port.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 92, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">089</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">090</span>:             # Username + port + password</pre>
-<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">091</span>:             elif self.parsed.username.len &gt; 0 and self.parsed.password.len &gt; 0 and self.parsed.port.len &gt; 0:</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">093</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">094</span>:             # Username + port + password</pre>
+<pre class="cython line score-0" onclick='toggleDiv(this)'>+<span class="">095</span>:             elif self.parsed.username.len &gt; 0 and self.parsed.password.len &gt; 0 and self.parsed.port.len &gt; 0:</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = ((__pyx_v_self-&gt;parsed.username.len &gt; 0) != 0);
   if (__pyx_t_2) {
   } else {
@@ -1023,50 +1041,50 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_11SplitResult_6netloc___get__(struct 
   if (__pyx_t_1) {
 /* … */
   }
-</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">092</span>:                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 3 + self.parsed.port.len  + self.parsed.username.len  + self.parsed.password.len]</pre>
+</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">096</span>:                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 3 + self.parsed.port.len  + self.parsed.username.len  + self.parsed.password.len]</pre>
 <pre class='cython code score-11 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
     if (unlikely(__pyx_v_self-&gt;pyurl == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 92, __pyx_L1_error)
+      __PYX_ERR(0, 96, __pyx_L1_error)
     }
-    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.username.begin, (((((__pyx_v_self-&gt;parsed.username.begin + __pyx_v_self-&gt;parsed.host.len) + 3) + __pyx_v_self-&gt;parsed.port.len) + __pyx_v_self-&gt;parsed.username.len) + __pyx_v_self-&gt;parsed.password.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __pyx_t_3 = <span class='py_c_api'>PySequence_GetSlice</span>(__pyx_v_self-&gt;pyurl, __pyx_v_self-&gt;parsed.username.begin, (((((__pyx_v_self-&gt;parsed.username.begin + __pyx_v_self-&gt;parsed.host.len) + 3) + __pyx_v_self-&gt;parsed.port.len) + __pyx_v_self-&gt;parsed.username.len) + __pyx_v_self-&gt;parsed.password.len)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">093</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">094</span>:             else:</pre>
-<pre class="cython line score-2" onclick='toggleDiv(this)'>+<span class="">095</span>:                 raise ValueError</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">097</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">098</span>:             else:</pre>
+<pre class="cython line score-2" onclick='toggleDiv(this)'>+<span class="">099</span>:                 raise ValueError</pre>
 <pre class='cython code score-2 '>  /*else*/ {
     <span class='pyx_c_api'>__Pyx_Raise</span>(__pyx_builtin_ValueError, 0, 0, 0);
-    __PYX_ERR(0, 95, __pyx_L1_error)
+    __PYX_ERR(0, 99, __pyx_L1_error)
   }
-</pre><pre class="cython line score-0">&#xA0;<span class="">096</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">097</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">098</span>: </pre>
-<pre class="cython line score-18" onclick='toggleDiv(this)'>+<span class="">099</span>: class SplitResultNamedTuple(tuple):</pre>
-<pre class='cython code score-18 '>  __pyx_t_1 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">100</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">101</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">102</span>: </pre>
+<pre class="cython line score-18" onclick='toggleDiv(this)'>+<span class="">103</span>: class SplitResultNamedTuple(tuple):</pre>
+<pre class='cython code score-18 '>  __pyx_t_1 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(((PyObject *)(&amp;PyTuple_Type)));
   <span class='refnanny'>__Pyx_GIVEREF</span>(((PyObject *)(&amp;PyTuple_Type)));
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_1, 0, ((PyObject *)(&amp;PyTuple_Type)));
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_CalculateMetaclass</span>(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_CalculateMetaclass</span>(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_SplitResultNamedTuple, __pyx_n_s_SplitResultNamedTuple, (PyObject *) NULL, __pyx_n_s_urlparse4_gurl, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_SplitResultNamedTuple, __pyx_n_s_SplitResultNamedTuple, (PyObject *) NULL, __pyx_n_s_urlparse4_gurl, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
 /* … */
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_SplitResultNamedTuple, __pyx_t_1, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_SplitResultNamedTuple, __pyx_t_1, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_SplitResultNamedTuple, __pyx_t_4) &lt; 0) __PYX_ERR(0, 99, __pyx_L1_error)
+  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_SplitResultNamedTuple, __pyx_t_4) &lt; 0) __PYX_ERR(0, 103, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">100</span>: </pre>
-<pre class="cython line score-5" onclick='toggleDiv(this)'>+<span class="">101</span>:     __slots__ = ()  # prevent creation of instance dictionary</pre>
-<pre class='cython code score-5 '>  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_slots, __pyx_empty_tuple) &lt; 0) __PYX_ERR(0, 101, __pyx_L1_error)
-</pre><pre class="cython line score-0">&#xA0;<span class="">102</span>: </pre>
-<pre class="cython line score-55" onclick='toggleDiv(this)'>+<span class="">103</span>:     def __new__(cls, url):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">104</span>: </pre>
+<pre class="cython line score-5" onclick='toggleDiv(this)'>+<span class="">105</span>:     __slots__ = ()  # prevent creation of instance dictionary</pre>
+<pre class='cython code score-5 '>  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_slots, __pyx_empty_tuple) &lt; 0) __PYX_ERR(0, 105, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">106</span>: </pre>
+<pre class="cython line score-55" onclick='toggleDiv(this)'>+<span class="">107</span>:     def __new__(cls, url):</pre>
 <pre class='cython code score-55 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_1__new__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_1__new__ = {"__new__", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_1__new__, METH_VARARGS|METH_KEYWORDS, 0};
@@ -1096,11 +1114,11 @@ static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_1__new__(PyOb
         case  1:
         if (likely((values[1] = <span class='py_c_api'>PyDict_GetItem</span>(__pyx_kwds, __pyx_n_s_url)) != 0)) kw_args--;
         else {
-          <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("__new__", 1, 2, 2, 1); __PYX_ERR(0, 103, __pyx_L3_error)
+          <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("__new__", 1, 2, 2, 1); __PYX_ERR(0, 107, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args &gt; 0)) {
-        if (unlikely(<span class='pyx_c_api'>__Pyx_ParseOptionalKeywords</span>(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__new__") &lt; 0)) __PYX_ERR(0, 103, __pyx_L3_error)
+        if (unlikely(<span class='pyx_c_api'>__Pyx_ParseOptionalKeywords</span>(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__new__") &lt; 0)) __PYX_ERR(0, 107, __pyx_L3_error)
       }
     } else if (<span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1113,7 +1131,7 @@ static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_1__new__(PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("__new__", 1, 2, 2, <span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)); __PYX_ERR(0, 103, __pyx_L3_error)
+  <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("__new__", 1, 2, 2, <span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)); __PYX_ERR(0, 107, __pyx_L3_error)
   __pyx_L3_error:;
   <span class='pyx_c_api'>__Pyx_AddTraceback</span>("urlparse4.gurl.SplitResultNamedTuple.__new__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
@@ -1149,37 +1167,37 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple___new__(CYTHO
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__2 = <span class='py_c_api'>PyTuple_Pack</span>(2, __pyx_n_s_cls, __pyx_n_s_url); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_tuple__2 = <span class='py_c_api'>PyTuple_Pack</span>(2, __pyx_n_s_cls, __pyx_n_s_url); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 107, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__2);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__2);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_1__new__, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_SplitResultNamedTuple___new, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_1__new__, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_SplitResultNamedTuple___new, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_new, __pyx_t_4) &lt; 0) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_new, __pyx_t_4) &lt; 0) __PYX_ERR(0, 107, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_codeobj__3 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_new, 103, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 103, __pyx_L1_error)
-</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">104</span>:         cls.__sr = SplitResult.__new__(SplitResult, url)</pre>
-<pre class='cython code score-11 '>  __pyx_t_1 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_codeobj__3 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_new, 107, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 107, __pyx_L1_error)
+</pre><pre class="cython line score-11" onclick='toggleDiv(this)'>+<span class="">108</span>:         cls.__sr = SplitResult.__new__(SplitResult, url)</pre>
+<pre class='cython code score-11 '>  __pyx_t_1 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_v_url);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_v_url);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_1, 0, __pyx_v_url);
-  __pyx_t_2 = __pyx_tp_new_9urlparse4_4gurl_SplitResult(((PyTypeObject *)__pyx_ptype_9urlparse4_4gurl_SplitResult), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_2 = __pyx_tp_new_9urlparse4_4gurl_SplitResult(((PyTypeObject *)__pyx_ptype_9urlparse4_4gurl_SplitResult), __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  if (<span class='pyx_c_api'>__Pyx_PyObject_SetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr, __pyx_t_2) &lt; 0) __PYX_ERR(0, 104, __pyx_L1_error)
+  if (<span class='pyx_c_api'>__Pyx_PyObject_SetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr, __pyx_t_2) &lt; 0) __PYX_ERR(0, 108, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">105</span>:         return tuple.__new__(cls, (</pre>
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">109</span>:         return tuple.__new__(cls, (</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)(&amp;PyTuple_Type)), __pyx_n_s_new); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(((PyObject *)(&amp;PyTuple_Type)), __pyx_n_s_new); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-</pre><pre class="cython line score-77" onclick='toggleDiv(this)'>+<span class="">106</span>:             cls.__sr.scheme.lower(), cls.__sr.netloc, cls.__sr.path, cls.__sr.query, cls.__sr.fragment</pre>
-<pre class='cython code score-77 '>  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+</pre><pre class="cython line score-77" onclick='toggleDiv(this)'>+<span class="">110</span>:             cls.__sr.scheme.lower(), cls.__sr.netloc, cls.__sr.path, cls.__sr.query, cls.__sr.fragment</pre>
+<pre class='cython code score-77 '>  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_t_5 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_scheme); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_5 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_scheme); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_5, __pyx_n_s_lower); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_5, __pyx_n_s_lower); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -1193,34 +1211,34 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple___new__(CYTHO
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_CallOneArg</span>(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_CallOneArg</span>(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_CallNoArg</span>(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_CallNoArg</span>(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
   }
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_t_5 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_netloc); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_5 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_netloc); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_path); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_path); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_6);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_query); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_query); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_cls, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_t_8 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_fragment); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_8 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_fragment); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_8);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='py_c_api'>PyTuple_New</span>(5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_4 = <span class='py_c_api'>PyTuple_New</span>(5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_3);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_4, 0, __pyx_t_3);
@@ -1249,7 +1267,7 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple___new__(CYTHO
       __pyx_t_9 = 1;
     }
   }
-  __pyx_t_7 = <span class='py_c_api'>PyTuple_New</span>(2+__pyx_t_9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_7 = <span class='py_c_api'>PyTuple_New</span>(2+__pyx_t_9); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 109, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
   if (__pyx_t_8) {
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_8); <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_7, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -1260,27 +1278,27 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple___new__(CYTHO
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_7, 1+__pyx_t_9, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_7); __pyx_t_7 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">107</span>:         ))</pre>
-<pre class="cython line score-0">&#xA0;<span class="">108</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">109</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 109, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">111</span>:         ))</pre>
+<pre class="cython line score-0">&#xA0;<span class="">112</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">113</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 113, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_scheme, __pyx_t_4) &lt; 0) __PYX_ERR(0, 110, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_scheme, __pyx_t_4) &lt; 0) __PYX_ERR(0, 114, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">110</span>:     def scheme(self):</pre>
+</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">114</span>:     def scheme(self):</pre>
 <pre class='cython code score-12 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_3scheme(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_3scheme = {"scheme", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_3scheme, METH_O, 0};
@@ -1311,33 +1329,33 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_2scheme(CYTHO
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__4 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_tuple__4 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 114, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__4);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__4);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_3scheme, 0, __pyx_n_s_SplitResultNamedTuple_scheme, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_3scheme, 0, __pyx_n_s_SplitResultNamedTuple_scheme, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__5 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_scheme, 110, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 110, __pyx_L1_error)
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">111</span>:         return self[0]</pre>
+  __pyx_codeobj__5 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_scheme, 114, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 114, __pyx_L1_error)
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">115</span>:         return self[0]</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">112</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">113</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 113, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">116</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">117</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 117, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_port, __pyx_t_4) &lt; 0) __PYX_ERR(0, 114, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_port, __pyx_t_4) &lt; 0) __PYX_ERR(0, 118, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-13" onclick='toggleDiv(this)'>+<span class="">114</span>:     def port(self):</pre>
+</pre><pre class="cython line score-13" onclick='toggleDiv(this)'>+<span class="">118</span>:     def port(self):</pre>
 <pre class='cython code score-13 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_5port(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_5port = {"port", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_5port, METH_O, 0};
@@ -1369,77 +1387,77 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_4port(CYTHON_
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__6 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_tuple__6 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 118, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__6);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__6);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_5port, 0, __pyx_n_s_SplitResultNamedTuple_port, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_5port, 0, __pyx_n_s_SplitResultNamedTuple_port, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__7 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_port, 114, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 114, __pyx_L1_error)
-</pre><pre class="cython line score-25" onclick='toggleDiv(this)'>+<span class="">115</span>:         if self.__sr.port and int(self.__sr.port) &lt;= 65535:</pre>
-<pre class='cython code score-25 '>  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_codeobj__7 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_port, 118, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 118, __pyx_L1_error)
+</pre><pre class="cython line score-25" onclick='toggleDiv(this)'>+<span class="">119</span>:         if self.__sr.port and int(self.__sr.port) &lt;= 65535:</pre>
+<pre class='cython code score-25 '>  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_port); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_port); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_3); if (unlikely(__pyx_t_4 &lt; 0)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_3); if (unlikely(__pyx_t_4 &lt; 0)) __PYX_ERR(0, 119, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   if (__pyx_t_4) {
   } else {
     __pyx_t_1 = __pyx_t_4;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_3, __pyx_n_s_port); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_3, __pyx_n_s_port); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyNumber_Int</span>(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyNumber_Int</span>(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = <span class='py_c_api'>PyObject_RichCompare</span>(__pyx_t_3, __pyx_int_65535, Py_LE); <span class='refnanny'>__Pyx_XGOTREF</span>(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_2 = <span class='py_c_api'>PyObject_RichCompare</span>(__pyx_t_3, __pyx_int_65535, Py_LE); <span class='refnanny'>__Pyx_XGOTREF</span>(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_2); if (unlikely(__pyx_t_4 &lt; 0)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_2); if (unlikely(__pyx_t_4 &lt; 0)) __PYX_ERR(0, 119, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = __pyx_t_4;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 /* … */
   }
-</pre><pre class="cython line score-9" onclick='toggleDiv(this)'>+<span class="">116</span>:             return int(self.__sr.port)</pre>
+</pre><pre class="cython line score-9" onclick='toggleDiv(this)'>+<span class="">120</span>:             return int(self.__sr.port)</pre>
 <pre class='cython code score-9 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-    __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-    __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_port); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_port); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyNumber_Int</span>(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyNumber_Int</span>(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">117</span>:         else:</pre>
-<pre class="cython line score-2" onclick='toggleDiv(this)'>+<span class="">118</span>:             return None</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">121</span>:         else:</pre>
+<pre class="cython line score-2" onclick='toggleDiv(this)'>+<span class="">122</span>:             return None</pre>
 <pre class='cython code score-2 '>  /*else*/ {
     <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
     <span class='pyx_macro_api'>__Pyx_INCREF</span>(Py_None);
     __pyx_r = Py_None;
     goto __pyx_L0;
   }
-</pre><pre class="cython line score-0">&#xA0;<span class="">119</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">120</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">123</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">124</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 124, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_path, __pyx_t_4) &lt; 0) __PYX_ERR(0, 121, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_path, __pyx_t_4) &lt; 0) __PYX_ERR(0, 125, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">121</span>:     def path(self):</pre>
+</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">125</span>:     def path(self):</pre>
 <pre class='cython code score-12 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_7path(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_7path = {"path", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_7path, METH_O, 0};
@@ -1470,33 +1488,33 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_6path(CYTHON_
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__8 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_tuple__8 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 125, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__8);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__8);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_7path, 0, __pyx_n_s_SplitResultNamedTuple_path, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_7path, 0, __pyx_n_s_SplitResultNamedTuple_path, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__9 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_path, 121, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 121, __pyx_L1_error)
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">122</span>:         return self[2]</pre>
+  __pyx_codeobj__9 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_path, 125, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 125, __pyx_L1_error)
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">126</span>:         return self[2]</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">123</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">124</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 124, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">127</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">128</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_query, __pyx_t_4) &lt; 0) __PYX_ERR(0, 125, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_query, __pyx_t_4) &lt; 0) __PYX_ERR(0, 129, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">125</span>:     def query(self):</pre>
+</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">129</span>:     def query(self):</pre>
 <pre class='cython code score-12 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_9query(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_9query = {"query", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_9query, METH_O, 0};
@@ -1527,33 +1545,33 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_8query(CYTHON
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__10 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_tuple__10 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 129, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__10);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__10);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_9query, 0, __pyx_n_s_SplitResultNamedTuple_query, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_9query, 0, __pyx_n_s_SplitResultNamedTuple_query, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__11 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_query, 125, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 125, __pyx_L1_error)
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">126</span>:         return self[3]</pre>
+  __pyx_codeobj__11 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_query, 129, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 129, __pyx_L1_error)
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">130</span>:         return self[3]</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">127</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">128</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">131</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">132</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 132, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_netloc, __pyx_t_4) &lt; 0) __PYX_ERR(0, 129, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_netloc, __pyx_t_4) &lt; 0) __PYX_ERR(0, 133, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">129</span>:     def netloc(self):</pre>
+</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">133</span>:     def netloc(self):</pre>
 <pre class='cython code score-12 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_11netloc(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_11netloc = {"netloc", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_11netloc, METH_O, 0};
@@ -1584,33 +1602,33 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_10netloc(CYTH
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__12 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_tuple__12 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 133, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__12);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__12);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_11netloc, 0, __pyx_n_s_SplitResultNamedTuple_netloc, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_11netloc, 0, __pyx_n_s_SplitResultNamedTuple_netloc, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__13 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_netloc, 129, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 129, __pyx_L1_error)
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">130</span>:         return self[1]</pre>
+  __pyx_codeobj__13 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_netloc, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 133, __pyx_L1_error)
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">134</span>:         return self[1]</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">131</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">132</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 132, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">135</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">136</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_username, __pyx_t_4) &lt; 0) __PYX_ERR(0, 133, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_username, __pyx_t_4) &lt; 0) __PYX_ERR(0, 137, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-14" onclick='toggleDiv(this)'>+<span class="">133</span>:     def username(self):</pre>
+</pre><pre class="cython line score-14" onclick='toggleDiv(this)'>+<span class="">137</span>:     def username(self):</pre>
 <pre class='cython code score-14 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_13username(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_13username = {"username", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_13username, METH_O, 0};
@@ -1643,21 +1661,21 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_12username(CY
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__14 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_tuple__14 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 137, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__14);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__14);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_13username, 0, __pyx_n_s_SplitResultNamedTuple_username, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_13username, 0, __pyx_n_s_SplitResultNamedTuple_username, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 137, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__15 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_username, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 133, __pyx_L1_error)
-</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">134</span>:         return self.__sr.username or None</pre>
+  __pyx_codeobj__15 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_username, 137, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 137, __pyx_L1_error)
+</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">138</span>:         return self.__sr.username or None</pre>
 <pre class='cython code score-12 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_username); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_username); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_3); if (unlikely(__pyx_t_4 &lt; 0)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_3); if (unlikely(__pyx_t_4 &lt; 0)) __PYX_ERR(0, 138, __pyx_L1_error)
   if (!__pyx_t_4) {
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   } else {
@@ -1672,19 +1690,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_12username(CY
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">135</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">136</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">139</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">140</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 140, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_password, __pyx_t_4) &lt; 0) __PYX_ERR(0, 137, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_password, __pyx_t_4) &lt; 0) __PYX_ERR(0, 141, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-14" onclick='toggleDiv(this)'>+<span class="">137</span>:     def password(self):</pre>
+</pre><pre class="cython line score-14" onclick='toggleDiv(this)'>+<span class="">141</span>:     def password(self):</pre>
 <pre class='cython code score-14 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_15password(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_15password = {"password", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_15password, METH_O, 0};
@@ -1717,21 +1735,21 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_14password(CY
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__16 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_tuple__16 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 141, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__16);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__16);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_15password, 0, __pyx_n_s_SplitResultNamedTuple_password, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_15password, 0, __pyx_n_s_SplitResultNamedTuple_password, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__17 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_password, 137, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 137, __pyx_L1_error)
-</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">138</span>:         return self.__sr.password or None</pre>
+  __pyx_codeobj__17 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_password, 141, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 141, __pyx_L1_error)
+</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">142</span>:         return self.__sr.password or None</pre>
 <pre class='cython code score-12 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_password); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_password); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 142, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_3); if (unlikely(__pyx_t_4 &lt; 0)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_3); if (unlikely(__pyx_t_4 &lt; 0)) __PYX_ERR(0, 142, __pyx_L1_error)
   if (!__pyx_t_4) {
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   } else {
@@ -1746,19 +1764,19 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_14password(CY
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">139</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">140</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 140, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">143</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">144</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 144, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_fragment, __pyx_t_4) &lt; 0) __PYX_ERR(0, 141, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_fragment, __pyx_t_4) &lt; 0) __PYX_ERR(0, 145, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">141</span>:     def fragment(self):</pre>
+</pre><pre class="cython line score-12" onclick='toggleDiv(this)'>+<span class="">145</span>:     def fragment(self):</pre>
 <pre class='cython code score-12 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_17fragment(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_17fragment = {"fragment", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_17fragment, METH_O, 0};
@@ -1789,33 +1807,33 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_16fragment(CY
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__18 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_tuple__18 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 145, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__18);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__18);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_17fragment, 0, __pyx_n_s_SplitResultNamedTuple_fragment, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_17fragment, 0, __pyx_n_s_SplitResultNamedTuple_fragment, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__19 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_fragment, 141, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 141, __pyx_L1_error)
-</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">142</span>:         return self[4]</pre>
+  __pyx_codeobj__19 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_fragment, 145, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 145, __pyx_L1_error)
+</pre><pre class="cython line score-3" onclick='toggleDiv(this)'>+<span class="">146</span>:         return self[4]</pre>
 <pre class='cython code score-3 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_GetItemInt</span>(__pyx_v_self, 4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">143</span>: </pre>
-<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">144</span>:     @property</pre>
-<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 144, __pyx_L1_error)
+</pre><pre class="cython line score-0">&#xA0;<span class="">147</span>: </pre>
+<pre class="cython line score-15" onclick='toggleDiv(this)'>+<span class="">148</span>:     @property</pre>
+<pre class='cython code score-15 '>  __pyx_t_5 = <span class='py_c_api'>PyTuple_New</span>(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_5, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_builtin_property, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_hostname, __pyx_t_4) &lt; 0) __PYX_ERR(0, 145, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_hostname, __pyx_t_4) &lt; 0) __PYX_ERR(0, 149, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-14" onclick='toggleDiv(this)'>+<span class="">145</span>:     def hostname(self):</pre>
+</pre><pre class="cython line score-14" onclick='toggleDiv(this)'>+<span class="">149</span>:     def hostname(self):</pre>
 <pre class='cython code score-14 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_19hostname(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_19hostname = {"hostname", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_19hostname, METH_O, 0};
@@ -1848,21 +1866,21 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_18hostname(CY
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__20 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_tuple__20 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 149, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__20);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__20);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_19hostname, 0, __pyx_n_s_SplitResultNamedTuple_hostname, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_19hostname, 0, __pyx_n_s_SplitResultNamedTuple_hostname, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  __pyx_codeobj__21 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_hostname, 145, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 145, __pyx_L1_error)
-</pre><pre class="cython line score-25" onclick='toggleDiv(this)'>+<span class="">146</span>:         return self.__sr.host.lower()</pre>
+  __pyx_codeobj__21 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_hostname, 149, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 149, __pyx_L1_error)
+</pre><pre class="cython line score-25" onclick='toggleDiv(this)'>+<span class="">150</span>:         return self.__sr.host.lower()</pre>
 <pre class='cython code score-25 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_v_self, __pyx_n_s_SplitResultNamedTuple__sr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_host); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_host); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_3, __pyx_n_s_lower); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_3, __pyx_n_s_lower); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -1876,18 +1894,18 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_18hostname(CY
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_CallOneArg</span>(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_CallOneArg</span>(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_CallNoArg</span>(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_CallNoArg</span>(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
   }
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">147</span>: </pre>
-<pre class="cython line score-21" onclick='toggleDiv(this)'>+<span class="">148</span>:     def geturl(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">151</span>: </pre>
+<pre class="cython line score-21" onclick='toggleDiv(this)'>+<span class="">152</span>:     def geturl(self):</pre>
 <pre class='cython code score-21 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_21geturl(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_21geturl = {"geturl", (PyCFunction)__pyx_pw_9urlparse4_4gurl_21SplitResultNamedTuple_21geturl, METH_O, 0};
@@ -1921,20 +1939,20 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_20geturl(CYTH
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__22 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_tuple__22 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 152, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__22);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__22);
 /* … */
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_21geturl, 0, __pyx_n_s_SplitResultNamedTuple_geturl, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_CyFunction_NewEx</span>(&amp;__pyx_mdef_9urlparse4_4gurl_21SplitResultNamedTuple_21geturl, 0, __pyx_n_s_SplitResultNamedTuple_geturl, NULL, __pyx_n_s_urlparse4_gurl, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_geturl, __pyx_t_4) &lt; 0) __PYX_ERR(0, 148, __pyx_L1_error)
+  if (<span class='py_c_api'>PyObject_SetItem</span>(__pyx_t_3, __pyx_n_s_geturl, __pyx_t_4) &lt; 0) __PYX_ERR(0, 152, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_codeobj__23 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_geturl, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 148, __pyx_L1_error)
-</pre><pre class="cython line score-30" onclick='toggleDiv(this)'>+<span class="">149</span>:         return stdlib_urlparse.urlunsplit(self)</pre>
+  __pyx_codeobj__23 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cosr_urlparse4_urlparse4_gurl_p, __pyx_n_s_geturl, 152, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 152, __pyx_L1_error)
+</pre><pre class="cython line score-30" onclick='toggleDiv(this)'>+<span class="">153</span>:         return stdlib_urlparse.urlunsplit(self)</pre>
 <pre class='cython code score-30 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_n_s_stdlib_urlparse); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_n_s_stdlib_urlparse); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_urlunsplit); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_urlunsplit); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -1948,16 +1966,16 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_20geturl(CYTH
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_CallOneArg</span>(__pyx_t_3, __pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_CallOneArg</span>(__pyx_t_3, __pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   } else {
-    __pyx_t_4 = <span class='py_c_api'>PyTuple_New</span>(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
+    __pyx_t_4 = <span class='py_c_api'>PyTuple_New</span>(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_2); <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
     <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_v_self);
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_v_self);
     <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_4, 0+1, __pyx_v_self);
-    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
   }
@@ -1965,9 +1983,9 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_21SplitResultNamedTuple_20geturl(CYTH
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">150</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">151</span>: </pre>
-<pre class="cython line score-18" onclick='toggleDiv(this)'>+<span class="">152</span>: def urlsplit(url):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">154</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">155</span>: </pre>
+<pre class="cython line score-18" onclick='toggleDiv(this)'>+<span class="">156</span>: def urlsplit(url):</pre>
 <pre class='cython code score-18 '>/* Python wrapper */
 static PyObject *__pyx_pw_9urlparse4_4gurl_1urlsplit(PyObject *__pyx_self, PyObject *__pyx_v_url); /*proto*/
 static PyMethodDef __pyx_mdef_9urlparse4_4gurl_1urlsplit = {"urlsplit", (PyCFunction)__pyx_pw_9urlparse4_4gurl_1urlsplit, METH_O, 0};
@@ -2002,22 +2020,22 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_urlsplit(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 /* … */
-  __pyx_tuple__24 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_url); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_tuple__24 = <span class='py_c_api'>PyTuple_Pack</span>(1, __pyx_n_s_url); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 156, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__24);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__24);
 /* … */
-  __pyx_t_1 = PyCFunction_NewEx(&amp;__pyx_mdef_9urlparse4_4gurl_1urlsplit, NULL, __pyx_n_s_urlparse4_gurl); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&amp;__pyx_mdef_9urlparse4_4gurl_1urlsplit, NULL, __pyx_n_s_urlparse4_gurl); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_urlsplit, __pyx_t_1) &lt; 0) __PYX_ERR(0, 152, __pyx_L1_error)
+  if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_urlsplit, __pyx_t_1) &lt; 0) __PYX_ERR(0, 156, __pyx_L1_error)
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-</pre><pre class="cython line score-31" onclick='toggleDiv(this)'>+<span class="">153</span>:     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)</pre>
+</pre><pre class="cython line score-31" onclick='toggleDiv(this)'>+<span class="">157</span>:     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)</pre>
 <pre class='cython code score-31 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_n_s_SplitResultNamedTuple); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_n_s_SplitResultNamedTuple); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
-  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_2, __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 157, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_n_s_SplitResultNamedTuple); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_n_s_SplitResultNamedTuple); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -2031,7 +2049,7 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_urlsplit(CYTHON_UNUSED PyObject *__py
       __pyx_t_5 = 1;
     }
   }
-  __pyx_t_6 = <span class='py_c_api'>PyTuple_New</span>(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_6 = <span class='py_c_api'>PyTuple_New</span>(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 157, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_6);
   if (__pyx_t_4) {
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4); <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -2042,16 +2060,16 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_urlsplit(CYTHON_UNUSED PyObject *__py
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_v_url);
   <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_6, 1+__pyx_t_5, __pyx_v_url);
   __pyx_t_2 = 0;
-  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_6); __pyx_t_6 = 0;
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">154</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">155</span>: </pre>
-<pre class="cython line score-51" onclick='toggleDiv(this)'>+<span class="">156</span>: cpdef urljoin(bytes base, bytes url, allow_fragments=True):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">158</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">159</span>: </pre>
+<pre class="cython line score-51" onclick='toggleDiv(this)'>+<span class="">160</span>: cpdef urljoin(bytes base, bytes url, allow_fragments=True):</pre>
 <pre class='cython code score-51 '>static PyObject *__pyx_pw_9urlparse4_4gurl_3urljoin(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_f_9urlparse4_4gurl_urljoin(PyObject *__pyx_v_base, PyObject *__pyx_v_url, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_9urlparse4_4gurl_urljoin *__pyx_optional_args) {
   PyObject *__pyx_v_allow_fragments = ((PyObject *)Py_True);
@@ -2109,7 +2127,7 @@ static PyObject *__pyx_pw_9urlparse4_4gurl_3urljoin(PyObject *__pyx_self, PyObje
         case  1:
         if (likely((values[1] = <span class='py_c_api'>PyDict_GetItem</span>(__pyx_kwds, __pyx_n_s_url)) != 0)) kw_args--;
         else {
-          <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("urljoin", 0, 2, 3, 1); __PYX_ERR(0, 156, __pyx_L3_error)
+          <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("urljoin", 0, 2, 3, 1); __PYX_ERR(0, 160, __pyx_L3_error)
         }
         case  2:
         if (kw_args &gt; 0) {
@@ -2118,7 +2136,7 @@ static PyObject *__pyx_pw_9urlparse4_4gurl_3urljoin(PyObject *__pyx_self, PyObje
         }
       }
       if (unlikely(kw_args &gt; 0)) {
-        if (unlikely(<span class='pyx_c_api'>__Pyx_ParseOptionalKeywords</span>(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "urljoin") &lt; 0)) __PYX_ERR(0, 156, __pyx_L3_error)
+        if (unlikely(<span class='pyx_c_api'>__Pyx_ParseOptionalKeywords</span>(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "urljoin") &lt; 0)) __PYX_ERR(0, 160, __pyx_L3_error)
       }
     } else {
       switch (<span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)) {
@@ -2135,14 +2153,14 @@ static PyObject *__pyx_pw_9urlparse4_4gurl_3urljoin(PyObject *__pyx_self, PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("urljoin", 0, 2, 3, <span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)); __PYX_ERR(0, 156, __pyx_L3_error)
+  <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("urljoin", 0, 2, 3, <span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)); __PYX_ERR(0, 160, __pyx_L3_error)
   __pyx_L3_error:;
   <span class='pyx_c_api'>__Pyx_AddTraceback</span>("urlparse4.gurl.urljoin", __pyx_clineno, __pyx_lineno, __pyx_filename);
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!<span class='pyx_c_api'>__Pyx_ArgTypeTest</span>(((PyObject *)__pyx_v_base), (&amp;PyBytes_Type), 1, "base", 1))) __PYX_ERR(0, 156, __pyx_L1_error)
-  if (unlikely(!<span class='pyx_c_api'>__Pyx_ArgTypeTest</span>(((PyObject *)__pyx_v_url), (&amp;PyBytes_Type), 1, "url", 1))) __PYX_ERR(0, 156, __pyx_L1_error)
+  if (unlikely(!<span class='pyx_c_api'>__Pyx_ArgTypeTest</span>(((PyObject *)__pyx_v_base), (&amp;PyBytes_Type), 1, "base", 1))) __PYX_ERR(0, 160, __pyx_L1_error)
+  if (unlikely(!<span class='pyx_c_api'>__Pyx_ArgTypeTest</span>(((PyObject *)__pyx_v_url), (&amp;PyBytes_Type), 1, "url", 1))) __PYX_ERR(0, 160, __pyx_L1_error)
   __pyx_r = __pyx_pf_9urlparse4_4gurl_2urljoin(__pyx_self, __pyx_v_base, __pyx_v_url, __pyx_v_allow_fragments);
 
   /* function exit code */
@@ -2161,7 +2179,7 @@ static PyObject *__pyx_pf_9urlparse4_4gurl_2urljoin(CYTHON_UNUSED PyObject *__py
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.allow_fragments = __pyx_v_allow_fragments;
-  __pyx_t_1 = __pyx_f_9urlparse4_4gurl_urljoin(__pyx_v_base, __pyx_v_url, 0, &amp;__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_9urlparse4_4gurl_urljoin(__pyx_v_base, __pyx_v_url, 0, &amp;__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2182,30 +2200,30 @@ struct __pyx_opt_args_9urlparse4_4gurl_urljoin {
   int __pyx_n;
   PyObject *allow_fragments;
 };
-</pre><pre class="cython line score-2" onclick='toggleDiv(this)'>+<span class="">157</span>:     if allow_fragments:</pre>
-<pre class='cython code score-2 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_v_allow_fragments); if (unlikely(__pyx_t_1 &lt; 0)) __PYX_ERR(0, 157, __pyx_L1_error)
+</pre><pre class="cython line score-2" onclick='toggleDiv(this)'>+<span class="">161</span>:     if allow_fragments:</pre>
+<pre class='cython code score-2 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_v_allow_fragments); if (unlikely(__pyx_t_1 &lt; 0)) __PYX_ERR(0, 161, __pyx_L1_error)
   if (__pyx_t_1) {
 /* … */
   }
-</pre><pre class="cython line score-17" onclick='toggleDiv(this)'>+<span class="">158</span>:         return GURL(base).Resolve(url).spec()</pre>
+</pre><pre class="cython line score-17" onclick='toggleDiv(this)'>+<span class="">162</span>:         return GURL(base).Resolve(url).spec()</pre>
 <pre class='cython code score-17 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-    __pyx_t_2 = <span class='pyx_c_api'>__pyx_convert_string_from_py_std__in_string</span>(__pyx_v_base); if (unlikely(<span class='py_c_api'>PyErr_Occurred</span>())) __PYX_ERR(0, 158, __pyx_L1_error)
-    __pyx_t_3 = <span class='pyx_c_api'>__pyx_convert_string_from_py_std__in_string</span>(__pyx_v_url); if (unlikely(<span class='py_c_api'>PyErr_Occurred</span>())) __PYX_ERR(0, 158, __pyx_L1_error)
-    __pyx_t_4 = <span class='pyx_c_api'>__pyx_convert_PyBytes_string_to_py_std__in_string</span>(GURL(__pyx_t_2).Resolve(__pyx_t_3).spec()); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 158, __pyx_L1_error)
+    __pyx_t_2 = <span class='pyx_c_api'>__pyx_convert_string_from_py_std__in_string</span>(__pyx_v_base); if (unlikely(<span class='py_c_api'>PyErr_Occurred</span>())) __PYX_ERR(0, 162, __pyx_L1_error)
+    __pyx_t_3 = <span class='pyx_c_api'>__pyx_convert_string_from_py_std__in_string</span>(__pyx_v_url); if (unlikely(<span class='py_c_api'>PyErr_Occurred</span>())) __PYX_ERR(0, 162, __pyx_L1_error)
+    __pyx_t_4 = <span class='pyx_c_api'>__pyx_convert_PyBytes_string_to_py_std__in_string</span>(GURL(__pyx_t_2).Resolve(__pyx_t_3).spec()); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">159</span>:     else:</pre>
-<pre class="cython line score-30" onclick='toggleDiv(this)'>+<span class="">160</span>:         return stdlib_urlparse.urljoin(base, url, allow_fragments=allow_fragments)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">163</span>:     else:</pre>
+<pre class="cython line score-30" onclick='toggleDiv(this)'>+<span class="">164</span>:         return stdlib_urlparse.urljoin(base, url, allow_fragments=allow_fragments)</pre>
 <pre class='cython code score-30 '>  /*else*/ {
     <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_n_s_stdlib_urlparse); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 160, __pyx_L1_error)
+    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_n_s_stdlib_urlparse); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-    __pyx_t_5 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_urljoin); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 160, __pyx_L1_error)
+    __pyx_t_5 = <span class='pyx_c_api'>__Pyx_PyObject_GetAttrStr</span>(__pyx_t_4, __pyx_n_s_urljoin); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = <span class='py_c_api'>PyTuple_New</span>(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 160, __pyx_L1_error)
+    __pyx_t_4 = <span class='py_c_api'>PyTuple_New</span>(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_v_base);
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_v_base);
@@ -2213,10 +2231,10 @@ struct __pyx_opt_args_9urlparse4_4gurl_urljoin {
     <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_v_url);
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_v_url);
     <span class='py_macro_api'>PyTuple_SET_ITEM</span>(__pyx_t_4, 1, __pyx_v_url);
-    __pyx_t_6 = <span class='py_c_api'>PyDict_New</span>(); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 160, __pyx_L1_error)
+    __pyx_t_6 = <span class='py_c_api'>PyDict_New</span>(); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 164, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_6);
-    if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_6, __pyx_n_s_allow_fragments, __pyx_v_allow_fragments) &lt; 0) __PYX_ERR(0, 160, __pyx_L1_error)
-    __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_5, __pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 160, __pyx_L1_error)
+    if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_t_6, __pyx_n_s_allow_fragments, __pyx_v_allow_fragments) &lt; 0) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyObject_Call</span>(__pyx_t_5, __pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 164, __pyx_L1_error)
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_7);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;

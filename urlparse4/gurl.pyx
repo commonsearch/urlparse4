@@ -1,4 +1,4 @@
-from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL
+from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
 from chromium_gurl cimport GURL
 import urlparse as stdlib_urlparse
 cimport cython
@@ -29,7 +29,10 @@ cdef class SplitResult:
     def __cinit__(self, char* url):
         # self.url = url
         self.pyurl = url
-        ParseStandardURL(url, len(url), &self.parsed)
+        if url[0:5] == b"file:":
+            ParseFileURL(url, len(url), &self.parsed)
+        else:
+            ParseStandardURL(url, len(url), &self.parsed)
 
     property scheme:
         def __get__(self):
@@ -80,11 +83,11 @@ cdef class SplitResult:
                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 1 + self.parsed.username.len]
 
             # Username + password
-            elif self.parsed.username.len > 0 and self.parsed.password.len <= 0 and self.parsed.port.len <= 0:
+            elif self.parsed.username.len > 0 and self.parsed.password.len > 0 and self.parsed.port.len <= 0:
                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 2 + self.parsed.username.len + self.parsed.password.len]
 
             # Username + port
-            elif self.parsed.username.len > 0 and self.parsed.password.len <= 0 and self.parsed.port.len <= 0:
+            elif self.parsed.username.len > 0 and self.parsed.password.len <= 0 and self.parsed.port.len > 0:
                 return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 2 + self.parsed.username.len + self.parsed.port.len]
 
             # Username + port + password

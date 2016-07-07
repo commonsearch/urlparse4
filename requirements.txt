@@ -1,5 +1,6 @@
 tabulate==0.7.5
 Cython==0.24
+pytest==2.9.2
 
 # For benchmarks
 uritools==1.0.2

@@ -630,8 +630,8 @@ class UrlParseTestCase(unittest.TestCase):
         self.assertEqual(urlparse.urlparse("http://www.python.org:80"),
                 ('http','www.python.org:80','','','',''))
 
-def test_main():
-    test_support.run_unittest(UrlParseTestCase)
+# def test_main():
+#     test_support.run_unittest(UrlParseTestCase)
 
-if __name__ == "__main__":
-    test_main()
+# if __name__ == "__main__":
+#     test_main()

@@ -5,7 +5,7 @@ benchmark:
 	python benchmarks/urls.py
 
 test:
-	python tests/test_*.py
+	py.test tests/ -v
 
 docker_build:
 	docker build -t commonsearch/urlparse4 .
