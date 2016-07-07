@@ -1,4 +1,5 @@
 from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL
+from chromium_gurl cimport GURL
 import urlparse as stdlib_urlparse
 cimport cython
 
@@ -150,3 +151,10 @@ class SplitResultNamedTuple(tuple):
 
 def urlsplit(url):
     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
+
+
+cpdef urljoin(bytes base, bytes url, allow_fragments=True):
+    if allow_fragments:
+        return GURL(base).Resolve(url).spec()
+    else:
+        return stdlib_urlparse.urljoin(base, url, allow_fragments=allow_fragments)
