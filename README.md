@@ -38,7 +38,7 @@ make docker_benchmark
 Current results on a 2.2GHz Intel Core i7 MBP (in seconds):
 
 ```
-Benchmarking on 104300 URLs x 10 times
+Benchmark results on 104300 URLs x 10 times, in seconds:
 
 Name              Sum            Mean               Median             90%
 ----------------  -------------  -----------------  -----------------  -----------------
@@ -61,7 +61,7 @@ uritools          10.266307      9.84305560882e-06  8.99999999859e-06  1.2000000
 pygurl            2.30582700001  2.2107641419e-06   1.99999999495e-06  2.99999999243e-06
 yurl              11.902723      1.14120067114e-05  1.10000000006e-05  1.40000000073e-05
 
-hotname:
+hostname:
 ----              ----           ----               ----               ----
 urlparse4         4.098633       3.92965771812e-06  4.00000000411e-06  4.00000000411e-06
 urlparse2         4.83505700001  4.63572099713e-06  4.00000000411e-06  5.99999999906e-06

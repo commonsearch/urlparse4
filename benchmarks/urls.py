@@ -28,9 +28,6 @@ for fp in os.listdir("tests/urls/"):
     with open("tests/urls/%s" % fp) as f:
         URLS += f.readlines()
 
-print "Benchmarking on %s URLs x %s times" % (len(URLS), REPEATS)
-print
-
 data = []
 
 
@@ -73,7 +70,7 @@ benchmark("yurl", lambda url: yurl_url(url) + yurl_url("sibling.html?q=1#e=b"))
 
 # Not very representative because some libraries have functions to access the host directly without parsing the rest.
 # Might still be useful for some people!
-title("hotname")
+title("hostname")
 benchmark("urlparse4", lambda url: urlparse4.urlsplit(url).hostname)
 benchmark("urlparse2", lambda url: urlparse2.urlsplit(url).hostname)
 benchmark("urlparse", lambda url: urlparse.urlsplit(url).hostname)
@@ -90,7 +87,8 @@ benchmark("yurl", lambda url: yurl_url(url).host)
 
 
 print
-print "Recap:"
+print "Benchmark results on %s URLs x %s times, in seconds:" % (len(URLS), REPEATS)
+print
 print
 print tabulate.tabulate(data, headers=["Name", "Sum", "Mean", "Median", "90%"])
 print
