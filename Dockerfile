@@ -37,6 +37,7 @@ RUN cd /tmp && \
 	make install && \
 	cd .. && \
 	CPPFLAGS=-I/usr/local/include/liburi make && \
-	cp cyuri.so /usr/lib/python2.7/
+	cp cyuri.so /usr/lib/python2.7/ && \
+	ldconfig
 
 ADD Makefile /Makefile

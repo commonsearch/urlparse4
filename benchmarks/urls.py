@@ -16,7 +16,7 @@ import pygurl
 # Disabled benchmarks
 # import slimurl
 # import urlparse3
-# import cyuri
+import cyuri
 
 sys.path.insert(-1, os.path.dirname(os.path.dirname(__file__)))
 import urlparse4
@@ -54,6 +54,9 @@ def title(name):
     data.append(["%s:" % name, "", "", "", ""])
     data.append(["----", "----", "----", "----", "----"])
 
+# Segfault: https://github.com/mitghi/cyuri/issues/1
+cyuri_parser = cyuri.uriparser()
+
 title("urlsplit")
 benchmark("urlparse4", lambda url: urlparse4.urlsplit(url))
 benchmark("pygurl", lambda url: pygurl.ParseStandard(url))
@@ -61,6 +64,7 @@ benchmark("uritools", lambda url: uritools_urisplit(url))
 benchmark("yurl", lambda url: yurl_url(url))
 benchmark("urlparse2", lambda url: urlparse2.urlsplit(url))
 benchmark("urlparse", lambda url: urlparse.urlsplit(url))
+benchmark("cyuri", lambda url: cyuri_parser.components(url))
 
 title("urljoin_sibling")
 benchmark("urlparse4", lambda url: urlparse4.urljoin(url, "sibling.html?q=1#e=b"))
@@ -69,6 +73,7 @@ benchmark("uritools", lambda url: uritools_urijoin(url, "sibling.html?q=1#e=b"))
 benchmark("yurl", lambda url: yurl_url(url) + yurl_url("sibling.html?q=1#e=b"))
 benchmark("urlparse2", lambda url: urlparse2.urljoin(url, "sibling.html?q=1#e=b"))
 benchmark("urlparse", lambda url: urlparse.urljoin(url, "sibling.html?q=1#e=b"))
+benchmark("cyuri", lambda url: cyuri_parser.join(url, "sibling.html?q=1#e=b"))
 
 # Not very representative because some libraries have functions to access the host directly without parsing the rest.
 # Might still be useful for some people!
@@ -79,13 +84,10 @@ benchmark("uritools", lambda url: uritools_urisplit(url).host)
 benchmark("yurl", lambda url: yurl_url(url).host)
 benchmark("urlparse2", lambda url: urlparse2.urlsplit(url).hostname)
 benchmark("urlparse", lambda url: urlparse.urlsplit(url).hostname)
+benchmark("cyuri", lambda url: cyuri_parser.components(url)["host"])
 
 # Very slow!
 # benchmark("slimurl", lambda url: slimurl.URL(url))
-
-# Segfault: https://github.com/mitghi/cyuri/issues/1
-# cyuri_parser = cyuri.uriparser()
-# benchmark("cyuri_urlsplit", lambda url: cyuri_parser.components(url), debug=True)
 
 # Breaks on simple URLs like http://1-14th.com/timeline-4-66T.htm
 # benchmark("urlparse3_urlsplit", lambda url: urlparse3.parse_url(url))
