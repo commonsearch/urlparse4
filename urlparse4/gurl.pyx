@@ -18,135 +18,139 @@ cdef bytes cslice_component(char * url, Component comp):
     return url[comp.begin:comp.begin + comp.len]
 
 
+cdef bytes build_netloc(bytes url, Parsed parsed):
 
-@cython.freelist(100)
-cdef class SplitResult:
+    if parsed.host.len <= 0:
+        return b""
 
-    cdef Parsed parsed
-    # cdef char * url
-    cdef bytes pyurl
+    # Nothing at all
+    elif parsed.username.len <= 0 and parsed.password.len <= 0 and parsed.port.len <= 0:
+        return url[parsed.host.begin: parsed.host.begin + parsed.host.len]
 
-    def __cinit__(self, char* url):
-        # self.url = url
-        self.pyurl = url
-        if url[0:5] == b"file:":
-            ParseFileURL(url, len(url), &self.parsed)
-        else:
-            ParseStandardURL(url, len(url), &self.parsed)
+    # Only port
+    elif parsed.username.len <= 0 and parsed.password.len <= 0 and parsed.port.len > 0:
+        return url[parsed.host.begin: parsed.host.begin + parsed.host.len + 1 + parsed.port.len]
 
-    property scheme:
-        def __get__(self):
-            return slice_component(self.pyurl, self.parsed.scheme)
+    # Only username
+    elif parsed.username.len > 0 and parsed.password.len <= 0 and parsed.port.len <= 0:
+        return url[parsed.username.begin: parsed.username.begin + parsed.host.len + 1 + parsed.username.len]
 
-    property path:
-        def __get__(self):
-            return slice_component(self.pyurl, self.parsed.path)
+    # Username + password
+    elif parsed.username.len > 0 and parsed.password.len > 0 and parsed.port.len <= 0:
+        return url[parsed.username.begin: parsed.username.begin + parsed.host.len + 2 + parsed.username.len + parsed.password.len]
 
-    property query:
-        def __get__(self):
-            return slice_component(self.pyurl, self.parsed.query)
+    # Username + port
+    elif parsed.username.len > 0 and parsed.password.len <= 0 and parsed.port.len > 0:
+        return url[parsed.username.begin: parsed.username.begin + parsed.host.len + 2 + parsed.username.len + parsed.port.len]
 
-    property fragment:
-        def __get__(self):
-            return slice_component(self.pyurl, self.parsed.ref)
+    # Username + port + password
+    elif parsed.username.len > 0 and parsed.password.len > 0 and parsed.port.len > 0:
+        return url[parsed.username.begin: parsed.username.begin + parsed.host.len + 3 + parsed.port.len  + parsed.username.len  + parsed.password.len]
 
-    property username:
-        def __get__(self):
-            return slice_component(self.pyurl, self.parsed.username)
+    else:
+        raise ValueError
 
-    property password:
-        def __get__(self):
-            return slice_component(self.pyurl, self.parsed.password)
 
-    property port:
-        def __get__(self):
-            return slice_component(self.pyurl, self.parsed.port)
+# @cython.freelist(100)
+# cdef class SplitResult:
 
-    # Not in regular urlsplit() !
-    property host:
-        def __get__(self):
-            return slice_component(self.pyurl, self.parsed.host)
+#     cdef Parsed parsed
+#     # cdef char * url
+#     cdef bytes pyurl
 
-    property netloc:
-        def __get__(self):
+#     def __cinit__(self, char* url):
+#         # self.url = url
+#         self.pyurl = url
+#         if url[0:5] == b"file:":
+#             ParseFileURL(url, len(url), &self.parsed)
+#         else:
+#             ParseStandardURL(url, len(url), &self.parsed)
 
-            # Nothing at all
-            if self.parsed.username.len <= 0 and self.parsed.password.len <= 0 and self.parsed.port.len <= 0:
-                return self.host
+#     property scheme:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.scheme)
 
-            # Only port
-            elif self.parsed.username.len <= 0 and self.parsed.password.len <= 0 and self.parsed.port.len > 0:
-                return self.pyurl[self.parsed.host.begin: self.parsed.host.begin + self.parsed.host.len + 1 + self.parsed.port.len]
+#     property path:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.path)
 
-            # Only username
-            elif self.parsed.username.len > 0 and self.parsed.password.len <= 0 and self.parsed.port.len <= 0:
-                return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 1 + self.parsed.username.len]
+#     property query:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.query)
 
-            # Username + password
-            elif self.parsed.username.len > 0 and self.parsed.password.len > 0 and self.parsed.port.len <= 0:
-                return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 2 + self.parsed.username.len + self.parsed.password.len]
+#     property fragment:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.ref)
 
-            # Username + port
-            elif self.parsed.username.len > 0 and self.parsed.password.len <= 0 and self.parsed.port.len > 0:
-                return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 2 + self.parsed.username.len + self.parsed.port.len]
+#     property username:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.username)
 
-            # Username + port + password
-            elif self.parsed.username.len > 0 and self.parsed.password.len > 0 and self.parsed.port.len > 0:
-                return self.pyurl[self.parsed.username.begin: self.parsed.username.begin + self.parsed.host.len + 3 + self.parsed.port.len  + self.parsed.username.len  + self.parsed.password.len]
+#     property password:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.password)
 
-            else:
-                raise ValueError
+#     property port:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.port)
 
+#     # Not in regular urlsplit() !
+#     property host:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.host)
+
+#     property netloc:
+#         def __get__(self):
+#             return build_netloc(self.pyurl, self.parsed)
 
 
 class SplitResultNamedTuple(tuple):
 
     __slots__ = ()  # prevent creation of instance dictionary
 
-    def __new__(cls, url):
-        cls.__sr = SplitResult.__new__(SplitResult, url)
-        return tuple.__new__(cls, (
-            cls.__sr.scheme.lower(), cls.__sr.netloc, cls.__sr.path, cls.__sr.query, cls.__sr.fragment
-        ))
+    def __new__(cls, bytes url):
 
-    @property
-    def scheme(self):
-        return self[0]
+        cdef Parsed parsed
 
-    @property
-    def port(self):
-        if self.__sr.port and int(self.__sr.port) <= 65535:
-            return int(self.__sr.port)
+        if url[0:5] == b"file:":
+            ParseFileURL(url, len(url), &parsed)
         else:
-            return None
+            ParseStandardURL(url, len(url), &parsed)
 
-    @property
-    def path(self):
-        return self[2]
+        def _get_attr(self, prop):
+            if prop == "scheme":
+                return self[0]
+            elif prop == "netloc":
+                return self[1]
+            elif prop == "path":
+                return self[2]
+            elif prop == "query":
+                return self[3]
+            elif prop == "fragment":
+                return self[4]
+            elif prop == "port":
+                if parsed.port.len > 0:
+                    port = int(slice_component(url, parsed.port))
+                    if port <= 65535:
+                        return port
 
-    @property
-    def query(self):
-        return self[3]
+            elif prop == "username":
+                return slice_component(url, parsed.username) or None
+            elif prop == "password":
+                return slice_component(url, parsed.password) or None
+            elif prop == "hostname":
+                return slice_component(url, parsed.host).lower()
 
-    @property
-    def netloc(self):
-        return self[1]
 
-    @property
-    def username(self):
-        return self.__sr.username or None
+        cls.__getattr__ = _get_attr
 
-    @property
-    def password(self):
-        return self.__sr.password or None
-
-    @property
-    def fragment(self):
-        return self[4]
-
-    @property
-    def hostname(self):
-        return self.__sr.host.lower()
+        return tuple.__new__(cls, (
+            slice_component(url, parsed.scheme).lower(),
+            build_netloc(url, parsed),
+            slice_component(url, parsed.path),
+            slice_component(url, parsed.query),
+            slice_component(url, parsed.ref)
+        ))
 
     def geturl(self):
         return stdlib_urlparse.urlunsplit(self)
@@ -154,6 +158,7 @@ class SplitResultNamedTuple(tuple):
 
 def urlsplit(url):
     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
+
 
 
 cpdef urljoin(bytes base, bytes url, allow_fragments=True):
