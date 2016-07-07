@@ -6,4 +6,5 @@ uritools==1.0.2
 YURL==0.13
 urlparse2==1.1.1
 urlparse3==1.0.9
+slimurl==0.7.2
 -e git+git://github.com/Preetwinder/gurl-cython.git@0b973257d9a3b8a38c209ed65e793953e21c6bf9#egg=gurl-cython

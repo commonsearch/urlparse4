@@ -205,7 +205,7 @@ class UrlParseTestCase(unittest.TestCase):
 
     def checkJoin(self, base, relurl, expected):
         self.assertEqual(urlparse.urljoin(base, relurl), expected,
-                         (base, relurl, expected))
+                         (base, relurl, expected, urlparse.urljoin(base, relurl)))
 
     def test_unparse_parse(self):
         for u in ['Python', './Python','x-newscheme://foo.com/stuff','x://y','x:/y','x:/','/',]:

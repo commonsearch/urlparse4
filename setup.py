@@ -1,0 +1,36 @@
+from distutils.core import setup, Extension
+from Cython.Build import cythonize
+
+setup(ext_modules=cythonize(Extension(
+    name="urlparse4/gurl",
+    sources=["urlparse4/gurl.pyx",
+             "vendor/gurl/base/third_party/icu/icu_utf.cc",
+             "vendor/gurl/base/strings/string16.cc",
+             "vendor/gurl/base/strings/string_piece.cc",
+             "vendor/gurl/base/strings/string_util.cc",
+             "vendor/gurl/base/strings/utf_string_conversions.cc",
+             "vendor/gurl/base/strings/utf_string_conversion_utils.cc",
+             "vendor/gurl/url/gurl.cc",
+             "vendor/gurl/url/url_canon_etc.cc",
+             "vendor/gurl/url/url_canon_filesystemurl.cc",
+             "vendor/gurl/url/url_canon_fileurl.cc",
+             "vendor/gurl/url/url_canon_host.cc",
+             "vendor/gurl/url/url_canon_internal.cc",
+             "vendor/gurl/url/url_canon_ip.cc",
+             "vendor/gurl/url/url_canon_mailtourl.cc",
+             "vendor/gurl/url/url_canon_path.cc",
+             "vendor/gurl/url/url_canon_pathurl.cc",
+             "vendor/gurl/url/url_canon_query.cc",
+             "vendor/gurl/url/url_canon_relative.cc",
+             "vendor/gurl/url/url_canon_stdstring.cc",
+             "vendor/gurl/url/url_canon_stdurl.cc",
+             "vendor/gurl/url/url_constants.cc",
+             "vendor/gurl/url/url_parse_file.cc",
+             "vendor/gurl/url/url_util.cc",
+             "vendor/gurl/url/third_party/mozilla/url_parse.cc"
+             ],
+    language="c++",
+    extra_compile_args=["-std=gnu++0x", "-I./vendor/gurl/",
+                        "-fPIC", "-Ofast", "-pthread", "-w"],
+    extra_link_args=["-std=gnu++0x", "-w"],
+), annotate=True))
