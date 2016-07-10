@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 import os
 
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 extension = Extension(
     name="urlparse4/cgurl",
