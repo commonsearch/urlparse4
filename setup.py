@@ -41,14 +41,19 @@ extension = Extension(
 if not os.path.isfile("urlparse4/cgurl.cpp"):
     try:
         from Cython.Build import cythonize
-        cpp_extension = cythonize(extension, annotate=True)
+        ext_modules = cythonize(extension, annotate=True)
     except:
         print "urlparse4/gurl.cpp not found and Cython failed to run to recreate it. Please install/upgrade Cython and try again."
         raise
 else:
+    ext_modules = [extension]
+    ext_modules[0].sources = ["urlparse4/cgurl.cpp"]
 
-    cpp_extension = extension
-    cpp_extension.sources = ["urlparse4/cgurl.cpp"]
+try:
+    import pypandoc
+    long_description = pypandoc.convert('README.md', 'rst')
+except ImportError:
+    long_description = open('README.md').read()
 
 setup(
     name="urlparse4",
@@ -77,8 +82,7 @@ setup(
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Libraries"
     ],
-    setup_requires=['setuptools-markdown'],
-    long_description_markdown_filename='README.md',
-    ext_modules=cpp_extension,
+    long_description=long_description,
+    ext_modules=ext_modules,
     include_package_data=True
 )
