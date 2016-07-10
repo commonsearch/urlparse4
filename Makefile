@@ -21,3 +21,9 @@ docker_benchmark:
 
 build_ext:
 	python setup.py build_ext --inplace
+
+sdist:
+	python setup.py sdist
+
+pypi:
+	python setup.py sdist upload

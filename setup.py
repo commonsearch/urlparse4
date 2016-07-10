@@ -1,9 +1,11 @@
 from distutils.core import setup, Extension
-from Cython.Build import cythonize
+import os
 
-setup(ext_modules=cythonize(Extension(
-    name="urlparse4/gurl",
-    sources=["urlparse4/gurl.pyx",
+VERSION = "0.1"
+
+extension = Extension(
+    name="urlparse4/cgurl",
+    sources=["urlparse4/cgurl.pyx",
              "vendor/gurl/base/third_party/icu/icu_utf.cc",
              "vendor/gurl/base/strings/string16.cc",
              "vendor/gurl/base/strings/string_piece.cc",
@@ -33,4 +35,50 @@ setup(ext_modules=cythonize(Extension(
     extra_compile_args=["-std=gnu++0x", "-I./vendor/gurl/",
                         "-fPIC", "-Ofast", "-pthread", "-w"],
     extra_link_args=["-std=gnu++0x", "-w"],
-), annotate=True))
+)
+
+
+if not os.path.isfile("urlparse4/gurl.cpp"):
+    try:
+        from Cython.Build import cythonize
+        cpp_extension = cythonize(extension, annotate=True)
+    except:
+        print "urlparse4/gurl.cpp not found and Cython failed to run to recreate it. Please install/upgrade Cython and try again."
+        raise
+else:
+
+    cpp_extension = extension
+    cpp_extension.sources = ["urlparse4/cgurl.cpp"]
+
+setup(
+    name="urlparse4",
+    packages=['urlparse4'],
+    version=VERSION,
+    description="Performance-focused replacement for Python's urlparse module",
+    author="Common Search contributors",
+    author_email="contact@commonsearch.org",
+    license="Apache License, Version 2.0",
+    url="https://github.com/commonsearch/urlparse4",
+    keywords=["urlparse", "urlsplit", "urljoin", "url", "parser", "urlparser", "parsing", "gurl", "cython", "faster", "speed", "performance"],
+    platforms='any',
+    classifiers=[
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        # 'Development Status :: 1 - Planning',
+        # 'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
+        # 'Development Status :: 4 - Beta',
+        # 'Development Status :: 5 - Production/Stable',
+        # 'Development Status :: 6 - Mature',
+        # 'Development Status :: 7 - Inactive',
+        "Environment :: Other Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Topic :: Software Development :: Libraries"
+    ],
+    setup_requires=['setuptools-markdown'],
+    long_description_markdown_filename='README.md',
+    ext_modules=cpp_extension,
+    include_package_data=True
+)

@@ -5,4 +5,4 @@ from urlparse import *
 _original_urlsplit = urlsplit
 _original_urljoin = urljoin
 
-from gurl import urlsplit, urljoin
+from cgurl import urlsplit, urljoin

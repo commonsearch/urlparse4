@@ -1,0 +1,2 @@
+recursive-include vendor *.cpp *.h *.cc
+recursive-include urlparse4 *.pxd *.pyx *.cpp

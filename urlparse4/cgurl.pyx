@@ -159,9 +159,7 @@ class SplitResultNamedTuple(tuple):
 def urlsplit(url):
     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
 
-
-
-cpdef urljoin(bytes base, bytes url, allow_fragments=True):
+def urljoin(bytes base, bytes url, allow_fragments=True):
     if allow_fragments:
         return GURL(base).Resolve(url).spec()
     else:

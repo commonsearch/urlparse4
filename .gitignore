@@ -4,3 +4,6 @@
 /build
 *.so
 /.cache
+/tmp
+/MANIFEST
+/urlparse4/*.html
