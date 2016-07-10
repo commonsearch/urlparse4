@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 import os
 
-VERSION = "0.1"
+VERSION = "0.1.1"
 
 extension = Extension(
     name="urlparse4/cgurl",
@@ -38,7 +38,7 @@ extension = Extension(
 )
 
 
-if not os.path.isfile("urlparse4/gurl.cpp"):
+if not os.path.isfile("urlparse4/cgurl.cpp"):
     try:
         from Cython.Build import cythonize
         cpp_extension = cythonize(extension, annotate=True)

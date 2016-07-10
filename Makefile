@@ -26,4 +26,4 @@ sdist:
 	python setup.py sdist
 
 pypi:
-	python setup.py sdist upload
+	python setup.py sdist upload -r pypi-commonsearch
