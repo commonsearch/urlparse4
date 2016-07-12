@@ -21,3 +21,10 @@ docker_benchmark:
 
 build_ext:
 	python setup.py build_ext --inplace
+
+sdist:
+	python setup.py sdist
+
+pypi: clean build_ext
+	pip install pypandoc
+	python setup.py sdist upload -r pypi-commonsearch

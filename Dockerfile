@@ -14,7 +14,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
 	bzip2 \
 	git \
 	pkg-config \
-	liburiparser-dev
+	liburiparser-dev \
+	vim
 
 RUN mkdir -p /cosr/urlparse4
 
