@@ -1,7 +1,15 @@
-from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
-from chromium_gurl cimport GURL
+from urlparse4.mozilla_url_parse cimport (
+  Component,
+  Parsed,
+  ParseStandardURL,
+  ParseFileURL
+)
+
+from libcpp.string              cimport string
+
+from chromium_gurl              cimport GURL
+
 import urlparse as stdlib_urlparse
-cimport cython
 
 cdef bytes slice_component(bytes pyurl, Component comp):
     if comp.len <= 0:
@@ -10,7 +18,7 @@ cdef bytes slice_component(bytes pyurl, Component comp):
     return pyurl[comp.begin:comp.begin + comp.len]
 
 
-cdef bytes cslice_component(char * url, Component comp):
+cdef bytes cslice_component(bytes url, Component comp):
     if comp.len <= 0:
         return b""
 
@@ -51,65 +59,11 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
         raise ValueError
 
 
-# @cython.freelist(100)
-# cdef class SplitResult:
-
-#     cdef Parsed parsed
-#     # cdef char * url
-#     cdef bytes pyurl
-
-#     def __cinit__(self, char* url):
-#         # self.url = url
-#         self.pyurl = url
-#         if url[0:5] == b"file:":
-#             ParseFileURL(url, len(url), &self.parsed)
-#         else:
-#             ParseStandardURL(url, len(url), &self.parsed)
-
-#     property scheme:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.scheme)
-
-#     property path:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.path)
-
-#     property query:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.query)
-
-#     property fragment:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.ref)
-
-#     property username:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.username)
-
-#     property password:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.password)
-
-#     property port:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.port)
-
-#     # Not in regular urlsplit() !
-#     property host:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.host)
-
-#     property netloc:
-#         def __get__(self):
-#             return build_netloc(self.pyurl, self.parsed)
-
-
 class SplitResultNamedTuple(tuple):
 
     __slots__ = ()  # prevent creation of instance dictionary
 
-    def __new__(cls, bytes url):
-
+    def __new__(cls, char *url):
         cdef Parsed parsed
 
         if url[0:5] == b"file:":
@@ -152,14 +106,17 @@ class SplitResultNamedTuple(tuple):
             slice_component(url, parsed.ref)
         ))
 
+    def __init__(self, *args, **kwargs):
+      super(SplitResultNamedTuple, self).__init__()
+      
     def geturl(self):
         return stdlib_urlparse.urlunsplit(self)
 
 
-def urlsplit(url):
-    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
+def urlsplit(string url):
+    return SplitResultNamedTuple(url)
 
-def urljoin(bytes base, bytes url, allow_fragments=True):
+def urljoin(string base, string url, allow_fragments=True):
     if allow_fragments:
         return GURL(base).Resolve(url).spec()
     else:
