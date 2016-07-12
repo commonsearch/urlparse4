@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 import os
 
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 extension = Extension(
     name="urlparse4/cgurl",
@@ -47,7 +47,7 @@ if not os.path.isfile("urlparse4/cgurl.cpp"):
         raise
 else:
     ext_modules = [extension]
-    ext_modules[0].sources = ["urlparse4/cgurl.cpp"]
+    ext_modules[0].sources[0] = "urlparse4/cgurl.cpp"
 
 try:
     import pypandoc

@@ -14,6 +14,12 @@ Many credits go to [gurl-cython](https://github.com/Preetwinder/gurl-cython) for
  - `urlparse4` currently doesn't pass CPython's `test_urlparse.py` suite due to edge cases that Chromium's parser manages differently (usually in accordance to the RFCs, which `urlparse` doesn't follow entirely).
  - `urlparse4` only supports Python 2.7 for now
 
+## How to install
+
+```
+pip install urlparse4
+```
+
 ## How to test
 
 You must have Docker installed and running. You can run CPython's test suite for `urlparse` like this:
