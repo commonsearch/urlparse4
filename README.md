@@ -34,8 +34,9 @@ You could also monkey-patch its methods in the global `urlparse` module like thi
 import urlparse4
 import urlparse
 
-urlparse.urlsplit = urlparse4.urlsplit
-...
+for attr in dir(urlparse4):
+	setattr(urlparse, attr, getattr(urlparse4, attr))
+
 ```
 
 ## How to test
