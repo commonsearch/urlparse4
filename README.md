@@ -20,6 +20,24 @@ Many credits go to [gurl-cython](https://github.com/Preetwinder/gurl-cython) for
 pip install urlparse4
 ```
 
+## How to use
+
+The most straightforward way to use `urlparse4` is to replace your imports of `urlparse` with this:
+
+```
+import urlparse4 as urlparse
+```
+
+You could also monkey-patch its methods in the global `urlparse` module like this:
+
+```
+import urlparse4
+import urlparse
+
+urlparse.urlsplit = urlparse4.urlsplit
+...
+```
+
 ## How to test
 
 You must have Docker installed and running. You can run CPython's test suite for `urlparse` like this:
