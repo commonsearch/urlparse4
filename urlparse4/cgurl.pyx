@@ -160,7 +160,7 @@ def urlsplit(url):
     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
 
 def urljoin(bytes base, bytes url, allow_fragments=True):
-    if allow_fragments:
+    if allow_fragments and base:
         return GURL(base).Resolve(url).spec()
     else:
         return stdlib_urlparse.urljoin(base, url, allow_fragments=allow_fragments)

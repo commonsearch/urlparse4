@@ -2626,7 +2626,7 @@ static PyObject *__pyx_pf_9urlparse4_5cgurl_urlsplit(CYTHON_UNUSED PyObject *__p
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
  * def urljoin(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
- *     if allow_fragments:
+ *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()
  */
 
@@ -2711,44 +2711,53 @@ static PyObject *__pyx_pf_9urlparse4_5cgurl_2urljoin(CYTHON_UNUSED PyObject *__p
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  std::string __pyx_t_2;
+  int __pyx_t_2;
   std::string __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
+  std::string __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("urljoin", 0);
 
   /* "urlparse4/cgurl.pyx":163
  * 
  * def urljoin(bytes base, bytes url, allow_fragments=True):
- *     if allow_fragments:             # <<<<<<<<<<<<<<
+ *     if allow_fragments and base:             # <<<<<<<<<<<<<<
  *         return GURL(base).Resolve(url).spec()
  *     else:
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_allow_fragments); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_allow_fragments); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 163, __pyx_L1_error)
+  if (__pyx_t_2) {
+  } else {
+    __pyx_t_1 = __pyx_t_2;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_2 = (__pyx_v_base != Py_None) && (PyBytes_GET_SIZE(__pyx_v_base) != 0);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
     /* "urlparse4/cgurl.pyx":164
  * def urljoin(bytes base, bytes url, allow_fragments=True):
- *     if allow_fragments:
+ *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()             # <<<<<<<<<<<<<<
  *     else:
  *         return stdlib_urlparse.urljoin(base, url, allow_fragments=allow_fragments)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_v_base); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
-    __pyx_t_3 = __pyx_convert_string_from_py_std__in_string(__pyx_v_url); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(GURL(__pyx_t_2).Resolve(__pyx_t_3).spec()); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_r = __pyx_t_4;
-    __pyx_t_4 = 0;
+    __pyx_t_3 = __pyx_convert_string_from_py_std__in_string(__pyx_v_base); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_string_from_py_std__in_string(__pyx_v_url); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(GURL(__pyx_t_3).Resolve(__pyx_t_4).spec()); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_r = __pyx_t_5;
+    __pyx_t_5 = 0;
     goto __pyx_L0;
 
     /* "urlparse4/cgurl.pyx":163
  * 
  * def urljoin(bytes base, bytes url, allow_fragments=True):
- *     if allow_fragments:             # <<<<<<<<<<<<<<
+ *     if allow_fragments and base:             # <<<<<<<<<<<<<<
  *         return GURL(base).Resolve(url).spec()
  *     else:
  */
@@ -2761,29 +2770,29 @@ static PyObject *__pyx_pf_9urlparse4_5cgurl_2urljoin(CYTHON_UNUSED PyObject *__p
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_stdlib_urlparse); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_urljoin); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_stdlib_urlparse); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_urljoin); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
     __Pyx_INCREF(__pyx_v_base);
     __Pyx_GIVEREF(__pyx_v_base);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_base);
+    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_v_base);
     __Pyx_INCREF(__pyx_v_url);
     __Pyx_GIVEREF(__pyx_v_url);
-    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_v_url);
-    __pyx_t_6 = PyDict_New(); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 166, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_allow_fragments, __pyx_v_allow_fragments) < 0) __PYX_ERR(0, 166, __pyx_L1_error)
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 166, __pyx_L1_error)
+    PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_v_url);
+    __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_allow_fragments, __pyx_v_allow_fragments) < 0) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_5, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_r = __pyx_t_7;
-    __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_r = __pyx_t_8;
+    __pyx_t_8 = 0;
     goto __pyx_L0;
   }
 
@@ -2791,16 +2800,16 @@ static PyObject *__pyx_pf_9urlparse4_5cgurl_2urljoin(CYTHON_UNUSED PyObject *__p
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
  * def urljoin(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
- *     if allow_fragments:
+ *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("urlparse4.cgurl.urljoin", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -3311,7 +3320,7 @@ static int __Pyx_InitCachedConstants(void) {
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
  * def urljoin(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
- *     if allow_fragments:
+ *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()
  */
   __pyx_tuple__10 = PyTuple_Pack(3, __pyx_n_s_base, __pyx_n_s_url, __pyx_n_s_allow_fragments); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 162, __pyx_L1_error)
@@ -3524,7 +3533,7 @@ PyMODINIT_FUNC PyInit_cgurl(void)
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
  * def urljoin(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
- *     if allow_fragments:
+ *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_9urlparse4_5cgurl_3urljoin, NULL, __pyx_n_s_urlparse4_cgurl); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)

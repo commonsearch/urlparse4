@@ -15,9 +15,17 @@ urlsplit_testcases = [
 
 ]
 
+urljoin_testcases = [
+    [("", "http://example.com"), "http://example.com"]
+]
+
 
 class UrlParse4TestCase(unittest.TestCase):
 
     def test_urlsplit(self):
         for case in urlsplit_testcases:
             self.assertEqual(urlparse.urlsplit(case[0]), case[1])
+
+    def test_urljoin(self):
+        for case in urljoin_testcases:
+            self.assertEqual(urlparse.urljoin(*case[0]), case[1])
