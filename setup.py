@@ -4,7 +4,7 @@ import os
 VERSION = "0.1.3"
 
 extension = Extension(
-    name="urlparse4/cgurl",
+    name="cgurl",
     sources=["urlparse4/cgurl.pyx",
              "vendor/gurl/base/third_party/icu/icu_utf.cc",
              "vendor/gurl/base/strings/string16.cc",
@@ -43,7 +43,7 @@ if not os.path.isfile("urlparse4/cgurl.cpp"):
         from Cython.Build import cythonize
         ext_modules = cythonize(extension, annotate=True)
     except:
-        print "urlparse4/gurl.cpp not found and Cython failed to run to recreate it. Please install/upgrade Cython and try again."
+        print("urlparse4/cgurl.cpp not found and Cython failed to run to recreate it. Please install/upgrade Cython and try again.")
         raise
 else:
     ext_modules = [extension]
