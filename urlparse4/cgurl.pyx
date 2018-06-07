@@ -149,13 +149,22 @@ class SplitResultNamedTuple(tuple):
 
         cls.__getattr__ = _get_attr
 
-        return tuple.__new__(cls, (
-            slice_component(url, parsed.scheme).lower(),
-            build_netloc(url, parsed),
-            slice_component(url, parsed.path),
-            slice_component(url, parsed.query),
-            slice_component(url, parsed.ref)
-        ))
+        if six.PY2:
+            return tuple.__new__(cls, (
+                unicode(slice_component(url, parsed.scheme).lower()),
+                unicode(build_netloc(url, parsed)),
+                unicode(slice_component(url, parsed.path)),
+                unicode(slice_component(url, parsed.query)),
+                unicode(slice_component(url, parsed.ref))
+            ))
+        else:
+            return tuple.__new__(cls, (
+                slice_component(url, parsed.scheme).lower(),
+                build_netloc(url, parsed),
+                slice_component(url, parsed.path),
+                slice_component(url, parsed.query),
+                slice_component(url, parsed.ref)
+            ))
 
     def geturl(self):
         return stdlib_urlunsplit(self)
