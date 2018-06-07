@@ -1,5 +1,5 @@
-from urlparse4.urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
-from chromium_gurl cimport GURL
+from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
+from urlparse4.chromium_gurl cimport GURL
 from six.moves.urllib.parse import urljoin as stdlib_urljoin
 from six.moves.urllib.parse import urlunsplit as stdlib_urlunsplit
 cimport cython

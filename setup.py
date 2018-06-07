@@ -4,7 +4,7 @@ import os
 VERSION = "0.1.3"
 
 extension = Extension(
-    name="urlparse4/cgurl",
+    name="cgurl",
     sources=["urlparse4/cgurl.pyx",
              "vendor/gurl/base/third_party/icu/icu_utf.cc",
              "vendor/gurl/base/strings/string16.cc",
