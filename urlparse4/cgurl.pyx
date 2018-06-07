@@ -1,8 +1,12 @@
 from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
 from urlparse4.chromium_gurl cimport GURL
+
+import six
 from six.moves.urllib.parse import urljoin as stdlib_urljoin
 from six.moves.urllib.parse import urlunsplit as stdlib_urlunsplit
+
 cimport cython
+
 
 cdef bytes slice_component(bytes pyurl, Component comp):
     if comp.len <= 0:
