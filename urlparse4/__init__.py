@@ -2,7 +2,10 @@
 
 import six
 
-from six.moves.urllib.parse import urlparse, urlsplit, urljoin
+if six.PY2:
+    from urlparse import *
+else:
+    from urllib.parse import *
 
 
 _original_urlsplit = urlsplit
