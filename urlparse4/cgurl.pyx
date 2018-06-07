@@ -158,7 +158,12 @@ class SplitResultNamedTuple(tuple):
 
 
 def urlsplit(url):
-    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
+    cdef bytes b_url
+    if isinstance(url, unicode):
+        b_url = <bytes>(<unicode>url).encode('utf8')
+    else:
+        b_url = url
+    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, b_url)
 
 def urljoin(bytes base, bytes url, allow_fragments=True):
     if allow_fragments and base:
