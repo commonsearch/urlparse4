@@ -1,4 +1,4 @@
-from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
+from urlparse4.urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
 from chromium_gurl cimport GURL
 import six
 from six.moves.urllib.parse import urljoin as stdlib_urljoin
