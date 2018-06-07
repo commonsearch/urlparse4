@@ -1291,10 +1291,9 @@ static const char __pyx_k_get_attr[] = "_get_attr";
 static const char __pyx_k_hostname[] = "hostname";
 static const char __pyx_k_password[] = "password";
 static const char __pyx_k_qualname[] = "__qualname__";
-static const char __pyx_k_url_join[] = "url_join";
+static const char __pyx_k_urlsplit[] = "urlsplit";
 static const char __pyx_k_username[] = "username";
 static const char __pyx_k_metaclass[] = "__metaclass__";
-static const char __pyx_k_url_split[] = "url_split";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_urlunsplit[] = "urlunsplit";
 static const char __pyx_k_stdlib_urljoin[] = "stdlib_urljoin";
@@ -1348,17 +1347,16 @@ static PyObject *__pyx_n_s_stdlib_urljoin;
 static PyObject *__pyx_n_s_stdlib_urlunsplit;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_url;
-static PyObject *__pyx_n_s_url_join;
-static PyObject *__pyx_n_s_url_split;
 static PyObject *__pyx_n_s_urljoin;
 static PyObject *__pyx_kp_s_urlparse4_cgurl_pyx;
+static PyObject *__pyx_n_s_urlsplit;
 static PyObject *__pyx_n_s_urlunsplit;
 static PyObject *__pyx_n_s_username;
 static PyObject *__pyx_pf_5cgurl_21SplitResultNamedTuple_7__new____get_attr(PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_prop); /* proto */
 static PyObject *__pyx_pf_5cgurl_21SplitResultNamedTuple___new__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_cls, PyObject *__pyx_v_url); /* proto */
 static PyObject *__pyx_pf_5cgurl_21SplitResultNamedTuple_2geturl(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5cgurl_url_split(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_url); /* proto */
-static PyObject *__pyx_pf_5cgurl_2url_join(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_base, PyObject *__pyx_v_url, PyObject *__pyx_v_allow_fragments); /* proto */
+static PyObject *__pyx_pf_5cgurl_urlsplit(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_url); /* proto */
+static PyObject *__pyx_pf_5cgurl_2urljoin(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_base, PyObject *__pyx_v_url, PyObject *__pyx_v_allow_fragments); /* proto */
 static PyObject *__pyx_tp_new_5cgurl___pyx_scope_struct____new__(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_65535;
 static PyObject *__pyx_tuple__2;
@@ -2964,26 +2962,26 @@ static PyObject *__pyx_pf_5cgurl_21SplitResultNamedTuple_2geturl(CYTHON_UNUSED P
 /* "cgurl.pyx":160
  * 
  * 
- * def url_split(url):             # <<<<<<<<<<<<<<
+ * def urlsplit(url):             # <<<<<<<<<<<<<<
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5cgurl_1url_split(PyObject *__pyx_self, PyObject *__pyx_v_url); /*proto*/
-static PyMethodDef __pyx_mdef_5cgurl_1url_split = {"url_split", (PyCFunction)__pyx_pw_5cgurl_1url_split, METH_O, 0};
-static PyObject *__pyx_pw_5cgurl_1url_split(PyObject *__pyx_self, PyObject *__pyx_v_url) {
+static PyObject *__pyx_pw_5cgurl_1urlsplit(PyObject *__pyx_self, PyObject *__pyx_v_url); /*proto*/
+static PyMethodDef __pyx_mdef_5cgurl_1urlsplit = {"urlsplit", (PyCFunction)__pyx_pw_5cgurl_1urlsplit, METH_O, 0};
+static PyObject *__pyx_pw_5cgurl_1urlsplit(PyObject *__pyx_self, PyObject *__pyx_v_url) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("url_split (wrapper)", 0);
-  __pyx_r = __pyx_pf_5cgurl_url_split(__pyx_self, ((PyObject *)__pyx_v_url));
+  __Pyx_RefNannySetupContext("urlsplit (wrapper)", 0);
+  __pyx_r = __pyx_pf_5cgurl_urlsplit(__pyx_self, ((PyObject *)__pyx_v_url));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5cgurl_url_split(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_url) {
+static PyObject *__pyx_pf_5cgurl_urlsplit(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_url) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2992,14 +2990,14 @@ static PyObject *__pyx_pf_5cgurl_url_split(CYTHON_UNUSED PyObject *__pyx_self, P
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
-  __Pyx_RefNannySetupContext("url_split", 0);
+  __Pyx_RefNannySetupContext("urlsplit", 0);
 
   /* "cgurl.pyx":161
  * 
- * def url_split(url):
+ * def urlsplit(url):
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)             # <<<<<<<<<<<<<<
  * 
- * def url_join(bytes base, bytes url, allow_fragments=True):
+ * def urljoin(bytes base, bytes url, allow_fragments=True):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_SplitResultNamedTuple); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
@@ -3063,7 +3061,7 @@ static PyObject *__pyx_pf_5cgurl_url_split(CYTHON_UNUSED PyObject *__pyx_self, P
   /* "cgurl.pyx":160
  * 
  * 
- * def url_split(url):             # <<<<<<<<<<<<<<
+ * def urlsplit(url):             # <<<<<<<<<<<<<<
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
  */
@@ -3075,7 +3073,7 @@ static PyObject *__pyx_pf_5cgurl_url_split(CYTHON_UNUSED PyObject *__pyx_self, P
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("cgurl.url_split", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cgurl.urlsplit", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3086,21 +3084,21 @@ static PyObject *__pyx_pf_5cgurl_url_split(CYTHON_UNUSED PyObject *__pyx_self, P
 /* "cgurl.pyx":163
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
- * def url_join(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
+ * def urljoin(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
  *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5cgurl_3url_join(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5cgurl_3url_join = {"url_join", (PyCFunction)__pyx_pw_5cgurl_3url_join, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5cgurl_3url_join(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cgurl_3urljoin(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_5cgurl_3urljoin = {"urljoin", (PyCFunction)__pyx_pw_5cgurl_3urljoin, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5cgurl_3urljoin(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_base = 0;
   PyObject *__pyx_v_url = 0;
   PyObject *__pyx_v_allow_fragments = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("url_join (wrapper)", 0);
+  __Pyx_RefNannySetupContext("urljoin (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_base,&__pyx_n_s_url,&__pyx_n_s_allow_fragments,0};
     PyObject* values[3] = {0,0,0};
@@ -3127,7 +3125,7 @@ static PyObject *__pyx_pw_5cgurl_3url_join(PyObject *__pyx_self, PyObject *__pyx
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_url)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("url_join", 0, 2, 3, 1); __PYX_ERR(0, 163, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("urljoin", 0, 2, 3, 1); __PYX_ERR(0, 163, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -3137,7 +3135,7 @@ static PyObject *__pyx_pw_5cgurl_3url_join(PyObject *__pyx_self, PyObject *__pyx
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "url_join") < 0)) __PYX_ERR(0, 163, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "urljoin") < 0)) __PYX_ERR(0, 163, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3155,15 +3153,15 @@ static PyObject *__pyx_pw_5cgurl_3url_join(PyObject *__pyx_self, PyObject *__pyx
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("url_join", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 163, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("urljoin", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 163, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cgurl.url_join", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cgurl.urljoin", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_base), (&PyBytes_Type), 1, "base", 1))) __PYX_ERR(0, 163, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_url), (&PyBytes_Type), 1, "url", 1))) __PYX_ERR(0, 163, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5cgurl_2url_join(__pyx_self, __pyx_v_base, __pyx_v_url, __pyx_v_allow_fragments);
+  __pyx_r = __pyx_pf_5cgurl_2urljoin(__pyx_self, __pyx_v_base, __pyx_v_url, __pyx_v_allow_fragments);
 
   /* function exit code */
   goto __pyx_L0;
@@ -3174,7 +3172,7 @@ static PyObject *__pyx_pw_5cgurl_3url_join(PyObject *__pyx_self, PyObject *__pyx
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5cgurl_2url_join(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_base, PyObject *__pyx_v_url, PyObject *__pyx_v_allow_fragments) {
+static PyObject *__pyx_pf_5cgurl_2urljoin(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_base, PyObject *__pyx_v_url, PyObject *__pyx_v_allow_fragments) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -3185,11 +3183,11 @@ static PyObject *__pyx_pf_5cgurl_2url_join(CYTHON_UNUSED PyObject *__pyx_self, P
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
   PyObject *__pyx_t_8 = NULL;
-  __Pyx_RefNannySetupContext("url_join", 0);
+  __Pyx_RefNannySetupContext("urljoin", 0);
 
   /* "cgurl.pyx":164
  * 
- * def url_join(bytes base, bytes url, allow_fragments=True):
+ * def urljoin(bytes base, bytes url, allow_fragments=True):
  *     if allow_fragments and base:             # <<<<<<<<<<<<<<
  *         return GURL(base).Resolve(url).spec()
  *     else:
@@ -3206,7 +3204,7 @@ static PyObject *__pyx_pf_5cgurl_2url_join(CYTHON_UNUSED PyObject *__pyx_self, P
   if (__pyx_t_1) {
 
     /* "cgurl.pyx":165
- * def url_join(bytes base, bytes url, allow_fragments=True):
+ * def urljoin(bytes base, bytes url, allow_fragments=True):
  *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()             # <<<<<<<<<<<<<<
  *     else:
@@ -3223,7 +3221,7 @@ static PyObject *__pyx_pf_5cgurl_2url_join(CYTHON_UNUSED PyObject *__pyx_self, P
 
     /* "cgurl.pyx":164
  * 
- * def url_join(bytes base, bytes url, allow_fragments=True):
+ * def urljoin(bytes base, bytes url, allow_fragments=True):
  *     if allow_fragments and base:             # <<<<<<<<<<<<<<
  *         return GURL(base).Resolve(url).spec()
  *     else:
@@ -3263,7 +3261,7 @@ static PyObject *__pyx_pf_5cgurl_2url_join(CYTHON_UNUSED PyObject *__pyx_self, P
   /* "cgurl.pyx":163
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
- * def url_join(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
+ * def urljoin(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
  *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()
  */
@@ -3274,7 +3272,7 @@ static PyObject *__pyx_pf_5cgurl_2url_join(CYTHON_UNUSED PyObject *__pyx_self, P
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("cgurl.url_join", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cgurl.urljoin", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3731,10 +3729,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_stdlib_urlunsplit, __pyx_k_stdlib_urlunsplit, sizeof(__pyx_k_stdlib_urlunsplit), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_url, __pyx_k_url, sizeof(__pyx_k_url), 0, 0, 1, 1},
-  {&__pyx_n_s_url_join, __pyx_k_url_join, sizeof(__pyx_k_url_join), 0, 0, 1, 1},
-  {&__pyx_n_s_url_split, __pyx_k_url_split, sizeof(__pyx_k_url_split), 0, 0, 1, 1},
   {&__pyx_n_s_urljoin, __pyx_k_urljoin, sizeof(__pyx_k_urljoin), 0, 0, 1, 1},
   {&__pyx_kp_s_urlparse4_cgurl_pyx, __pyx_k_urlparse4_cgurl_pyx, sizeof(__pyx_k_urlparse4_cgurl_pyx), 0, 0, 1, 0},
+  {&__pyx_n_s_urlsplit, __pyx_k_urlsplit, sizeof(__pyx_k_urlsplit), 0, 0, 1, 1},
   {&__pyx_n_s_urlunsplit, __pyx_k_urlunsplit, sizeof(__pyx_k_urlunsplit), 0, 0, 1, 1},
   {&__pyx_n_s_username, __pyx_k_username, sizeof(__pyx_k_username), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
@@ -3789,26 +3786,26 @@ static int __Pyx_InitCachedConstants(void) {
   /* "cgurl.pyx":160
  * 
  * 
- * def url_split(url):             # <<<<<<<<<<<<<<
+ * def urlsplit(url):             # <<<<<<<<<<<<<<
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
  */
   __pyx_tuple__8 = PyTuple_Pack(1, __pyx_n_s_url); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_urlparse4_cgurl_pyx, __pyx_n_s_url_split, 160, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_urlparse4_cgurl_pyx, __pyx_n_s_urlsplit, 160, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 160, __pyx_L1_error)
 
   /* "cgurl.pyx":163
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
- * def url_join(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
+ * def urljoin(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
  *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()
  */
   __pyx_tuple__10 = PyTuple_Pack(3, __pyx_n_s_base, __pyx_n_s_url, __pyx_n_s_allow_fragments); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_urlparse4_cgurl_pyx, __pyx_n_s_url_join, 163, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_urlparse4_cgurl_pyx, __pyx_n_s_urljoin, 163, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -4183,25 +4180,25 @@ if (!__Pyx_RefNanny) {
   /* "cgurl.pyx":160
  * 
  * 
- * def url_split(url):             # <<<<<<<<<<<<<<
+ * def urlsplit(url):             # <<<<<<<<<<<<<<
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5cgurl_1url_split, NULL, __pyx_n_s_cgurl); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5cgurl_1urlsplit, NULL, __pyx_n_s_cgurl); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_url_split, __pyx_t_1) < 0) __PYX_ERR(0, 160, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_urlsplit, __pyx_t_1) < 0) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "cgurl.pyx":163
  *     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
  * 
- * def url_join(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
+ * def urljoin(bytes base, bytes url, allow_fragments=True):             # <<<<<<<<<<<<<<
  *     if allow_fragments and base:
  *         return GURL(base).Resolve(url).spec()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5cgurl_3url_join, NULL, __pyx_n_s_cgurl); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5cgurl_3urljoin, NULL, __pyx_n_s_cgurl); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_url_join, __pyx_t_1) < 0) __PYX_ERR(0, 163, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_urljoin, __pyx_t_1) < 0) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "cgurl.pyx":1
