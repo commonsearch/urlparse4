@@ -8,4 +8,4 @@ from six.moves.urllib.parse import urlparse, urlsplit, urljoin
 _original_urlsplit = urlsplit
 _original_urljoin = urljoin
 
-from cgurl import url_split, url_join
+from cgurl import urlsplit, urljoin
