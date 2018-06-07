@@ -10,4 +10,4 @@ _original_urlsplit = urlsplit
 _original_urljoin = urljoin
 
 pyximport.install()
-from urlparse4.cgurl import urlsplit, urljoin
+from urlparse4.cgurl import url_split, url_join
