@@ -1,6 +1,8 @@
 from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
 from chromium_gurl cimport GURL
-import urlparse as stdlib_urlparse
+import six
+from six.moves.urllib.parse import urljoin as stdlib_urljoin
+from six.moves.urllib.parse import urlunsplit as stdlib_urlunsplit
 cimport cython
 
 cdef bytes slice_component(bytes pyurl, Component comp):
@@ -153,7 +155,7 @@ class SplitResultNamedTuple(tuple):
         ))
 
     def geturl(self):
-        return stdlib_urlparse.urlunsplit(self)
+        return stdlib_urlunsplit(self)
 
 
 def urlsplit(url):
@@ -163,4 +165,4 @@ def urljoin(bytes base, bytes url, allow_fragments=True):
     if allow_fragments and base:
         return GURL(base).Resolve(url).spec()
     else:
-        return stdlib_urlparse.urljoin(base, url, allow_fragments=allow_fragments)
+        return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
