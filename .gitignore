@@ -14,3 +14,4 @@
 .tox
 nosetests.xml
 htmlcov
+.pytest_cache
