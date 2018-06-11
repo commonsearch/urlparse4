@@ -168,16 +168,21 @@ class SplitResultNamedTuple(tuple):
     def geturl(self):
         return stdlib_urlunsplit(self)
 
+def unicode_handling(str):
+    cdef bytes bytes_str
+    if isinstance(str, unicode):
+        bytes_str = <bytes>(<unicode>str).encode('utf8')
+    else:
+        bytes_str = str
+    return bytes_str
 
 def urlsplit(url):
-    cdef bytes b_url
-    if isinstance(url, unicode):
-        b_url = <bytes>(<unicode>url).encode('utf8')
-    else:
-        b_url = url
-    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, b_url)
+    url = unicode_handling(url)
+    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
 
-def urljoin(bytes base, bytes url, allow_fragments=True):
+def urljoin(base, url, allow_fragments=True):
+    base, url = unicode_handling(base), unicode_handling(url)
+
     if allow_fragments and base:
         return GURL(base).Resolve(url).spec()
     else:
