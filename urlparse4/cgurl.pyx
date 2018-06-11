@@ -1,7 +1,12 @@
 from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
-from chromium_gurl cimport GURL
-import urlparse as stdlib_urlparse
+from urlparse4.chromium_gurl cimport GURL
+
+import six
+from six.moves.urllib.parse import urljoin as stdlib_urljoin
+from six.moves.urllib.parse import urlunsplit as stdlib_urlunsplit
+
 cimport cython
+
 
 cdef bytes slice_component(bytes pyurl, Component comp):
     if comp.len <= 0:
@@ -144,23 +149,36 @@ class SplitResultNamedTuple(tuple):
 
         cls.__getattr__ = _get_attr
 
-        return tuple.__new__(cls, (
-            slice_component(url, parsed.scheme).lower(),
-            build_netloc(url, parsed),
-            slice_component(url, parsed.path),
-            slice_component(url, parsed.query),
-            slice_component(url, parsed.ref)
-        ))
+        scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
+                                            build_netloc(url, parsed),
+                                            slice_component(url, parsed.path),
+                                            slice_component(url, parsed.query),
+                                            slice_component(url, parsed.ref))
+        if six.PY2:
+            return tuple.__new__(cls, (
+                <unicode>scheme.decode('utf-8'),
+                <unicode>netloc.decode('utf-8'),
+                <unicode>path.decode('utf-8'),
+                <unicode>query.decode('utf-8'),
+                <unicode>ref.decode('utf-8')
+            ))
+        else:
+            return tuple.__new__(cls, (scheme, netloc, path, query, ref))
 
     def geturl(self):
-        return stdlib_urlparse.urlunsplit(self)
+        return stdlib_urlunsplit(self)
 
 
 def urlsplit(url):
-    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
+    cdef bytes b_url
+    if isinstance(url, unicode):
+        b_url = <bytes>(<unicode>url).encode('utf8')
+    else:
+        b_url = url
+    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, b_url)
 
 def urljoin(bytes base, bytes url, allow_fragments=True):
     if allow_fragments and base:
         return GURL(base).Resolve(url).spec()
     else:
-        return stdlib_urlparse.urljoin(base, url, allow_fragments=allow_fragments)
+        return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
