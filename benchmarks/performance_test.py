@@ -3,7 +3,7 @@ from timeit import default_timer as timer
 
 total = 0
 
-with open('benchmarks/urls/chromiumUrls.txt') as f:
+with open('urls/chromiumUrls.txt') as f:
     for url in f:
 
         start = timer()
