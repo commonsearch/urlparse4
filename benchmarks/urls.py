@@ -27,7 +27,7 @@ REPEATS = 10
 
 URLS = []
 for fp in os.listdir("tests/urls/"):
-    with open("tests/urls/%s" % fp) as f:
+    with open("urls/%s" % fp) as f:
         URLS += f.readlines()
 
 data = []
