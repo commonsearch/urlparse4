@@ -8,3 +8,10 @@
 /MANIFEST
 /urlparse4/*.html
 /dist
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+htmlcov
+.pytest_cache
