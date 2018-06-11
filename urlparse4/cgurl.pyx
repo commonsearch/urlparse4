@@ -154,16 +154,14 @@ class SplitResultNamedTuple(tuple):
                                             slice_component(url, parsed.path),
                                             slice_component(url, parsed.query),
                                             slice_component(url, parsed.ref))
-        if six.PY2:
-            return tuple.__new__(cls, (
-                <unicode>scheme.decode('utf-8'),
-                <unicode>netloc.decode('utf-8'),
-                <unicode>path.decode('utf-8'),
-                <unicode>query.decode('utf-8'),
-                <unicode>ref.decode('utf-8')
-            ))
-        else:
-            return tuple.__new__(cls, (scheme, netloc, path, query, ref))
+
+        return tuple.__new__(cls, (
+            <unicode>scheme.decode('utf-8'),
+            <unicode>netloc.decode('utf-8'),
+            <unicode>path.decode('utf-8'),
+            <unicode>query.decode('utf-8'),
+            <unicode>ref.decode('utf-8')
+        ))
 
     def geturl(self):
         return stdlib_urlunsplit(self)
@@ -184,6 +182,6 @@ def urljoin(base, url, allow_fragments=True):
     base, url = unicode_handling(base), unicode_handling(url)
 
     if allow_fragments and base:
-        return GURL(base).Resolve(url).spec()
+        return GURL(base).Resolve(url).spec().decode('utf-8')
     else:
         return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
