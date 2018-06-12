@@ -14,7 +14,7 @@ except IndexError:
 if encode:
     total = 0
 
-    for i in range(50):
+    for i in range(5):
         with open('urls/chromiumUrls.txt') as f:
             for url in f:
 
@@ -26,12 +26,12 @@ if encode:
 
                 total += end - start
 
-    print("the urlsplit time with encode in python is", total / 50, "seconds")
+    print("the urlsplit time with encode in python is", total / 5, "seconds")
 
 
     total2 = 0
 
-    for i in range(50):
+    for i in range(5):
         with open('urls/chromiumUrls.txt') as f:
             for url in f:
 
@@ -43,11 +43,11 @@ if encode:
 
                 total2 += end - start
 
-    print("the urljoin time with encode in python is", total2 / 50, "seconds")
+    print("the urljoin time with encode in python is", total2 / 5, "seconds")
 
 else:
     total = 0
-    for i in range(50):
+    for i in range(5):
         with open('urls/chromiumUrls.txt') as f:
             for url in f:
 
@@ -59,11 +59,11 @@ else:
 
                 total += end - start
 
-    print("the urlsplit time without encoding in python is", total / 50, "seconds")
+    print("the urlsplit time without encoding in python is", total / 5, "seconds")
 
 
     total2 = 0
-    for i in range(50):
+    for i in range(5):
         with open('urls/chromiumUrls.txt') as f:
             for url in f:
 
@@ -75,4 +75,4 @@ else:
 
                 total2 += end - start
 
-    print("the urljoin time without encoding in python is", total2 / 50, "seconds")
+    print("the urljoin time without encoding in python is", total2 / 5, "seconds")
