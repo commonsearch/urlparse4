@@ -181,21 +181,19 @@ def urlsplit(url):
     """
     Use GURL to split the url. Needs to be reviewed!
     """
-    handled_url = unicode_handling(url)
-    if isinstance(url, bytes):
-        return SplitResultNamedTuple.__new__(SplitResultNamedTuple, handled_url)
-    else:
-        return SplitResultNamedTuple.__new__(SplitResultNamedTuple, handled_url, True)
+    decode = False if isinstance(url, bytes) else True
+    url = unicode_handling(url)
+    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url, decode)
 
 def urljoin(base, url, allow_fragments=True):
     """
     Use the urljoin function from GURL chromium. Needs to be reviewed!
     """
-    handled_base, handled_url = unicode_handling(base), unicode_handling(url)
+    decode = False if (isinstance(base, bytes) and isinstance(url, bytes)) else True
+    base, url = unicode_handling(base), unicode_handling(url)
     if allow_fragments and base:
-        if isinstance(base, bytes) and isinstance(url, bytes):
-            return GURL(handled_base).Resolve(handled_url).spec()
-        else:
-            return GURL(handled_base).Resolve(handled_url).spec().decode('utf-8')
+        if decode:
+            return GURL(base).Resolve(url).spec().decode('utf-8')
+        return GURL(base).Resolve(url).spec()
     else:
-        return stdlib_urljoin(handled_base, handled_url, allow_fragments=allow_fragments)
+        return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
