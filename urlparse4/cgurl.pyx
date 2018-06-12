@@ -140,8 +140,12 @@ class SplitResultNamedTuple(tuple):
                         return port
 
             elif prop == "username":
+                if decoded:
+                    return slice_component(url, parsed.username).decode('utf-8') or None
                 return slice_component(url, parsed.username) or None
             elif prop == "password":
+                if decoded:
+                    return slice_component(url, parsed.password).decode('utf-8') or None
                 return slice_component(url, parsed.password) or None
             elif prop == "hostname":
                 if decoded:
