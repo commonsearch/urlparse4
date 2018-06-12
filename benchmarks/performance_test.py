@@ -8,10 +8,26 @@ with open('urls/chromiumUrls.txt') as f:
 
         start = timer()
 
-        a = urlsplit(url)
+        a = urlsplit(url.encode())
 
         end = timer()
 
         total += end - start
 
-print("the total time is", total, "seconds")
+print("the urlsplit time is", total, "seconds")
+
+
+total2 = 0
+
+with open('urls/chromiumUrls.txt') as f:
+    for url in f:
+
+        start = timer()
+
+        a = urljoin(url.encode(), "/asd".encode())
+
+        end = timer()
+
+        total2 += end - start
+
+print("the urljoin time is", total2, "seconds")
