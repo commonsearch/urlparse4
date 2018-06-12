@@ -144,6 +144,8 @@ class SplitResultNamedTuple(tuple):
             elif prop == "password":
                 return slice_component(url, parsed.password) or None
             elif prop == "hostname":
+                if decoded:
+                    return slice_component(url, parsed.host).lower().decode('utf-8')
                 return slice_component(url, parsed.host).lower()
 
 
@@ -190,10 +192,10 @@ def urljoin(base, url, allow_fragments=True):
     Use the urljoin function from GURL chromium. Needs to be reviewed!
     """
     decode = False if (isinstance(base, bytes) and isinstance(url, bytes)) else True
-    base, url = unicode_handling(base), unicode_handling(url)
     if allow_fragments and base:
+        base, url = unicode_handling(base), unicode_handling(url)
         if decode:
             return GURL(base).Resolve(url).spec().decode('utf-8')
         return GURL(base).Resolve(url).spec()
-    else:
-        return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
+
+    return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
