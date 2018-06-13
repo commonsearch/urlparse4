@@ -180,22 +180,11 @@ class SplitResultNamedTuple(tuple):
 
         cls.__getattr__ = _get_attr
 
-        scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
-                                            slice_component(url, parsed.host),
-                                            slice_component(url, parsed.path),
-                                            slice_component(url, parsed.query),
-                                            slice_component(url, parsed.ref))
-
-        if decoded == True:
-            return tuple.__new__(cls, (
-                <unicode>scheme.decode('utf-8'),
-                <unicode>netloc.decode('utf-8'),
-                <unicode>path.decode('utf-8'),
-                <unicode>query.decode('utf-8'),
-                <unicode>ref.decode('utf-8')
-            ))
-
-        return tuple.__new__(cls, (scheme, netloc, path, query, ref))
+        return tuple.__new__(cls, (slice_component(url, parsed.scheme).lower(),
+                                    slice_component(url, parsed.host),
+                                    slice_component(url, parsed.path),
+                                    slice_component(url, parsed.query),
+                                    slice_component(url, parsed.ref)))
 
     def geturl(self):
         return stdlib_urlunsplit(self)
