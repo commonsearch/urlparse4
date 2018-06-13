@@ -1,5 +1,8 @@
-from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
+from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL, ParseFileSystemURL, ParseMailtoURL, ParsePathURL, ExtractScheme
 from urlparse4.chromium_gurl cimport GURL
+from urlparse4.chromium_url_constant cimport *
+from urlparse4.chromium_url_util_internal cimport CompareSchemeComponent
+from urlparse4.chromium_url_util cimport IsStandard
 
 import six
 from six.moves.urllib.parse import urljoin as stdlib_urljoin
@@ -24,7 +27,10 @@ cdef bytes cslice_component(char * url, Component comp):
 
 
 cdef bytes build_netloc(bytes url, Parsed parsed):
-
+    """
+    TODO:
+    take a look at this function
+    """
     if parsed.host.len <= 0:
         return b""
 
@@ -116,11 +122,30 @@ class SplitResultNamedTuple(tuple):
     def __new__(cls, bytes url, decoded=False):
 
         cdef Parsed parsed
+        cdef Component scheme
 
-        if url[0:5] == b"file:":
+        if not ExtractScheme(url, len(url), &scheme):
+            """
+            TO DO:
+            What do we return here
+            """
+            return False
+
+        if CompareSchemeComponent(url, scheme, kFileScheme):
             ParseFileURL(url, len(url), &parsed)
-        else:
+        elif CompareSchemeComponent(url, scheme, kFileSystemScheme):
+            ParseFileSystemURL(url, len(url), &parsed)
+        elif IsStandard(url, scheme):
             ParseStandardURL(url, len(url), &parsed)
+        elif CompareSchemeComponent(url, scheme, kMailToScheme):
+            ParseMailtoURL(url, len(url), &parsed)
+        else:
+            """
+            TODO:
+            trim or not to trim?
+            """
+            ParsePathURL(url, len(url), True, &parsed)
+
 
         def _get_attr(self, prop):
             if prop == "scheme":
@@ -156,7 +181,7 @@ class SplitResultNamedTuple(tuple):
         cls.__getattr__ = _get_attr
 
         scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
-                                            build_netloc(url, parsed),
+                                            slice_component(url, parsed.host),
                                             slice_component(url, parsed.path),
                                             slice_component(url, parsed.query),
                                             slice_component(url, parsed.ref))
