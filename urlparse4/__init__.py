@@ -4,7 +4,6 @@ if six.PY2:
     from urlparse import *
 else:
     from urllib.parse import *
-    from urllib.parse import Quoter, _ALWAYS_SAFE, __all__
 
 
 _original_urlsplit = urlsplit
