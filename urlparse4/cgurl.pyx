@@ -184,6 +184,15 @@ class SplitResultNamedTuple(tuple):
 
         cls.__getattr__ = _get_attr
 
+        if decoded == True:
+            return tuple.__new__(cls, (
+                <unicode>slice_component(url, parsed.scheme).lower().decode('utf-8'),
+                <unicode>slice_component(url, parsed.host).decode('utf-8'),
+                <unicode>slice_component(url, parsed.path).decode('utf-8'),
+                <unicode>slice_component(url, parsed.query).decode('utf-8'),
+                <unicode>slice_component(url, parsed.ref).decode('utf-8')
+            ))
+
         return tuple.__new__(cls, (slice_component(url, parsed.scheme).lower(),
                                     slice_component(url, parsed.host),
                                     slice_component(url, parsed.path),
