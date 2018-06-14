@@ -159,6 +159,10 @@ class SplitResultNamedTuple(tuple):
             elif prop == "fragment":
                 return self[4]
             elif prop == "port":
+                """
+                TODO:
+                Port can go beyond 0
+                """
                 if parsed.port.len > 0:
                     port = int(slice_component(url, parsed.port))
                     if port <= 65535:
