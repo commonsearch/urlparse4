@@ -138,6 +138,9 @@ class SplitResultNamedTuple(tuple):
         elif IsStandard(url, scheme):
             ParseStandardURL(url, len(url), &parsed)
         elif CompareSchemeComponent(url, scheme, kMailToScheme):
+            """
+            Discuss: Is this correct?
+            """
             ParseMailtoURL(url, len(url), &parsed)
         else:
             """
