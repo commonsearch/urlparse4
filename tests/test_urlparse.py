@@ -1,3 +1,5 @@
+# https://github.com/python/cpython/blob/master/Lib/test/test_urlparse.py
+
 import unittest
 import urlparse4
 import warnings
