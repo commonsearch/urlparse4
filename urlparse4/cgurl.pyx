@@ -122,22 +122,22 @@ class SplitResultNamedTuple(tuple):
     def __new__(cls, bytes url, decoded=False):
 
         cdef Parsed parsed
-        cdef Component scheme
+        cdef Component url_scheme
 
-        if not ExtractScheme(url, len(url), &scheme):
+        if not ExtractScheme(url, len(url), &url_scheme):
             """
             TO DO:
             What do we return here
             """
             return False
 
-        if CompareSchemeComponent(url, scheme, kFileScheme):
+        if CompareSchemeComponent(url, url_scheme, kFileScheme):
             ParseFileURL(url, len(url), &parsed)
-        elif CompareSchemeComponent(url, scheme, kFileSystemScheme):
+        elif CompareSchemeComponent(url, url_scheme, kFileSystemScheme):
             ParseFileSystemURL(url, len(url), &parsed)
-        elif IsStandard(url, scheme):
+        elif IsStandard(url, url_scheme):
             ParseStandardURL(url, len(url), &parsed)
-        elif CompareSchemeComponent(url, scheme, kMailToScheme):
+        elif CompareSchemeComponent(url, url_scheme, kMailToScheme):
             """
             Discuss: Is this correct?
             """
@@ -193,20 +193,22 @@ class SplitResultNamedTuple(tuple):
 
         cls.__getattr__ = _get_attr
 
-        if decoded == True:
+        scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
+                                            build_netloc(url, parsed),
+                                            slice_component(url, parsed.path),
+                                            slice_component(url, parsed.query),
+                                            slice_component(url, parsed.ref))
+
+        if decoded:
             return tuple.__new__(cls, (
-                <unicode>slice_component(url, parsed.scheme).lower().decode('utf-8'),
-                <unicode>slice_component(url, parsed.host).decode('utf-8'),
-                <unicode>slice_component(url, parsed.path).decode('utf-8'),
-                <unicode>slice_component(url, parsed.query).decode('utf-8'),
-                <unicode>slice_component(url, parsed.ref).decode('utf-8')
+                <unicode>scheme.decode('utf-8'),
+                <unicode>netloc.decode('utf-8'),
+                <unicode>path.decode('utf-8'),
+                <unicode>query.decode('utf-8'),
+                <unicode>ref.decode('utf-8')
             ))
 
-        return tuple.__new__(cls, (slice_component(url, parsed.scheme).lower(),
-                                    slice_component(url, parsed.host),
-                                    slice_component(url, parsed.path),
-                                    slice_component(url, parsed.query),
-                                    slice_component(url, parsed.ref)))
+        return tuple.__new__(cls, (scheme, netloc, path, query, ref))
 
     def geturl(self):
         return stdlib_urlunsplit(self)
