@@ -6,7 +6,6 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(description='Measure the time of urlsplit and urljoin')
-
     parser.add_argument('--encode', action='store_true',
                     help='encode the urls (default: False)')
     args = parser.parse_args()
