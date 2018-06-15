@@ -1,19 +1,17 @@
 from urlparse4 import urlsplit, urljoin
 from timeit import default_timer as timer
 
-from sys import argv
 import argparse
 
 
 def main():
-    encode = False
+    parser = argparse.ArgumentParser(description='Measure the time of urlsplit and urljoin')
 
-    try:
-        if argv[1] == "encode":
-            encode = True
-    except IndexError:
-        print("encode is not defined, continue with the program...")
+    parser.add_argument('--encode', action='store_true',
+                    help='encode the urls (default: False)')
+    args = parser.parse_args()
 
+    encode = args.encode
 
     urlsplit_time = 0
 
