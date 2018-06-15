@@ -135,7 +135,8 @@ class SplitResultNamedTuple(tuple):
         cdef Component url_scheme
 
         if not ExtractScheme(url, len(url), &url_scheme):
-            return stdlib_urlsplit(url)
+            original_url = url.decode('utf-8') if decoded else url
+            return stdlib_urlsplit(original_url)
 
         if CompareSchemeComponent(url, url_scheme, kFileScheme):
             ParseFileURL(url, len(url), &parsed)
