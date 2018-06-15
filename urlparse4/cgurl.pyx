@@ -172,17 +172,23 @@ class SplitResultNamedTuple(tuple):
                         return port
 
             elif prop == "username":
+                username = slice_component(url, parsed.username)
                 if decoded:
-                    return slice_component(url, parsed.username).decode('utf-8') or None
-                return slice_component(url, parsed.username) or None
+                    return username.decode('utf-8') or None
+                return username or None
             elif prop == "password":
+                password = slice_component(url, parsed.password)
                 if decoded:
-                    return slice_component(url, parsed.password).decode('utf-8') or None
-                return slice_component(url, parsed.password) or None
+                    return password.decode('utf-8') or None
+                return password or None
             elif prop == "hostname":
+                """
+                hostname should be treated differently from netloc
+                """
+                hostname = slice_component(url, parsed.host).lower()
                 if decoded:
-                    return slice_component(url, parsed.host).lower().decode('utf-8')
-                return slice_component(url, parsed.host).lower()
+                    return hostname.decode('utf-8')
+                return hostname
 
 
         cls.__getattr__ = _get_attr
