@@ -129,14 +129,14 @@ class SplitResultNamedTuple(tuple):
 
     __slots__ = ()  # prevent creation of instance dictionary
 
-    def __new__(cls, bytes url, decoded=False):
+    def __new__(cls, bytes url, input_scheme, decoded=False):
 
         cdef Parsed parsed
         cdef Component url_scheme
 
         if not ExtractScheme(url, len(url), &url_scheme):
             original_url = url.decode('utf-8') if decoded else url
-            return stdlib_urlsplit(original_url)
+            return stdlib_urlsplit(original_url, input_scheme)
 
         if CompareSchemeComponent(url, url_scheme, kFileScheme):
             ParseFileURL(url, len(url), &parsed)
@@ -205,6 +205,8 @@ class SplitResultNamedTuple(tuple):
                                             slice_component(url, parsed.path),
                                             slice_component(url, parsed.query),
                                             slice_component(url, parsed.ref))
+        if scheme == '' and input_scheme != '':
+            scheme = input_scheme
 
         if decoded:
             return tuple.__new__(cls, (
@@ -221,14 +223,14 @@ class SplitResultNamedTuple(tuple):
         return stdlib_urlunsplit(self)
 
 
-def urlsplit(url):
+def urlsplit(url, scheme='', allow_fragments=True):
     """
     This function intends to replace urljoin from urllib,
     which uses Urlparse class from GURL Chromium
     """
     decode = not isinstance(url, bytes)
     url = unicode_handling(url)
-    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url, decode)
+    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url, scheme, decode)
 
 def urljoin(base, url, allow_fragments=True):
     """
@@ -245,18 +247,18 @@ def urljoin(base, url, allow_fragments=True):
         return joined_url
 
     return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
-
-def urlparse(url, scheme='', allow_fragments=True):
-    """
-    This function intends to replace urlparse from urllib
-    using urlsplit function from urlparse4 itself
-    """
-    url, scheme, _coerce_result = _coerce_args(url, scheme)
-    splitresult = urlsplit(url, scheme, allow_fragments)
-    scheme, netloc, url, query, fragment = splitresult
-    if scheme in uses_params and ';' in url:
-        url, params = _splitparams(url)
-    else:
-        params = ''
-    result = ParseResult(scheme, netloc, url, params, query, fragment)
-    return _coerce_result(result)
+#
+# def urlparse(url, scheme='', allow_fragments=True):
+#     """
+#     This function intends to replace urlparse from urllib
+#     using urlsplit function from urlparse4 itself
+#     """
+#     url, scheme, _coerce_result = _coerce_args(url, scheme)
+#     splitresult = urlsplit(url, scheme, allow_fragments)
+#     scheme, netloc, url, query, fragment = splitresult
+#     if scheme in uses_params and ';' in url:
+#         url, params = _splitparams(url)
+#     else:
+#         params = ''
+#     result = ParseResult(scheme, netloc, url, params, query, fragment)
+#     return _coerce_result(result)
