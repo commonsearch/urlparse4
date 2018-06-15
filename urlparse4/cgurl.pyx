@@ -5,6 +5,7 @@ from urlparse4.chromium_url_util_internal cimport CompareSchemeComponent
 from urlparse4.chromium_url_util cimport IsStandard
 
 import six
+from six.moves.urllib.parse import urlsplit as stdlib_urlsplit
 from six.moves.urllib.parse import urljoin as stdlib_urljoin
 from six.moves.urllib.parse import urlunsplit as stdlib_urlunsplit
 
@@ -134,11 +135,7 @@ class SplitResultNamedTuple(tuple):
         cdef Component url_scheme
 
         if not ExtractScheme(url, len(url), &url_scheme):
-            """
-            TO DO:
-            What do we return here
-            """
-            return False
+            return stdlib_urlsplit(url)
 
         if CompareSchemeComponent(url, url_scheme, kFileScheme):
             ParseFileURL(url, len(url), &parsed)
