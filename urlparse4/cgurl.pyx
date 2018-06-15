@@ -245,3 +245,18 @@ def urljoin(base, url, allow_fragments=True):
         return joined_url
 
     return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
+
+def urlparse(url, scheme='', allow_fragments=True):
+    """
+    This function intends to replace urlparse from urllib
+    using urlsplit function from urlparse4 itself
+    """
+    url, scheme, _coerce_result = _coerce_args(url, scheme)
+    splitresult = urlsplit(url, scheme, allow_fragments)
+    scheme, netloc, url, query, fragment = splitresult
+    if scheme in uses_params and ';' in url:
+        url, params = _splitparams(url)
+    else:
+        params = ''
+    result = ParseResult(scheme, netloc, url, params, query, fragment)
+    return _coerce_result(result)
