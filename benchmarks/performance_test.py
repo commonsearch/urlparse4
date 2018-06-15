@@ -1,28 +1,30 @@
 from urlparse4 import urlsplit, urljoin
 from timeit import default_timer as timer
 
+from sys import argv
 import argparse
 
 
-encode = False
+def main():
+    encode = False
 
-try:
-    if argv[1] == "encode":
-        encode = True
-except IndexError:
-    print("encode is not defined, continue with the program...")
+    try:
+        if argv[1] == "encode":
+            encode = True
+    except IndexError:
+        print("encode is not defined, continue with the program...")
 
-if encode:
+
     urlsplit_time = 0
 
     for i in range(5):
         with open('urls/chromiumUrls.txt') as f:
             for url in f:
+                if encode:
+                    url = url.encode()
 
                 start = timer()
-
-                a = urlsplit(url.encode())
-
+                a = urlsplit(url)
                 end = timer()
 
                 urlsplit_time += end - start
@@ -35,13 +37,20 @@ if encode:
     for i in range(5):
         with open('urls/chromiumUrls.txt') as f:
             for url in f:
+                partial_url = "/asd"
+
+                if encode:
+                    url = url.encode()
+                    partial_url = partial_url.encode()
 
                 start = timer()
-
-                a = urljoin(url.encode(), "/asd".encode())
-
+                a = urljoin(url, partial_url)
                 end = timer()
 
                 urljoin_time += end - start
 
     print("the urljoin time with encode in python is", urljoin_time / 5, "seconds")
+
+
+if __name__ == "__main__":
+    main()
