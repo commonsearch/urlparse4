@@ -62,6 +62,15 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
         raise ValueError
 
 
+def unicode_handling(str):
+    cdef bytes bytes_str
+    if isinstance(str, unicode):
+        bytes_str = <bytes>(<unicode>str).encode('utf8')
+    else:
+        bytes_str = str
+    return bytes_str
+
+
 # @cython.freelist(100)
 # cdef class SplitResult:
 
@@ -213,31 +222,28 @@ class SplitResultNamedTuple(tuple):
     def geturl(self):
         return stdlib_urlunsplit(self)
 
-def unicode_handling(str):
-    cdef bytes bytes_str
-    if isinstance(str, unicode):
-        bytes_str = <bytes>(<unicode>str).encode('utf8')
-    else:
-        bytes_str = str
-    return bytes_str
 
 def urlsplit(url):
     """
-    Use GURL to split the url. Needs to be reviewed!
+    This function intends to replace urljoin from urllib,
+    which uses Urlparse class from GURL Chromium
     """
-    decode = False if isinstance(url, bytes) else True
+    decode = not isinstance(url, bytes)
     url = unicode_handling(url)
     return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url, decode)
 
 def urljoin(base, url, allow_fragments=True):
     """
-    Use the urljoin function from GURL chromium. Needs to be reviewed!
+    This function intends to replace urljoin from urllib,
+    which uses Resolve function from class GURL of GURL chromium
     """
-    decode = False if (isinstance(base, bytes) and isinstance(url, bytes)) else True
+    decode = not (isinstance(base, bytes) and isinstance(url, bytes))
     if allow_fragments and base:
         base, url = unicode_handling(base), unicode_handling(url)
+        joined_url = GURL(base).Resolve(url).spec()
+
         if decode:
-            return GURL(base).Resolve(url).spec().decode('utf-8')
-        return GURL(base).Resolve(url).spec()
+            return joined_url.decode('utf-8')
+        return joined_url
 
     return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
