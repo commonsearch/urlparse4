@@ -1,7 +1,11 @@
-from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL
+from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL, ParseFileSystemURL, ParseMailtoURL, ParsePathURL, ExtractScheme
 from urlparse4.chromium_gurl cimport GURL
+from urlparse4.chromium_url_constant cimport *
+from urlparse4.chromium_url_util_internal cimport CompareSchemeComponent
+from urlparse4.chromium_url_util cimport IsStandard
 
 import six
+from six.moves.urllib.parse import urlsplit as stdlib_urlsplit
 from six.moves.urllib.parse import urljoin as stdlib_urljoin
 from six.moves.urllib.parse import urlunsplit as stdlib_urlunsplit
 
@@ -24,7 +28,10 @@ cdef bytes cslice_component(char * url, Component comp):
 
 
 cdef bytes build_netloc(bytes url, Parsed parsed):
-
+    """
+    TODO:
+    take a look at this function
+    """
     if parsed.host.len <= 0:
         return b""
 
@@ -54,6 +61,15 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
 
     else:
         raise ValueError
+
+
+def unicode_handling(str):
+    cdef bytes bytes_str
+    if isinstance(str, unicode):
+        bytes_str = <bytes>(<unicode>str).encode('utf8')
+    else:
+        bytes_str = str
+    return bytes_str
 
 
 # @cython.freelist(100)
@@ -113,14 +129,33 @@ class SplitResultNamedTuple(tuple):
 
     __slots__ = ()  # prevent creation of instance dictionary
 
-    def __new__(cls, bytes url):
+    def __new__(cls, bytes url, decoded=False):
 
         cdef Parsed parsed
+        cdef Component url_scheme
 
-        if url[0:5] == b"file:":
+        if not ExtractScheme(url, len(url), &url_scheme):
+            original_url = url.decode('utf-8') if decoded else url
+            return stdlib_urlsplit(original_url)
+
+        if CompareSchemeComponent(url, url_scheme, kFileScheme):
             ParseFileURL(url, len(url), &parsed)
-        else:
+        elif CompareSchemeComponent(url, url_scheme, kFileSystemScheme):
+            ParseFileSystemURL(url, len(url), &parsed)
+        elif IsStandard(url, url_scheme):
             ParseStandardURL(url, len(url), &parsed)
+        elif CompareSchemeComponent(url, url_scheme, kMailToScheme):
+            """
+            Discuss: Is this correct?
+            """
+            ParseMailtoURL(url, len(url), &parsed)
+        else:
+            """
+            TODO:
+            trim or not to trim?
+            """
+            ParsePathURL(url, len(url), True, &parsed)
+
 
         def _get_attr(self, prop):
             if prop == "scheme":
@@ -134,17 +169,33 @@ class SplitResultNamedTuple(tuple):
             elif prop == "fragment":
                 return self[4]
             elif prop == "port":
+                """
+                TODO:
+                Port can go beyond 0
+                """
                 if parsed.port.len > 0:
                     port = int(slice_component(url, parsed.port))
                     if port <= 65535:
                         return port
 
             elif prop == "username":
-                return slice_component(url, parsed.username) or None
+                username = slice_component(url, parsed.username)
+                if decoded:
+                    return username.decode('utf-8') or None
+                return username or None
             elif prop == "password":
-                return slice_component(url, parsed.password) or None
+                password = slice_component(url, parsed.password)
+                if decoded:
+                    return password.decode('utf-8') or None
+                return password or None
             elif prop == "hostname":
-                return slice_component(url, parsed.host).lower()
+                """
+                hostname should be treated differently from netloc
+                """
+                hostname = slice_component(url, parsed.host).lower()
+                if decoded:
+                    return hostname.decode('utf-8')
+                return hostname
 
 
         cls.__getattr__ = _get_attr
@@ -154,7 +205,8 @@ class SplitResultNamedTuple(tuple):
                                             slice_component(url, parsed.path),
                                             slice_component(url, parsed.query),
                                             slice_component(url, parsed.ref))
-        if six.PY2:
+
+        if decoded:
             return tuple.__new__(cls, (
                 <unicode>scheme.decode('utf-8'),
                 <unicode>netloc.decode('utf-8'),
@@ -162,28 +214,34 @@ class SplitResultNamedTuple(tuple):
                 <unicode>query.decode('utf-8'),
                 <unicode>ref.decode('utf-8')
             ))
-        else:
-            return tuple.__new__(cls, (scheme, netloc, path, query, ref))
+
+        return tuple.__new__(cls, (scheme, netloc, path, query, ref))
 
     def geturl(self):
         return stdlib_urlunsplit(self)
 
-def unicode_handling(str):
-    cdef bytes bytes_str
-    if isinstance(str, unicode):
-        bytes_str = <bytes>(<unicode>str).encode('utf8')
-    else:
-        bytes_str = str
-    return bytes_str
 
 def urlsplit(url):
+    """
+    This function intends to replace urljoin from urllib,
+    which uses Urlparse class from GURL Chromium
+    """
+    decode = not isinstance(url, bytes)
     url = unicode_handling(url)
-    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url)
+    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url, decode)
 
 def urljoin(base, url, allow_fragments=True):
-    base, url = unicode_handling(base), unicode_handling(url)
-
+    """
+    This function intends to replace urljoin from urllib,
+    which uses Resolve function from class GURL of GURL chromium
+    """
+    decode = not (isinstance(base, bytes) and isinstance(url, bytes))
     if allow_fragments and base:
-        return GURL(base).Resolve(url).spec()
-    else:
-        return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
+        base, url = unicode_handling(base), unicode_handling(url)
+        joined_url = GURL(base).Resolve(url).spec()
+
+        if decode:
+            return joined_url.decode('utf-8')
+        return joined_url
+
+    return stdlib_urljoin(base, url, allow_fragments=allow_fragments)

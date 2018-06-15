@@ -1,5 +1,3 @@
-# https://github.com/python/cpython/blob/2.7/Lib/urlparse.py
-
 import six
 
 if six.PY2:
