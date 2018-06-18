@@ -249,38 +249,9 @@ def urljoin(base, url, allow_fragments=True):
     return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
 
 # https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
-_implicit_encoding = 'ascii'
-_implicit_errors = 'strict'
-
 uses_params = ['', 'ftp', 'hdl', 'prospero', 'http', 'imap',
            'https', 'shttp', 'rtsp', 'rtspu', 'sip', 'sips',
            'mms', 'sftp', 'tel']
-def _noop(obj):
-    return obj
-
-def _encode_result(obj, encoding=_implicit_encoding,
-                        errors=_implicit_errors):
-    return obj.encode(encoding, errors)
-
-def _decode_args(args, encoding=_implicit_encoding,
-                       errors=_implicit_errors):
-    return tuple(x.decode(encoding, errors) if x else '' for x in args)
-
-def _coerce_args(*args):
-    # Invokes decode if necessary to create str args
-    # and returns the coerced inputs along with
-    # an appropriate result coercion function
-    #   - noop for str inputs
-    #   - encoding function otherwise
-    str_input = isinstance(args[0], str)
-    for arg in args[1:]:
-        # We special-case the empty string to support the
-        # "scheme=''" default argument to some functions
-        if arg and isinstance(arg, str) != str_input:
-            raise TypeError("Cannot mix str and non-str arguments")
-    if str_input:
-        return args + (_noop,)
-    return _decode_args(args) + (_encode_result,)
 
 def _splitparams(url):
     if '/'  in url:
@@ -297,8 +268,7 @@ def urlparse(url, scheme='', allow_fragments=True):
     using urlsplit function from urlparse4 itself.
     Can this function be further enhanced?
     """
-
-    url, scheme, _coerce_result = _coerce_args(url, scheme)
+    decode = not isinstance(url, bytes)
     splitresult = urlsplit(url, scheme, allow_fragments)
     scheme, netloc, url, query, fragment = splitresult
 
@@ -306,5 +276,8 @@ def urlparse(url, scheme='', allow_fragments=True):
         url, params = _splitparams(url)
     else:
         params = ''
-    result = (scheme, netloc, url, params, query, fragment)
-    return _coerce_result(result)
+
+    if not decode:
+        params = <bytes>(<unicode>params).encode('utf8')
+
+    return (scheme, netloc, url, params, query, fragment)
