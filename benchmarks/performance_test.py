@@ -1,4 +1,4 @@
-from urlparse4 import urlsplit, urljoin
+from urlparse4 import urlsplit, urljoin, urlparse
 from timeit import default_timer as timer
 
 import argparse
@@ -11,6 +11,22 @@ def main():
     args = parser.parse_args()
 
     encode = args.encode
+
+    urlparse_time = 0
+
+    for i in range(5):
+        with open('urls/chromiumUrls.txt') as f:
+            for url in f:
+                if encode:
+                    url = url.encode()
+
+                start = timer()
+                a = urlparse(url)
+                end = timer()
+
+                urlparse_time += end - start
+
+    print("the urlparse time is", urlparse_time / 5, "seconds")
 
     urlsplit_time = 0
 
@@ -26,7 +42,7 @@ def main():
 
                 urlsplit_time += end - start
 
-    print("the urlsplit time with encode in python is", urlsplit_time / 5, "seconds")
+    print("the urlsplit time is", urlsplit_time / 5, "seconds")
 
 
     urljoin_time = 0
@@ -46,7 +62,7 @@ def main():
 
                 urljoin_time += end - start
 
-    print("the urljoin time with encode in python is", urljoin_time / 5, "seconds")
+    print("the urljoin time is", urljoin_time / 5, "seconds")
 
 
 if __name__ == "__main__":
