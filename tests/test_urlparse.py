@@ -758,7 +758,6 @@ class UrlParseTestCase(unittest.TestCase):
         self.assertEqual(urlparse4.urlparse(b"x-newscheme://foo.com/stuff?query"),
                          (b'x-newscheme', b'foo.com', b'/stuff', b'', b'query', b''))
 
-    @pytest.mark.xfail
     def test_default_scheme(self):
         # Exercise the scheme parameter of urlparse() and urlsplit()
         for func in (urlparse4.urlparse, urlparse4.urlsplit):
