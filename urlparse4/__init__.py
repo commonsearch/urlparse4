@@ -8,5 +8,6 @@ else:
 
 _original_urlsplit = urlsplit
 _original_urljoin = urljoin
+_original_urlparse = urlparse
 
-from cgurl import urlsplit, urljoin
+from cgurl import urlsplit, urljoin, urlparse
