@@ -266,7 +266,7 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
         raise ValueError
 
 
-def unicode_handling(str):
+cdef bytes unicode_handling(str):
     cdef bytes bytes_str
     if isinstance(str, unicode):
         bytes_str = <bytes>(<unicode>str).encode('utf8')
