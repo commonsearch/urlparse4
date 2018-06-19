@@ -18,6 +18,9 @@ uses_params = ['', 'ftp', 'hdl', 'prospero', 'http', 'imap',
            'https', 'shttp', 'rtsp', 'rtspu', 'sip', 'sips',
            'mms', 'sftp', 'tel']
 
+SplitResult = namedtuple('SplitResult', 'scheme netloc path query fragment')
+ParseResult = namedtuple('ParseResult', 'scheme netloc path params query fragment')
+
 
 # class _NetlocResultMixinBase(object):
 #     """Shared methods for the parsed result objects containing a netloc element"""
@@ -115,6 +118,12 @@ uses_params = ['', 'ftp', 'hdl', 'prospero', 'http', 'imap',
 #             port = None
 #         return hostname, port
 
+class SplitResultNamedTuple(SplitResult):
+    __slots__ = ()
+
+class ParsedResultNamedTuple(ParseResult):
+    __slots__ = ()
+
 
 cdef bytes slice_component(bytes pyurl, Component comp):
     if comp.len <= 0:
@@ -206,6 +215,52 @@ def _splitparams(bytes url):
     return url[:i], url[i+1:]
 
 
+def parse_url(bytes url, input_scheme, decoded=False, allow_params=False):
+    """
+    This function uses methods from GURL-chromium to parse the urls
+    which will return the result for urlparse and urljoin
+    """
+    cdef Parsed parsed
+    cdef Component url_scheme
+
+    if not ExtractScheme(url, len(url), &url_scheme):
+        original_url = url.decode('utf-8') if decoded else url
+        if allow_params:
+            return stdlib_urlparse(original_url, input_scheme)
+        return stdlib_urlsplit(original_url, input_scheme)
+
+    parse_url_helper(url, &parsed, url_scheme)
+
+    scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
+                                        build_netloc(url, parsed),
+                                        slice_component(url, parsed.path),
+                                        slice_component(url, parsed.query),
+                                        slice_component(url, parsed.ref))
+    if scheme == '' and input_scheme != '':
+        scheme = input_scheme
+
+    if allow_params:
+        if scheme in uses_params and ';' in url:
+            url, params = _splitparams(url)
+        else:
+            params = ''
+
+    if decoded:
+        scheme, netloc, path, query, ref = (<unicode>scheme.decode('utf-8'),
+                                            <unicode>netloc.decode('utf-8'),
+                                            <unicode>path.decode('utf-8'),
+                                            <unicode>query.decode('utf-8'),
+                                            <unicode>ref.decode('utf-8'))
+        if allow_params:
+            return ParseResult(scheme, netloc, path, params, query, ref)
+        return SplitResult(scheme, netloc, path, query, ref)
+
+    if allow_params:
+        return ParseResult(scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref)
+
+    return SplitResult(scheme, netloc, path, query, ref)
+
+
 # @cython.freelist(100)
 # cdef class SplitResult:
 
@@ -257,61 +312,6 @@ def _splitparams(bytes url):
 #     property netloc:
 #         def __get__(self):
 #             return build_netloc(self.pyurl, self.parsed)
-
-SplitResult = namedtuple('SplitResult', 'scheme netloc path query fragment')
-ParseResult = namedtuple('ParseResult', 'scheme netloc path params query fragment')
-
-class SplitResultNamedTuple(SplitResult):
-    __slots__ = ()
-
-class ParsedResultNamedTuple(ParseResult):
-    __slots__ = ()
-
-
-def parse_url(bytes url, input_scheme, decoded=False, allow_params=False):
-    """
-    This function uses methods from GURL-chromium to parse the urls
-    which will return the result for urlparse and urljoin
-    """
-    cdef Parsed parsed
-    cdef Component url_scheme
-
-    if not ExtractScheme(url, len(url), &url_scheme):
-        original_url = url.decode('utf-8') if decoded else url
-        if allow_params:
-            return stdlib_urlparse(original_url, input_scheme)
-        return stdlib_urlsplit(original_url, input_scheme)
-
-    parse_url_helper(url, &parsed, url_scheme)
-
-    scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
-                                        build_netloc(url, parsed),
-                                        slice_component(url, parsed.path),
-                                        slice_component(url, parsed.query),
-                                        slice_component(url, parsed.ref))
-    if scheme == '' and input_scheme != '':
-        scheme = input_scheme
-
-    if allow_params:
-        if scheme in uses_params and ';' in url:
-            url, params = _splitparams(url)
-        else:
-            params = ''
-
-    if decoded:
-        scheme, netloc, path, query, ref = (<unicode>scheme.decode('utf-8'),
-                                            <unicode>netloc.decode('utf-8'),
-                                            <unicode>path.decode('utf-8'),
-                                            <unicode>query.decode('utf-8'),
-                                            <unicode>ref.decode('utf-8'))
-        if allow_params:
-            return ParseResult(scheme, netloc, path, params, query, ref)
-        return SplitResult(scheme, netloc, path, query, ref)
-
-    if allow_params:
-        return ParseResult(scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref)
-
-    return SplitResult(scheme, netloc, path, query, ref)
 
 def urlparse(url, scheme='', allow_fragments=True):
     """
