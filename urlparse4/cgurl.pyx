@@ -19,6 +19,103 @@ uses_params = ['', 'ftp', 'hdl', 'prospero', 'http', 'imap',
            'mms', 'sftp', 'tel']
 
 
+# class _NetlocResultMixinBase(object):
+#     """Shared methods for the parsed result objects containing a netloc element"""
+#     __slots__ = ()
+#
+#     @property
+#     def username(self):
+#         return self._userinfo[0]
+#
+#     @property
+#     def password(self):
+#         return self._userinfo[1]
+#
+#     @property
+#     def hostname(self):
+#         hostname = self._hostinfo[0]
+#         if not hostname:
+#            return None
+#         # Scoped IPv6 address may have zone info, which must not be lowercased
+#         # like http://[fe80::822a:a8ff:fe49:470c%tESt]:1234/keys
+#         separator = '%' if isinstance(hostname, str) else b'%'
+#         hostname, percent, zone = hostname.partition(separator)
+#         return hostname.lower() + percent + zone
+#
+#     @property
+#     def port(self):
+#         port = self._hostinfo[1]
+#         if port is not None:
+#             try:
+#                 port = int(port, 10)
+#             except ValueError:
+#                 message = f'Port could not be cast to integer value as {port!r}'
+#                 raise ValueError(message) from None
+#             if not ( 0 <= port <= 65535):
+#                 raise ValueError("Port out of range 0-65535")
+#         return port
+#
+#
+# class _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
+#     __slots__ = ()
+#
+#     @property
+#     def _userinfo(self):
+#         netloc = self.netloc
+#         userinfo, have_info, hostinfo = netloc.rpartition('@')
+#         if have_info:
+#             username, have_password, password = userinfo.partition(':')
+#             if not have_password:
+#                 password = None
+#         else:
+#             username = password = None
+#         return username, password
+#
+#     @property
+#     def _hostinfo(self):
+#         netloc = self.netloc
+#         _, _, hostinfo = netloc.rpartition('@')
+#         _, have_open_br, bracketed = hostinfo.partition('[')
+#         if have_open_br:
+#             hostname, _, port = bracketed.partition(']')
+#             _, _, port = port.partition(':')
+#         else:
+#             hostname, _, port = hostinfo.partition(':')
+#         if not port:
+#             port = None
+#         return hostname, port
+#
+#
+# class _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
+#     __slots__ = ()
+#
+#     @property
+#     def _userinfo(self):
+#         netloc = self.netloc
+#         userinfo, have_info, hostinfo = netloc.rpartition(b'@')
+#         if have_info:
+#             username, have_password, password = userinfo.partition(b':')
+#             if not have_password:
+#                 password = None
+#         else:
+#             username = password = None
+#         return username, password
+#
+#     @property
+#     def _hostinfo(self):
+#         netloc = self.netloc
+#         _, _, hostinfo = netloc.rpartition(b'@')
+#         _, have_open_br, bracketed = hostinfo.partition(b'[')
+#         if have_open_br:
+#             hostname, _, port = bracketed.partition(b']')
+#             _, _, port = port.partition(b':')
+#         else:
+#             hostname, _, port = hostinfo.partition(b':')
+#         if not port:
+#             port = None
+#         return hostname, port
+
+
 cdef bytes slice_component(bytes pyurl, Component comp):
     if comp.len <= 0:
         return b""
