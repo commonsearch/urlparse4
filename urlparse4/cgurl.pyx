@@ -23,102 +23,10 @@ SplitResult = namedtuple('SplitResult', 'scheme netloc path query fragment')
 ParseResult = namedtuple('ParseResult', 'scheme netloc path params query fragment')
 
 
-class _NetlocResultMixinBase(object):
-    """Shared methods for the parsed result objects containing a netloc element"""
-    pass
-    # __slots__ = ()
-    #
-    # @property
-    # def username(self):
-    #     return self._userinfo[0]
-    #
-    # @property
-    # def password(self):
-    #     return self._userinfo[1]
-    #
-    # @property
-    # def hostname(self):
-    #     hostname = self._hostinfo[0]
-    #     if not hostname:
-    #        return None
-    #     # Scoped IPv6 address may have zone info, which must not be lowercased
-    #     # like http://[fe80::822a:a8ff:fe49:470c%tESt]:1234/keys
-    #     separator = '%' if isinstance(hostname, str) else b'%'
-    #     hostname, percent, zone = hostname.partition(separator)
-    #     return hostname.lower() + percent + zone
-    #
-    # @property
-    # def port(self):
-    #     if parsed.port.len > 0:
-    #         port = int(slice_component(url, parsed.port))
-    #         if port <= 65535:
-    #             return port
-#
-#
-# class _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
-#     __slots__ = ()
-#
-#     @property
-#     def _userinfo(self):
-#         netloc = self.netloc
-#         userinfo, have_info, hostinfo = netloc.rpartition('@')
-#         if have_info:
-#             username, have_password, password = userinfo.partition(':')
-#             if not have_password:
-#                 password = None
-#         else:
-#             username = password = None
-#         return username, password
-#
-#     @property
-#     def _hostinfo(self):
-#         netloc = self.netloc
-#         _, _, hostinfo = netloc.rpartition('@')
-#         _, have_open_br, bracketed = hostinfo.partition('[')
-#         if have_open_br:
-#             hostname, _, port = bracketed.partition(']')
-#             _, _, port = port.partition(':')
-#         else:
-#             hostname, _, port = hostinfo.partition(':')
-#         if not port:
-#             port = None
-#         return hostname, port
-#
-#
-# class _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
-#     __slots__ = ()
-#
-#     @property
-#     def _userinfo(self):
-#         netloc = self.netloc
-#         userinfo, have_info, hostinfo = netloc.rpartition(b'@')
-#         if have_info:
-#             username, have_password, password = userinfo.partition(b':')
-#             if not have_password:
-#                 password = None
-#         else:
-#             username = password = None
-#         return username, password
-#
-#     @property
-#     def _hostinfo(self):
-#         netloc = self.netloc
-#         _, _, hostinfo = netloc.rpartition(b'@')
-#         _, have_open_br, bracketed = hostinfo.partition(b'[')
-#         if have_open_br:
-#             hostname, _, port = bracketed.partition(b']')
-#             _, _, port = port.partition(b':')
-#         else:
-#             hostname, _, port = hostinfo.partition(b':')
-#         if not port:
-#             port = None
-#         return hostname, port
-
-
-class SplitResultNamedTuple(SplitResult, _NetlocResultMixinBase):
+class SplitResultNamedTuple(SplitResult):
     __slots__ = ()
 
-    def __new__(bytes url, input_scheme, decode=False):
+    def __new__(cls, bytes url, input_scheme, decode=False):
 
         cdef Parsed parsed
         cdef Component extracted_scheme
@@ -127,16 +35,24 @@ class SplitResultNamedTuple(SplitResult, _NetlocResultMixinBase):
             original_url = url.decode('utf-8') if decode else url
             return stdlib_urlsplit(original_url, input_scheme)
 
-        return parse_url(url, input_scheme, extracted_scheme, parsed, decode)
+        parse_url(url, input_scheme, extracted_scheme, &parsed, decode)
+
+        def _get_attr(self, prop):
+            extra_attr(prop, url, parsed, decode)
+
+        cls.__getattr__ = _get_attr
+
+        return parse_url_helper(url, input_scheme, parsed, decode)
+
 
     def geturl(self):
         return stdlib_urlunsplit(self)
 
 
-class ParsedResultNamedTuple(ParseResult, _NetlocResultMixinBase):
+class ParsedResultNamedTuple(ParseResult):
     __slots__ = ()
 
-    def __new__(bytes url, input_scheme, decode=False):
+    def __new__(cls, bytes url, input_scheme, decode=False):
 
         cdef Parsed parsed
         cdef Component extracted_scheme
@@ -145,7 +61,14 @@ class ParsedResultNamedTuple(ParseResult, _NetlocResultMixinBase):
             original_url = url.decode('utf-8') if decode else url
             return stdlib_urlparse(original_url, input_scheme)
 
-        return parse_url(url, input_scheme, extracted_scheme, parsed, decode, True)
+        parse_url(url, input_scheme, extracted_scheme, &parsed, decode, True)
+
+        def _get_attr(self, prop):
+            extra_attr(prop, url, parsed, decode)
+
+        cls.__getattr__ = _get_attr
+
+        return parse_url_helper(url, input_scheme, parsed, decode, True)
 
     def geturl(self):
         return stdlib_urlunparse(self)
@@ -166,29 +89,62 @@ def _splitparams(bytes url):
     return url[:i], url[i+1:]
 
 
-cdef object parse_url(bytes url, input_scheme, scheme, Parsed parsed, decode=False, allow_params=False):
+cdef object extra_attr(prop, url, Parsed parsed, decode):
+    if prop == "port":
+        """
+        TODO:
+        Port can go beyond 0
+        """
+        if parsed.port.len > 0:
+            port = int(slice_component(url, parsed.port))
+            if port <= 65535:
+                return port
+
+    elif prop == "username":
+        username = slice_component(url, parsed.username)
+        if decode:
+            return username.decode('utf-8') or None
+        return username or None
+    elif prop == "password":
+        password = slice_component(url, parsed.password)
+        if decode:
+            return password.decode('utf-8') or None
+        return password or None
+    elif prop == "hostname":
+        """
+        hostname should be treated differently from netloc
+        """
+        hostname = slice_component(url, parsed.host).lower()
+        if decode:
+            return hostname.decode('utf-8')
+        return hostname
+
+
+cdef void parse_url(bytes url, input_scheme, scheme, Parsed * parsed, decode=False, allow_params=False):
     """
     This function uses methods from GURL-chromium to parse the urls
     which will return the result for urlparse and urljoin
     """
     if CompareSchemeComponent(url, scheme, kFileScheme):
-        ParseFileURL(url, len(url), &parsed)
+        ParseFileURL(url, len(url), parsed)
     elif CompareSchemeComponent(url, scheme, kFileSystemScheme):
-        ParseFileSystemURL(url, len(url), &parsed)
+        ParseFileSystemURL(url, len(url), parsed)
     elif IsStandard(url, scheme):
-        ParseStandardURL(url, len(url), &parsed)
+        ParseStandardURL(url, len(url), parsed)
     elif CompareSchemeComponent(url, scheme, kMailToScheme):
         """
         Discuss: Is this correct?
         """
-        ParseMailtoURL(url, len(url), &parsed)
+        ParseMailtoURL(url, len(url), parsed)
     else:
         """
         TODO:
         trim or not to trim?
         """
-        ParsePathURL(url, len(url), True, &parsed)
+        ParsePathURL(url, len(url), True, parsed)
 
+
+cdef object parse_url_helper(bytes url, input_scheme, Parsed parsed, decode=False, allow_params=False):
     scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
                                         build_netloc(url, parsed),
                                         slice_component(url, parsed.path),
@@ -210,11 +166,11 @@ cdef object parse_url(bytes url, input_scheme, scheme, Parsed parsed, decode=Fal
                                             <unicode>query.decode('utf-8'),
                                             <unicode>ref.decode('utf-8'))
         if allow_params:
-            return ParseResult(scheme, netloc, path, params, query, ref)
+            return tuple.__new__(ParsedResultNamedTuple, (scheme, netloc, path, params, query, ref))
         return SplitResult(scheme, netloc, path, query, ref)
 
     if allow_params:
-        return ParseResult(scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref)
+        return tuple.__new__(ParsedResultNamedTuple, (scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref))
 
     return SplitResult(scheme, netloc, path, query, ref)
 
@@ -335,7 +291,7 @@ def urlparse(url, scheme='', allow_fragments=True):
     """
     decode = not isinstance(url, bytes)
     url = unicode_handling(url)
-    return ParsedResultNamedTuple.__new__(url, scheme, decode)
+    return ParsedResultNamedTuple.__new__(ParsedResultNamedTuple, url, scheme, decode)
 
 
 def urlsplit(url, scheme='', allow_fragments=True):
@@ -345,7 +301,7 @@ def urlsplit(url, scheme='', allow_fragments=True):
     """
     decode = not isinstance(url, bytes)
     url = unicode_handling(url)
-    return SplitResultNamedTuple.__new__(url, scheme, decode)
+    return SplitResultNamedTuple.__new__(SplitResultNamedTuple, url, scheme, decode)
 
 def urljoin(base, url, allow_fragments=True):
     """
