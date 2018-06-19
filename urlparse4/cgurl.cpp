@@ -1765,7 +1765,7 @@ static PyObject *__pyx_pw_5cgurl_21SplitResultNamedTuple_1__new__(PyObject *__py
  *         parse_url(url, input_scheme, extracted_scheme, &parsed, decode)
  * 
  *         def _get_attr(self, prop):             # <<<<<<<<<<<<<<
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  */
 
@@ -1846,10 +1846,11 @@ static PyObject *__pyx_pf_5cgurl_21SplitResultNamedTuple_7__new____get_attr(PyOb
   /* "cgurl.pyx":41
  * 
  *         def _get_attr(self, prop):
- *             extra_attr(prop, url, parsed, decode)             # <<<<<<<<<<<<<<
+ *             return extra_attr(prop, url, parsed, decode)             # <<<<<<<<<<<<<<
  * 
  *         cls.__getattr__ = _get_attr
  */
+  __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_cur_scope->__pyx_v_url)) { __Pyx_RaiseClosureNameError("url"); __PYX_ERR(0, 41, __pyx_L1_error) }
   __pyx_t_1 = __pyx_cur_scope->__pyx_v_url;
   __Pyx_INCREF(__pyx_t_1);
@@ -1860,19 +1861,19 @@ static PyObject *__pyx_pf_5cgurl_21SplitResultNamedTuple_7__new____get_attr(PyOb
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
+  goto __pyx_L0;
 
   /* "cgurl.pyx":40
  *         parse_url(url, input_scheme, extracted_scheme, &parsed, decode)
  * 
  *         def _get_attr(self, prop):             # <<<<<<<<<<<<<<
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
@@ -2065,7 +2066,7 @@ static PyObject *__pyx_pf_5cgurl_21SplitResultNamedTuple___new__(CYTHON_UNUSED P
  *         parse_url(url, input_scheme, extracted_scheme, &parsed, decode)
  * 
  *         def _get_attr(self, prop):             # <<<<<<<<<<<<<<
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  */
   __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5cgurl_21SplitResultNamedTuple_7__new___1_get_attr, 0, __pyx_n_s_SplitResultNamedTuple___new___lo, ((PyObject*)__pyx_cur_scope), __pyx_n_s_cgurl, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 40, __pyx_L1_error)
@@ -2074,7 +2075,7 @@ static PyObject *__pyx_pf_5cgurl_21SplitResultNamedTuple___new__(CYTHON_UNUSED P
   __pyx_t_8 = 0;
 
   /* "cgurl.pyx":43
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  *         cls.__getattr__ = _get_attr             # <<<<<<<<<<<<<<
  * 
@@ -2344,7 +2345,7 @@ static PyObject *__pyx_pw_5cgurl_22ParsedResultNamedTuple_1__new__(PyObject *__p
  *         parse_url(url, input_scheme, extracted_scheme, &parsed, decode, True)
  * 
  *         def _get_attr(self, prop):             # <<<<<<<<<<<<<<
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  */
 
@@ -2425,10 +2426,11 @@ static PyObject *__pyx_pf_5cgurl_22ParsedResultNamedTuple_7__new____get_attr(PyO
   /* "cgurl.pyx":67
  * 
  *         def _get_attr(self, prop):
- *             extra_attr(prop, url, parsed, decode)             # <<<<<<<<<<<<<<
+ *             return extra_attr(prop, url, parsed, decode)             # <<<<<<<<<<<<<<
  * 
  *         cls.__getattr__ = _get_attr
  */
+  __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_cur_scope->__pyx_v_url)) { __Pyx_RaiseClosureNameError("url"); __PYX_ERR(0, 67, __pyx_L1_error) }
   __pyx_t_1 = __pyx_cur_scope->__pyx_v_url;
   __Pyx_INCREF(__pyx_t_1);
@@ -2439,19 +2441,19 @@ static PyObject *__pyx_pf_5cgurl_22ParsedResultNamedTuple_7__new____get_attr(PyO
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
+  goto __pyx_L0;
 
   /* "cgurl.pyx":66
  *         parse_url(url, input_scheme, extracted_scheme, &parsed, decode, True)
  * 
  *         def _get_attr(self, prop):             # <<<<<<<<<<<<<<
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
@@ -2645,7 +2647,7 @@ static PyObject *__pyx_pf_5cgurl_22ParsedResultNamedTuple___new__(CYTHON_UNUSED 
  *         parse_url(url, input_scheme, extracted_scheme, &parsed, decode, True)
  * 
  *         def _get_attr(self, prop):             # <<<<<<<<<<<<<<
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  */
   __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5cgurl_22ParsedResultNamedTuple_7__new___1_get_attr, 0, __pyx_n_s_ParsedResultNamedTuple___new___l, ((PyObject*)__pyx_cur_scope), __pyx_n_s_cgurl, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 66, __pyx_L1_error)
@@ -2654,7 +2656,7 @@ static PyObject *__pyx_pf_5cgurl_22ParsedResultNamedTuple___new__(CYTHON_UNUSED 
   __pyx_t_8 = 0;
 
   /* "cgurl.pyx":69
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  *         cls.__getattr__ = _get_attr             # <<<<<<<<<<<<<<
  * 
@@ -6873,7 +6875,7 @@ static int __Pyx_InitCachedConstants(void) {
  *         parse_url(url, input_scheme, extracted_scheme, &parsed, decode)
  * 
  *         def _get_attr(self, prop):             # <<<<<<<<<<<<<<
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  */
   __pyx_tuple_ = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_prop); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 40, __pyx_L1_error)
@@ -6885,7 +6887,7 @@ static int __Pyx_InitCachedConstants(void) {
  *         parse_url(url, input_scheme, extracted_scheme, &parsed, decode, True)
  * 
  *         def _get_attr(self, prop):             # <<<<<<<<<<<<<<
- *             extra_attr(prop, url, parsed, decode)
+ *             return extra_attr(prop, url, parsed, decode)
  * 
  */
   __pyx_tuple__3 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_prop); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 66, __pyx_L1_error)
