@@ -269,6 +269,10 @@ class ParsedResultNamedTuple(ParseResult):
 
 
 def parse_url(bytes url, input_scheme, decoded=False, allow_params=False):
+    """
+    This function uses methods from GURL-chromium to parse the urls
+    which will return the result for urlparse and urljoin
+    """
     cdef Parsed parsed
     cdef Component url_scheme
 
