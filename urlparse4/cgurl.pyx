@@ -38,7 +38,7 @@ class SplitResultNamedTuple(SplitResult):
         parse_url(url, input_scheme, extracted_scheme, &parsed, decode)
 
         def _get_attr(self, prop):
-            extra_attr(prop, url, parsed, decode)
+            return extra_attr(prop, url, parsed, decode)
 
         cls.__getattr__ = _get_attr
 
@@ -64,7 +64,7 @@ class ParsedResultNamedTuple(ParseResult):
         parse_url(url, input_scheme, extracted_scheme, &parsed, decode, True)
 
         def _get_attr(self, prop):
-            extra_attr(prop, url, parsed, decode)
+            return extra_attr(prop, url, parsed, decode)
 
         cls.__getattr__ = _get_attr
 
