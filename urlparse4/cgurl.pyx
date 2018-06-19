@@ -167,12 +167,14 @@ class ParsedResultNamedTuple(ParseResult):
     __slots__ = ()
 
 
-def split_url(bytes url, input_scheme, decoded=False):
+def parse_url(bytes url, input_scheme, decoded=False, allow_params=False):
     cdef Parsed parsed
     cdef Component url_scheme
 
     if not ExtractScheme(url, len(url), &url_scheme):
         original_url = url.decode('utf-8') if decoded else url
+        if allow_params:
+            return stdlib_urlparse(original_url, input_scheme)
         return stdlib_urlsplit(original_url, input_scheme)
 
     parse_url_helper(url, &parsed, url_scheme)
@@ -185,53 +187,37 @@ def split_url(bytes url, input_scheme, decoded=False):
     if scheme == '' and input_scheme != '':
         scheme = input_scheme
 
+    if allow_params:
+        if scheme in uses_params and ';' in url:
+            url, params = _splitparams(url)
+        else:
+            params = ''
+
     if decoded:
-        return SplitResult(
-            <unicode>scheme.decode('utf-8'),
-            <unicode>netloc.decode('utf-8'),
-            <unicode>path.decode('utf-8'),
-            <unicode>query.decode('utf-8'),
-            <unicode>ref.decode('utf-8')
-        )
+        scheme, netloc, path, query, ref = (<unicode>scheme.decode('utf-8'),
+                                            <unicode>netloc.decode('utf-8'),
+                                            <unicode>path.decode('utf-8'),
+                                            <unicode>query.decode('utf-8'),
+                                            <unicode>ref.decode('utf-8'))
+        if allow_params:
+            return ParseResult(scheme, netloc, path, params, query, ref)
+        return SplitResult(scheme, netloc, path, query, ref)
+
+    if allow_params:
+        return ParseResult(scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref)
 
     return SplitResult(scheme, netloc, path, query, ref)
 
+def urlparse(url, scheme='', allow_fragments=True):
+    """
+    This function intends to replace urlparse from urllib
+    using urlsplit function from urlparse4 itself.
+    Can this function be further enhanced?
+    """
+    decode = not isinstance(url, bytes)
+    url = unicode_handling(url)
+    return parse_url(url, scheme, decode, True)
 
-def parse_url(bytes url, input_scheme, decoded=False):
-    cdef Parsed parsed
-    cdef Component url_scheme
-
-    if not ExtractScheme(url, len(url), &url_scheme):
-        original_url = url.decode('utf-8') if decoded else url
-        return stdlib_urlparse(original_url, input_scheme)
-
-    parse_url_helper(url, &parsed, url_scheme)
-
-    scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
-                                        build_netloc(url, parsed),
-                                        slice_component(url, parsed.path),
-                                        slice_component(url, parsed.query),
-                                        slice_component(url, parsed.ref))
-
-    if scheme == '' and input_scheme != '':
-        scheme = input_scheme
-
-    if scheme in uses_params and ';' in url:
-        url, params = _splitparams(url)
-    else:
-        params = ''
-
-    if decoded:
-        return ParseResult(
-            <unicode>scheme.decode('utf-8'),
-            <unicode>netloc.decode('utf-8'),
-            <unicode>path.decode('utf-8'),
-            <unicode>params,
-            <unicode>query.decode('utf-8'),
-            <unicode>ref.decode('utf-8')
-        )
-
-    return ParseResult(scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref)
 
 def urlsplit(url, scheme='', allow_fragments=True):
     """
@@ -240,7 +226,7 @@ def urlsplit(url, scheme='', allow_fragments=True):
     """
     decode = not isinstance(url, bytes)
     url = unicode_handling(url)
-    return split_url(url, scheme, decode)
+    return parse_url(url, scheme, decode)
 
 def urljoin(base, url, allow_fragments=True):
     """
@@ -257,14 +243,3 @@ def urljoin(base, url, allow_fragments=True):
         return joined_url
 
     return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
-
-
-def urlparse(url, scheme='', allow_fragments=True):
-    """
-    This function intends to replace urlparse from urllib
-    using urlsplit function from urlparse4 itself.
-    Can this function be further enhanced?
-    """
-    decode = not isinstance(url, bytes)
-    url = unicode_handling(url)
-    return parse_url(url, scheme, decode)
