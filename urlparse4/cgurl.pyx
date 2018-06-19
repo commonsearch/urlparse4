@@ -192,7 +192,11 @@ def unicode_handling(str):
 
 
 # https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
-def _splitparams(url):
+def _splitparams(bytes url):
+    """
+    This function can be converted to C to further enhance the performance
+    """
+    cdef int i
     if '/'  in url:
         i = url.find(';', url.rfind('/'))
         if i < 0:
