@@ -12,6 +12,11 @@ from six.moves.urllib.parse import urlunsplit as stdlib_urlunsplit
 cimport cython
 
 
+uses_params = ['', 'ftp', 'hdl', 'prospero', 'http', 'imap',
+           'https', 'shttp', 'rtsp', 'rtspu', 'sip', 'sips',
+           'mms', 'sftp', 'tel']
+
+
 cdef bytes slice_component(bytes pyurl, Component comp):
     if comp.len <= 0:
         return b""
@@ -70,6 +75,17 @@ def unicode_handling(str):
     else:
         bytes_str = str
     return bytes_str
+
+
+# https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
+def _splitparams(url):
+    if '/'  in url:
+        i = url.find(';', url.rfind('/'))
+        if i < 0:
+            return url, ''
+    else:
+        i = url.find(';')
+    return url[:i], url[i+1:]
 
 
 # @cython.freelist(100)
@@ -223,6 +239,10 @@ class SplitResultNamedTuple(tuple):
         return stdlib_urlunsplit(self)
 
 
+class ParsedResultNamedTuple():
+    pass
+
+
 def urlsplit(url, scheme='', allow_fragments=True):
     """
     This function intends to replace urljoin from urllib,
@@ -248,19 +268,6 @@ def urljoin(base, url, allow_fragments=True):
 
     return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
 
-# https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
-uses_params = ['', 'ftp', 'hdl', 'prospero', 'http', 'imap',
-           'https', 'shttp', 'rtsp', 'rtspu', 'sip', 'sips',
-           'mms', 'sftp', 'tel']
-
-def _splitparams(url):
-    if '/'  in url:
-        i = url.find(';', url.rfind('/'))
-        if i < 0:
-            return url, ''
-    else:
-        i = url.find(';')
-    return url[:i], url[i+1:]
 
 def urlparse(url, scheme='', allow_fragments=True):
     """
