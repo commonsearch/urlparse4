@@ -140,6 +140,53 @@ def _splitparams(url):
 #         def __get__(self):
 #             return build_netloc(self.pyurl, self.parsed)
 
+cdef void parse_url(bytes url, Component url_scheme, Parsed * parsed):
+    if CompareSchemeComponent(url, url_scheme, kFileScheme):
+        ParseFileURL(url, len(url), parsed)
+    elif CompareSchemeComponent(url, url_scheme, kFileSystemScheme):
+        ParseFileSystemURL(url, len(url), parsed)
+    elif IsStandard(url, url_scheme):
+        ParseStandardURL(url, len(url), parsed)
+    elif CompareSchemeComponent(url, url_scheme, kMailToScheme):
+        """
+        Discuss: Is this correct?
+        """
+        ParseMailtoURL(url, len(url), parsed)
+    else:
+        """
+        TODO:
+        trim or not to trim?
+        """
+        ParsePathURL(url, len(url), True, parsed)
+
+cdef object extra_attr(prop, bytes url, Parsed parsed, decoded):
+    if prop == "port":
+        """
+        TODO:
+        Port can go beyond 0
+        """
+        if parsed.port.len > 0:
+            port = int(slice_component(url, parsed.port))
+            if port <= 65535:
+                return port
+    elif prop == "username":
+        username = slice_component(url, parsed.username)
+        if decoded:
+            return username.decode('utf-8') or None
+        return username or None
+    elif prop == "password":
+        password = slice_component(url, parsed.password)
+        if decoded:
+            return password.decode('utf-8') or None
+        return password or None
+    elif prop == "hostname":
+        """
+        hostname should be treated differently from netloc
+        """
+        hostname = slice_component(url, parsed.host).lower()
+        if decoded:
+            return hostname.decode('utf-8')
+        return hostname
 
 class SplitResultNamedTuple(tuple):
 
@@ -154,65 +201,10 @@ class SplitResultNamedTuple(tuple):
             original_url = url.decode('utf-8') if decoded else url
             return stdlib_urlsplit(original_url, input_scheme)
 
-        if CompareSchemeComponent(url, url_scheme, kFileScheme):
-            ParseFileURL(url, len(url), &parsed)
-        elif CompareSchemeComponent(url, url_scheme, kFileSystemScheme):
-            ParseFileSystemURL(url, len(url), &parsed)
-        elif IsStandard(url, url_scheme):
-            ParseStandardURL(url, len(url), &parsed)
-        elif CompareSchemeComponent(url, url_scheme, kMailToScheme):
-            """
-            Discuss: Is this correct?
-            """
-            ParseMailtoURL(url, len(url), &parsed)
-        else:
-            """
-            TODO:
-            trim or not to trim?
-            """
-            ParsePathURL(url, len(url), True, &parsed)
-
+        parse_url(url, url_scheme, &parsed)
 
         def _get_attr(self, prop):
-            if prop == "scheme":
-                return self[0]
-            elif prop == "netloc":
-                return self[1]
-            elif prop == "path":
-                return self[2]
-            elif prop == "query":
-                return self[3]
-            elif prop == "fragment":
-                return self[4]
-            elif prop == "port":
-                """
-                TODO:
-                Port can go beyond 0
-                """
-                if parsed.port.len > 0:
-                    port = int(slice_component(url, parsed.port))
-                    if port <= 65535:
-                        return port
-
-            elif prop == "username":
-                username = slice_component(url, parsed.username)
-                if decoded:
-                    return username.decode('utf-8') or None
-                return username or None
-            elif prop == "password":
-                password = slice_component(url, parsed.password)
-                if decoded:
-                    return password.decode('utf-8') or None
-                return password or None
-            elif prop == "hostname":
-                """
-                hostname should be treated differently from netloc
-                """
-                hostname = slice_component(url, parsed.host).lower()
-                if decoded:
-                    return hostname.decode('utf-8')
-                return hostname
-
+            return extra_attr(prop, url, parsed, decoded)
 
         cls.__getattr__ = _get_attr
 
@@ -240,8 +232,65 @@ class SplitResultNamedTuple(tuple):
 
 
 class ParsedResultNamedTuple():
-    pass
+    __slots__ = ()  # prevent creation of instance dictionary
 
+    def __new__(cls, bytes url, input_scheme, decoded=False):
+
+        cdef Parsed parsed
+        cdef Component url_scheme
+
+        if not ExtractScheme(url, len(url), &url_scheme):
+            original_url = url.decode('utf-8') if decoded else url
+            return stdlib_urlsplit(original_url, input_scheme)
+
+        parse_url(url, url_scheme, &parsed)
+
+        def _get_attr(self, prop):
+            return extra_attr(prop, url, parsed, decoded)
+
+        cls.__getattr__ = _get_attr
+
+        scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
+                                            build_netloc(url, parsed),
+                                            slice_component(url, parsed.path),
+                                            slice_component(url, parsed.query),
+                                            slice_component(url, parsed.ref))
+        if scheme == '' and input_scheme != '':
+            scheme = input_scheme
+
+        if decoded:
+            return tuple.__new__(cls, (
+                <unicode>scheme.decode('utf-8'),
+                <unicode>netloc.decode('utf-8'),
+                <unicode>path.decode('utf-8'),
+                <unicode>query.decode('utf-8'),
+                <unicode>ref.decode('utf-8')
+            ))
+
+        return tuple.__new__(cls, (scheme, netloc, path, query, ref))
+
+    def geturl(self):
+        return stdlib_urlunsplit(self)
+
+def urlparse(url, scheme='', allow_fragments=True):
+    """
+    This function intends to replace urlparse from urllib
+    using urlsplit function from urlparse4 itself.
+    Can this function be further enhanced?
+    """
+    decode = not isinstance(url, bytes)
+    splitresult = urlsplit(url, scheme, allow_fragments)
+    scheme, netloc, url, query, fragment = splitresult
+
+    if scheme in uses_params and ';' in url:
+        url, params = _splitparams(url)
+    else:
+        params = ''
+
+    if not decode:
+        params = <bytes>(<unicode>params).encode('utf8')
+
+    return (scheme, netloc, url, params, query, fragment)
 
 def urlsplit(url, scheme='', allow_fragments=True):
     """
@@ -267,24 +316,3 @@ def urljoin(base, url, allow_fragments=True):
         return joined_url
 
     return stdlib_urljoin(base, url, allow_fragments=allow_fragments)
-
-
-def urlparse(url, scheme='', allow_fragments=True):
-    """
-    This function intends to replace urlparse from urllib
-    using urlsplit function from urlparse4 itself.
-    Can this function be further enhanced?
-    """
-    decode = not isinstance(url, bytes)
-    splitresult = urlsplit(url, scheme, allow_fragments)
-    scheme, netloc, url, query, fragment = splitresult
-
-    if scheme in uses_params and ';' in url:
-        url, params = _splitparams(url)
-    else:
-        params = ''
-
-    if not decode:
-        params = <bytes>(<unicode>params).encode('utf8')
-
-    return (scheme, netloc, url, params, query, fragment)
