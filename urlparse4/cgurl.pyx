@@ -167,12 +167,12 @@ cdef object parse_url_helper(bytes url, input_scheme, Parsed parsed, decode=Fals
                                             <unicode>ref.decode('utf-8'))
         if allow_params:
             return tuple.__new__(ParsedResultNamedTuple, (scheme, netloc, path, params, query, ref))
-        return SplitResult(scheme, netloc, path, query, ref)
+        return SplitResultNamedTuple(scheme, netloc, path, query, ref)
 
     if allow_params:
         return tuple.__new__(ParsedResultNamedTuple, (scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref))
 
-    return SplitResult(scheme, netloc, path, query, ref)
+    return SplitResultNamedTuple(scheme, netloc, path, query, ref)
 
 
 cdef bytes slice_component(bytes pyurl, Component comp):
