@@ -76,21 +76,6 @@ cdef bytes unicode_handling(str):
         bytes_str = str
     return bytes_str
 
-
-# https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
-def _splitparams(bytes url):
-    """
-    this function can be modified to enhance the performance?
-    """
-    slash, semcol = '/'.encode('utf-8'), ';'.encode('utf-8')
-    if slash in url:
-        i = url.find(semcol, url.rfind(slash))
-        if i < 0:
-            return url, ''.encode('utf-8')
-    else:
-        i = url.find(semcol)
-    return url[:i], url[i+1:]
-
 cdef void parse_url(bytes url, Component url_scheme, Parsed * parsed):
     if CompareSchemeComponent(url, url_scheme, kFileScheme):
         ParseFileURL(url, len(url), parsed)
@@ -154,6 +139,20 @@ cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=Fals
         if decoded:
             return hostname.decode('utf-8')
         return hostname
+
+# https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
+def _splitparams(bytes url):
+    """
+    this function can be modified to enhance the performance?
+    """
+    slash, semcol = '/'.encode('utf-8'), ';'.encode('utf-8')
+    if slash in url:
+        i = url.find(semcol, url.rfind(slash))
+        if i < 0:
+            return url, ''.encode('utf-8')
+    else:
+        i = url.find(semcol)
+    return url[:i], url[i+1:]
 
 
 # @cython.freelist(100)
