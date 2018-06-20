@@ -159,8 +159,24 @@ cdef void parse_url(bytes url, Component url_scheme, Parsed * parsed):
         """
         ParsePathURL(url, len(url), True, parsed)
 
-cdef object extra_attr(prop, bytes url, Parsed parsed, decoded):
-    if prop == "port":
+cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=False):
+    if prop == "scheme":
+        return obj[0]
+    elif prop == "netloc":
+        return obj[1]
+    elif prop == "path":
+        return obj[2]
+    elif params and prop == "params":
+        return obj[3]
+    elif prop == "query":
+        if params:
+            return obj[4]
+        return obj[3]
+    elif prop == "fragment":
+        if params:
+            return obj[5]
+        return obj[4]
+    elif prop == "port":
         """
         TODO:
         Port can go beyond 0
@@ -204,7 +220,7 @@ class SplitResultNamedTuple(tuple):
         parse_url(url, url_scheme, &parsed)
 
         def _get_attr(self, prop):
-            return extra_attr(prop, url, parsed, decoded)
+            return extra_attr(self, prop, url, parsed, decoded)
 
         cls.__getattr__ = _get_attr
 
@@ -246,7 +262,7 @@ class ParsedResultNamedTuple(tuple):
         parse_url(url, url_scheme, &parsed)
 
         def _get_attr(self, prop):
-            return extra_attr(prop, url, parsed, decoded)
+            return extra_attr(self, prop, url, parsed, decoded, True)
 
         cls.__getattr__ = _get_attr
 
