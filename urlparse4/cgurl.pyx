@@ -143,7 +143,7 @@ cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=Fals
         return hostname
 
 # https://github.com/python/cpython/blob/master/Lib/urllib/parse.py
-def _splitparams(bytes url):
+cdef object _splitparams(bytes url):
     """
     this function can be modified to enhance the performance?
     """
