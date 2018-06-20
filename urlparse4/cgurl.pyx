@@ -77,6 +77,9 @@ cdef bytes unicode_handling(str):
 
 # https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
 def _splitparams(url):
+    """
+    this function can be modified to enhance the performance?
+    """
     if '/'  in url:
         i = url.find(';', url.rfind('/'))
         if i < 0:
@@ -204,6 +207,10 @@ cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=Fals
 
 
 class SplitResultNamedTuple(tuple):
+    """
+    There is some repetition in the class,
+    we will need to take care of that!
+    """
 
     __slots__ = ()  # prevent creation of instance dictionary
 
