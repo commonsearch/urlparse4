@@ -231,7 +231,7 @@ class SplitResultNamedTuple(tuple):
         return stdlib_urlunsplit(self)
 
 
-class ParsedResultNamedTuple():
+class ParsedResultNamedTuple(tuple):
     __slots__ = ()  # prevent creation of instance dictionary
 
     def __new__(cls, bytes url, input_scheme, decoded=False):
@@ -258,16 +258,22 @@ class ParsedResultNamedTuple():
         if scheme == '' and input_scheme != '':
             scheme = input_scheme
 
+        if scheme in uses_params and ';' in url:
+            url, params = _splitparams(url)
+        else:
+            params = ''
+
         if decoded:
             return tuple.__new__(cls, (
                 <unicode>scheme.decode('utf-8'),
                 <unicode>netloc.decode('utf-8'),
                 <unicode>path.decode('utf-8'),
+                <unicode>params,
                 <unicode>query.decode('utf-8'),
                 <unicode>ref.decode('utf-8')
             ))
 
-        return tuple.__new__(cls, (scheme, netloc, path, query, ref))
+        return tuple.__new__(cls, (scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref))
 
     def geturl(self):
         return stdlib_urlunsplit(self)
@@ -279,18 +285,8 @@ def urlparse(url, scheme='', allow_fragments=True):
     Can this function be further enhanced?
     """
     decode = not isinstance(url, bytes)
-    splitresult = urlsplit(url, scheme, allow_fragments)
-    scheme, netloc, url, query, fragment = splitresult
-
-    if scheme in uses_params and ';' in url:
-        url, params = _splitparams(url)
-    else:
-        params = ''
-
-    if not decode:
-        params = <bytes>(<unicode>params).encode('utf8')
-
-    return (scheme, netloc, url, params, query, fragment)
+    url = unicode_handling(url)
+    return ParsedResultNamedTuple.__new__(ParsedResultNamedTuple, url, scheme, decode)
 
 def urlsplit(url, scheme='', allow_fragments=True):
     """
