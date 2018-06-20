@@ -68,7 +68,7 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
         raise ValueError
 
 
-def unicode_handling(str):
+cdef bytes unicode_handling(str):
     cdef bytes bytes_str
     if isinstance(str, unicode):
         bytes_str = <bytes>(<unicode>str).encode('utf8')
@@ -86,59 +86,6 @@ def _splitparams(url):
     else:
         i = url.find(';')
     return url[:i], url[i+1:]
-
-
-# @cython.freelist(100)
-# cdef class SplitResult:
-
-#     cdef Parsed parsed
-#     # cdef char * url
-#     cdef bytes pyurl
-
-#     def __cinit__(self, char* url):
-#         # self.url = url
-#         self.pyurl = url
-#         if url[0:5] == b"file:":
-#             ParseFileURL(url, len(url), &self.parsed)
-#         else:
-#             ParseStandardURL(url, len(url), &self.parsed)
-
-#     property scheme:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.scheme)
-
-#     property path:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.path)
-
-#     property query:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.query)
-
-#     property fragment:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.ref)
-
-#     property username:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.username)
-
-#     property password:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.password)
-
-#     property port:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.port)
-
-#     # Not in regular urlsplit() !
-#     property host:
-#         def __get__(self):
-#             return slice_component(self.pyurl, self.parsed.host)
-
-#     property netloc:
-#         def __get__(self):
-#             return build_netloc(self.pyurl, self.parsed)
 
 cdef void parse_url(bytes url, Component url_scheme, Parsed * parsed):
     if CompareSchemeComponent(url, url_scheme, kFileScheme):
@@ -203,6 +150,60 @@ cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=Fals
         if decoded:
             return hostname.decode('utf-8')
         return hostname
+
+
+# @cython.freelist(100)
+# cdef class SplitResult:
+
+#     cdef Parsed parsed
+#     # cdef char * url
+#     cdef bytes pyurl
+
+#     def __cinit__(self, char* url):
+#         # self.url = url
+#         self.pyurl = url
+#         if url[0:5] == b"file:":
+#             ParseFileURL(url, len(url), &self.parsed)
+#         else:
+#             ParseStandardURL(url, len(url), &self.parsed)
+
+#     property scheme:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.scheme)
+
+#     property path:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.path)
+
+#     property query:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.query)
+
+#     property fragment:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.ref)
+
+#     property username:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.username)
+
+#     property password:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.password)
+
+#     property port:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.port)
+
+#     # Not in regular urlsplit() !
+#     property host:
+#         def __get__(self):
+#             return slice_component(self.pyurl, self.parsed.host)
+
+#     property netloc:
+#         def __get__(self):
+#             return build_netloc(self.pyurl, self.parsed)
+
 
 class SplitResultNamedTuple(tuple):
 
