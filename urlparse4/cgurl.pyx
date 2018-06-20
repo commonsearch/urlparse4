@@ -136,11 +136,13 @@ cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=Fals
         hostname should be treated differently from netloc
         """
         hostname = slice_component(url, parsed.host).lower()
+        if chr(hostname[0]) == '[':
+            hostname = hostname[1:-1]
         if decoded:
             return hostname.decode('utf-8')
         return hostname
 
-# https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
+# https://github.com/python/cpython/blob/master/Lib/urllib/parse.py
 def _splitparams(bytes url):
     """
     this function can be modified to enhance the performance?
