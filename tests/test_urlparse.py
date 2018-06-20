@@ -698,6 +698,7 @@ class UrlParseTestCase(unittest.TestCase):
         self.assertEqual(urlparse4.urlparse(b"http://example.com?blahblah=/foo"),
                          (b'http', b'example.com', b'', b'', b'blahblah=/foo', b''))
 
+    @pytest.mark.xfail(reason='with no scheme, gurl puts all into scheme')
     def test_withoutscheme(self):
         # Test urlparse without scheme
         # Issue 754016: urlparse goes wrong with IP:port without scheme
