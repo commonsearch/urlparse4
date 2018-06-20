@@ -286,19 +286,19 @@ class ParsedResultNamedTuple(tuple):
         if scheme in uses_params and ';'.encode('utf-8') in path:
             path, params = _splitparams(path)
         else:
-            params = ''
+            params = ''.encode('utf-8')
 
         if decoded:
             return tuple.__new__(cls, (
                 <unicode>scheme.decode('utf-8'),
                 <unicode>netloc.decode('utf-8'),
                 <unicode>path.decode('utf-8'),
-                <unicode>params,
+                <unicode>params.decode('utf-8'),
                 <unicode>query.decode('utf-8'),
                 <unicode>ref.decode('utf-8')
             ))
 
-        return tuple.__new__(cls, (scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref))
+        return tuple.__new__(cls, (scheme, netloc, path, params, query, ref))
 
     def geturl(self):
         return stdlib_urlunparse(self)
