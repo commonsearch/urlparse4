@@ -14,9 +14,11 @@ from six.moves.urllib.parse import urlunparse as stdlib_urlunparse
 cimport cython
 
 
-uses_params = ['', 'ftp', 'hdl', 'prospero', 'http', 'imap',
-           'https', 'shttp', 'rtsp', 'rtspu', 'sip', 'sips',
-           'mms', 'sftp', 'tel']
+uses_params = [scheme.encode('utf-8') for scheme in ['', 'ftp', 'hdl',
+                                                     'prospero', 'http', 'imap',
+                                                     'https', 'shttp', 'rtsp',
+                                                     'rtspu', 'sip', 'sips',
+                                                     'mms', 'sftp', 'tel']]
 
 
 cdef bytes slice_component(bytes pyurl, Component comp):
@@ -76,16 +78,17 @@ cdef bytes unicode_handling(str):
 
 
 # https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
-def _splitparams(url):
+def _splitparams(bytes url):
     """
     this function can be modified to enhance the performance?
     """
-    if '/'  in url:
-        i = url.find(';', url.rfind('/'))
+    slash, semcol = '/'.encode('utf-8'), ';'.encode('utf-8')
+    if slash in url:
+        i = url.find(semcol, url.rfind(slash))
         if i < 0:
-            return url, ''
+            return url, ''.encode('utf-8')
     else:
-        i = url.find(';')
+        i = url.find(semcol)
     return url[:i], url[i+1:]
 
 cdef void parse_url(bytes url, Component url_scheme, Parsed * parsed):
@@ -280,8 +283,8 @@ class ParsedResultNamedTuple(tuple):
         if scheme == '' and input_scheme != '':
             scheme = input_scheme
 
-        if scheme in uses_params and ';' in url:
-            url, params = _splitparams(url)
+        if scheme in uses_params and ';'.encode('utf-8') in path:
+            path, params = _splitparams(path)
         else:
             params = ''
 
