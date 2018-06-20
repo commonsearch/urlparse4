@@ -5,12 +5,11 @@ from urlparse4.chromium_url_util_internal cimport CompareSchemeComponent
 from urlparse4.chromium_url_util cimport IsStandard
 
 import six
-from six.moves.urllib.parse import urlparse as stdlib_urlparse
 from six.moves.urllib.parse import urlsplit as stdlib_urlsplit
 from six.moves.urllib.parse import urljoin as stdlib_urljoin
 from six.moves.urllib.parse import urlunsplit as stdlib_urlunsplit
+from six.moves.urllib.parse import urlparse as stdlib_urlparse
 from six.moves.urllib.parse import urlunparse as stdlib_urlunparse
-from collections import namedtuple
 
 cimport cython
 
@@ -18,161 +17,6 @@ cimport cython
 uses_params = ['', 'ftp', 'hdl', 'prospero', 'http', 'imap',
            'https', 'shttp', 'rtsp', 'rtspu', 'sip', 'sips',
            'mms', 'sftp', 'tel']
-
-SplitResult = namedtuple('SplitResult', 'scheme netloc path query fragment')
-ParseResult = namedtuple('ParseResult', 'scheme netloc path params query fragment')
-
-
-class SplitResultNamedTuple(SplitResult):
-    __slots__ = ()
-
-    def __new__(cls, bytes url, input_scheme, decode=False):
-
-        cdef Parsed parsed
-        cdef Component extracted_scheme
-
-        if not ExtractScheme(url, len(url), &extracted_scheme):
-            original_url = url.decode('utf-8') if decode else url
-            return stdlib_urlsplit(original_url, input_scheme)
-
-        parse_url(url, input_scheme, extracted_scheme, &parsed, decode)
-
-        def _get_attr(self, prop):
-            return extra_attr(prop, url, parsed, decode)
-
-        cls.__getattr__ = _get_attr
-
-        return parse_url_helper(url, input_scheme, parsed, decode)
-
-
-    def geturl(self):
-        return stdlib_urlunsplit(self)
-
-
-class ParsedResultNamedTuple(ParseResult):
-    __slots__ = ()
-
-    def __new__(cls, bytes url, input_scheme, decode=False):
-
-        cdef Parsed parsed
-        cdef Component extracted_scheme
-
-        if not ExtractScheme(url, len(url), &extracted_scheme):
-            original_url = url.decode('utf-8') if decode else url
-            return stdlib_urlparse(original_url, input_scheme)
-
-        parse_url(url, input_scheme, extracted_scheme, &parsed, decode, True)
-
-        def _get_attr(self, prop):
-            return extra_attr(prop, url, parsed, decode)
-
-        cls.__getattr__ = _get_attr
-
-        return parse_url_helper(url, input_scheme, parsed, decode, True)
-
-    def geturl(self):
-        return stdlib_urlunparse(self)
-
-
-# https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
-def _splitparams(bytes url):
-    """
-    This function can be converted to C to further enhance the performance
-    """
-    cdef int i
-    if '/'  in url:
-        i = url.find(';', url.rfind('/'))
-        if i < 0:
-            return url, ''
-    else:
-        i = url.find(';')
-    return url[:i], url[i+1:]
-
-
-cdef object extra_attr(prop, url, Parsed parsed, decode):
-    if prop == "port":
-        """
-        TODO:
-        Port can go beyond 0
-        """
-        if parsed.port.len > 0:
-            port = int(slice_component(url, parsed.port))
-            if port <= 65535:
-                return port
-
-    elif prop == "username":
-        username = slice_component(url, parsed.username)
-        if decode:
-            return username.decode('utf-8') or None
-        return username or None
-    elif prop == "password":
-        password = slice_component(url, parsed.password)
-        if decode:
-            return password.decode('utf-8') or None
-        return password or None
-    elif prop == "hostname":
-        """
-        hostname should be treated differently from netloc
-        """
-        hostname = slice_component(url, parsed.host).lower()
-        if decode:
-            return hostname.decode('utf-8')
-        return hostname
-
-
-cdef void parse_url(bytes url, input_scheme, scheme, Parsed * parsed, decode=False, allow_params=False):
-    """
-    This function uses methods from GURL-chromium to parse the urls
-    which will return the result for urlparse and urljoin
-    """
-    if CompareSchemeComponent(url, scheme, kFileScheme):
-        ParseFileURL(url, len(url), parsed)
-    elif CompareSchemeComponent(url, scheme, kFileSystemScheme):
-        ParseFileSystemURL(url, len(url), parsed)
-    elif IsStandard(url, scheme):
-        ParseStandardURL(url, len(url), parsed)
-    elif CompareSchemeComponent(url, scheme, kMailToScheme):
-        """
-        Discuss: Is this correct?
-        """
-        ParseMailtoURL(url, len(url), parsed)
-    else:
-        """
-        TODO:
-        trim or not to trim?
-        """
-        ParsePathURL(url, len(url), True, parsed)
-
-
-cdef object parse_url_helper(bytes url, input_scheme, Parsed parsed, decode=False, allow_params=False):
-    scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
-                                        build_netloc(url, parsed),
-                                        slice_component(url, parsed.path),
-                                        slice_component(url, parsed.query),
-                                        slice_component(url, parsed.ref))
-    if not scheme and input_scheme:
-        scheme = input_scheme.encode('utf-8')
-
-    if allow_params:
-        if scheme in uses_params and ';' in url:
-            url, params = _splitparams(url)
-        else:
-            params = ''
-
-    if decode:
-        scheme, netloc, path, query, ref = (<unicode>scheme.decode('utf-8'),
-                                            <unicode>netloc.decode('utf-8'),
-                                            <unicode>path.decode('utf-8'),
-                                            <unicode>query.decode('utf-8'),
-                                            <unicode>ref.decode('utf-8'))
-        if allow_params:
-            return tuple.__new__(ParsedResultNamedTuple, (scheme, netloc, path, params, query, ref))
-        return tuple.__new__(SplitResultNamedTuple, (scheme, netloc, path, query, ref))
-
-    if allow_params:
-        return tuple.__new__(ParsedResultNamedTuple, (scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref))
-
-    return tuple.__new__(SplitResultNamedTuple, (scheme, netloc, path, query, ref))
 
 
 cdef bytes slice_component(bytes pyurl, Component comp):
@@ -231,6 +75,81 @@ cdef bytes unicode_handling(str):
     return bytes_str
 
 
+# https://github.com/python/cpython/blob/master/Lib/urllib/parse.py#L373
+def _splitparams(url):
+    if '/'  in url:
+        i = url.find(';', url.rfind('/'))
+        if i < 0:
+            return url, ''
+    else:
+        i = url.find(';')
+    return url[:i], url[i+1:]
+
+cdef void parse_url(bytes url, Component url_scheme, Parsed * parsed):
+    if CompareSchemeComponent(url, url_scheme, kFileScheme):
+        ParseFileURL(url, len(url), parsed)
+    elif CompareSchemeComponent(url, url_scheme, kFileSystemScheme):
+        ParseFileSystemURL(url, len(url), parsed)
+    elif IsStandard(url, url_scheme):
+        ParseStandardURL(url, len(url), parsed)
+    elif CompareSchemeComponent(url, url_scheme, kMailToScheme):
+        """
+        Discuss: Is this correct?
+        """
+        ParseMailtoURL(url, len(url), parsed)
+    else:
+        """
+        TODO:
+        trim or not to trim?
+        """
+        ParsePathURL(url, len(url), True, parsed)
+
+cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=False):
+    if prop == "scheme":
+        return obj[0]
+    elif prop == "netloc":
+        return obj[1]
+    elif prop == "path":
+        return obj[2]
+    elif params and prop == "params":
+        return obj[3]
+    elif prop == "query":
+        if params:
+            return obj[4]
+        return obj[3]
+    elif prop == "fragment":
+        if params:
+            return obj[5]
+        return obj[4]
+    elif prop == "port":
+        """
+        TODO:
+        Port can go beyond 0
+        """
+        if parsed.port.len > 0:
+            port = int(slice_component(url, parsed.port))
+            if port <= 65535:
+                return port
+    elif prop == "username":
+        username = slice_component(url, parsed.username)
+        if decoded:
+            return username.decode('utf-8') or None
+        return username or None
+    elif prop == "password":
+        password = slice_component(url, parsed.password)
+        if decoded:
+            return password.decode('utf-8') or None
+        return password or None
+    elif prop == "hostname":
+        """
+        hostname should be treated differently from netloc
+        """
+        hostname = slice_component(url, parsed.host).lower()
+        if decoded:
+            return hostname.decode('utf-8')
+        return hostname
+
+
 # @cython.freelist(100)
 # cdef class SplitResult:
 
@@ -283,6 +202,97 @@ cdef bytes unicode_handling(str):
 #         def __get__(self):
 #             return build_netloc(self.pyurl, self.parsed)
 
+
+class SplitResultNamedTuple(tuple):
+
+    __slots__ = ()  # prevent creation of instance dictionary
+
+    def __new__(cls, bytes url, input_scheme, decoded=False):
+
+        cdef Parsed parsed
+        cdef Component url_scheme
+
+        if not ExtractScheme(url, len(url), &url_scheme):
+            original_url = url.decode('utf-8') if decoded else url
+            return stdlib_urlsplit(original_url, input_scheme)
+
+        parse_url(url, url_scheme, &parsed)
+
+        def _get_attr(self, prop):
+            return extra_attr(self, prop, url, parsed, decoded)
+
+        cls.__getattr__ = _get_attr
+
+        scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
+                                            build_netloc(url, parsed),
+                                            slice_component(url, parsed.path),
+                                            slice_component(url, parsed.query),
+                                            slice_component(url, parsed.ref))
+        if scheme == '' and input_scheme != '':
+            scheme = input_scheme
+
+        if decoded:
+            return tuple.__new__(cls, (
+                <unicode>scheme.decode('utf-8'),
+                <unicode>netloc.decode('utf-8'),
+                <unicode>path.decode('utf-8'),
+                <unicode>query.decode('utf-8'),
+                <unicode>ref.decode('utf-8')
+            ))
+
+        return tuple.__new__(cls, (scheme, netloc, path, query, ref))
+
+    def geturl(self):
+        return stdlib_urlunsplit(self)
+
+
+class ParsedResultNamedTuple(tuple):
+    __slots__ = ()  # prevent creation of instance dictionary
+
+    def __new__(cls, bytes url, input_scheme, decoded=False):
+
+        cdef Parsed parsed
+        cdef Component url_scheme
+
+        if not ExtractScheme(url, len(url), &url_scheme):
+            original_url = url.decode('utf-8') if decoded else url
+            return stdlib_urlparse(original_url, input_scheme)
+
+        parse_url(url, url_scheme, &parsed)
+
+        def _get_attr(self, prop):
+            return extra_attr(self, prop, url, parsed, decoded, True)
+
+        cls.__getattr__ = _get_attr
+
+        scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
+                                            build_netloc(url, parsed),
+                                            slice_component(url, parsed.path),
+                                            slice_component(url, parsed.query),
+                                            slice_component(url, parsed.ref))
+        if scheme == '' and input_scheme != '':
+            scheme = input_scheme
+
+        if scheme in uses_params and ';' in url:
+            url, params = _splitparams(url)
+        else:
+            params = ''
+
+        if decoded:
+            return tuple.__new__(cls, (
+                <unicode>scheme.decode('utf-8'),
+                <unicode>netloc.decode('utf-8'),
+                <unicode>path.decode('utf-8'),
+                <unicode>params,
+                <unicode>query.decode('utf-8'),
+                <unicode>ref.decode('utf-8')
+            ))
+
+        return tuple.__new__(cls, (scheme, netloc, path, <bytes>(<unicode>params).encode('utf8'), query, ref))
+
+    def geturl(self):
+        return stdlib_urlunparse(self)
+
 def urlparse(url, scheme='', allow_fragments=True):
     """
     This function intends to replace urlparse from urllib
@@ -292,7 +302,6 @@ def urlparse(url, scheme='', allow_fragments=True):
     decode = not isinstance(url, bytes)
     url = unicode_handling(url)
     return ParsedResultNamedTuple.__new__(ParsedResultNamedTuple, url, scheme, decode)
-
 
 def urlsplit(url, scheme='', allow_fragments=True):
     """
