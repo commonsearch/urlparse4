@@ -1,4 +1,4 @@
-from urlparse4.mozilla_url_parse cimport Component, Parsed, ParseStandardURL, ParseFileURL, ParseFileSystemURL, ParseMailtoURL, ParsePathURL, ExtractScheme
+from urlparse4.mozilla_url_parse cimport *
 from urlparse4.chromium_gurl cimport GURL
 from urlparse4.chromium_url_constant cimport *
 from urlparse4.chromium_url_util_internal cimport CompareSchemeComponent
@@ -12,6 +12,7 @@ from six.moves.urllib.parse import urlparse as stdlib_urlparse
 from six.moves.urllib.parse import urlunparse as stdlib_urlunparse
 
 cimport cython
+from libcpp.string cimport string
 
 
 uses_params = [scheme.encode('utf-8') for scheme in ['', 'ftp', 'hdl',
@@ -68,12 +69,12 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
         raise ValueError
 
 
-cdef bytes unicode_handling(str):
+cdef bytes unicode_handling(str str):
     cdef bytes bytes_str
     if isinstance(str, unicode):
         bytes_str = <bytes>(<unicode>str).encode('utf8')
     else:
-        bytes_str = str
+        bytes_str = <bytes>str
     return bytes_str
 
 cdef void parse_url(bytes url, Component url_scheme, Parsed * parsed):
@@ -143,18 +144,22 @@ cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=Fals
         return hostname
 
 # https://github.com/python/cpython/blob/master/Lib/urllib/parse.py
-cdef object _splitparams(bytes url):
+cdef object _splitparams(string path):
     """
     this function can be modified to enhance the performance?
     """
-    slash, semcol = '/'.encode('utf-8'), ';'.encode('utf-8')
-    if slash in url:
-        i = url.find(semcol, url.rfind(slash))
+    cdef char slash_char = b'/'
+    cdef string slash_string = b'/'
+    cdef string semcol = b';'
+    cdef int i
+
+    if path.find(slash_string) > 0:
+        i = path.find(semcol, path.rfind(slash_char))
         if i < 0:
-            return url, ''.encode('utf-8')
+            return path, b''
     else:
-        i = url.find(semcol)
-    return url[:i], url[i+1:]
+        i = path.find(semcol)
+    return path.substr(0, i), path.substr(i + 1)
 
 
 # @cython.freelist(100)
@@ -287,7 +292,7 @@ class ParsedResultNamedTuple(tuple):
         if scheme in uses_params and ';'.encode('utf-8') in path:
             path, params = _splitparams(path)
         else:
-            params = ''.encode('utf-8')
+            params = b''
 
         if decoded:
             return tuple.__new__(cls, (
