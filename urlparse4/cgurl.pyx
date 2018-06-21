@@ -2,7 +2,9 @@ from urlparse4.mozilla_url_parse cimport *
 from urlparse4.chromium_gurl cimport GURL
 from urlparse4.chromium_url_constant cimport *
 from urlparse4.chromium_url_util_internal cimport CompareSchemeComponent
-from urlparse4.chromium_url_util cimport IsStandard
+from urlparse4.chromium_url_util cimport Canonicalize
+from urlparse4.chromium_url_canon_stdstring cimport StdStringCanonOutput
+from urlparse4.chromium_url_canon cimport CharsetConverter
 
 import six
 from six.moves.urllib.parse import urlsplit as stdlib_urlsplit
@@ -13,6 +15,7 @@ from six.moves.urllib.parse import urlunparse as stdlib_urlunparse
 
 cimport cython
 from libcpp.string cimport string
+from libcpp cimport bool
 
 
 uses_params = [scheme.encode('utf-8') for scheme in ['', 'ftp', 'hdl',
@@ -26,7 +29,7 @@ cdef bytes slice_component(bytes pyurl, Component comp):
     if comp.len <= 0:
         return b""
 
-    return pyurl[comp.begin:comp.begin + comp.len]
+    return pyurl[comp.begin-len(pyurl):(comp.begin-len(pyurl)) + comp.len]
 
 
 cdef bytes cslice_component(char * url, Component comp):
@@ -43,11 +46,11 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
 
     # Nothing at all
     elif parsed.username.len <= 0 and parsed.password.len <= 0 and parsed.port.len <= 0:
-        return url[parsed.host.begin: parsed.host.begin + parsed.host.len]
+        return url[parsed.host.begin-len(url): parsed.host.begin-len(url) + parsed.host.len]
 
     # Only port
     elif parsed.username.len <= 0 and parsed.password.len <= 0 and parsed.port.len > 0:
-        return url[parsed.host.begin: parsed.host.begin + parsed.host.len + 1 + parsed.port.len]
+        return url[parsed.host.begin-len(url): parsed.host.begin-len(url) + parsed.host.len + 1 + parsed.port.len]
 
     # Only username
     elif parsed.username.len > 0 and parsed.password.len <= 0 and parsed.port.len <= 0:
@@ -69,7 +72,7 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
         raise ValueError
 
 
-cdef bytes unicode_handling(str str):
+cdef bytes unicode_handling(str):
     cdef bytes bytes_str
     if isinstance(str, unicode):
         bytes_str = <bytes>(<unicode>str).encode('utf8')
@@ -77,24 +80,11 @@ cdef bytes unicode_handling(str str):
         bytes_str = <bytes>str
     return bytes_str
 
-cdef void parse_url(bytes url, Component url_scheme, Parsed * parsed):
-    if CompareSchemeComponent(url, url_scheme, kFileScheme):
-        ParseFileURL(url, len(url), parsed)
-    elif CompareSchemeComponent(url, url_scheme, kFileSystemScheme):
-        ParseFileSystemURL(url, len(url), parsed)
-    elif IsStandard(url, url_scheme):
-        ParseStandardURL(url, len(url), parsed)
-    elif CompareSchemeComponent(url, url_scheme, kMailToScheme):
-        """
-        Discuss: Is this correct?
-        """
-        ParseMailtoURL(url, len(url), parsed)
-    else:
-        """
-        TODO:
-        trim or not to trim?
-        """
-        ParsePathURL(url, len(url), True, parsed)
+cdef void parse_url(bytes url, Parsed * parsed):
+    cdef string string_url = string(url)
+    cdef StdStringCanonOutput * output = new StdStringCanonOutput(&string_url)
+    cdef bool is_valid_ = Canonicalize(url, len(url), True, NULL, output, parsed)
+    output.Complete()
 
 cdef object extra_attr(obj, prop, bytes url, Parsed parsed, decoded, params=False):
     if prop == "scheme":
@@ -226,13 +216,8 @@ class SplitResultNamedTuple(tuple):
     def __new__(cls, bytes url, input_scheme, decoded=False):
 
         cdef Parsed parsed
-        cdef Component url_scheme
 
-        if not ExtractScheme(url, len(url), &url_scheme):
-            original_url = url.decode('utf-8') if decoded else url
-            return stdlib_urlsplit(original_url, input_scheme)
-
-        parse_url(url, url_scheme, &parsed)
+        parse_url(url, &parsed)
 
         def _get_attr(self, prop):
             return extra_attr(self, prop, url, parsed, decoded)
@@ -268,13 +253,8 @@ class ParsedResultNamedTuple(tuple):
     def __new__(cls, bytes url, input_scheme, decoded=False):
 
         cdef Parsed parsed
-        cdef Component url_scheme
 
-        if not ExtractScheme(url, len(url), &url_scheme):
-            original_url = url.decode('utf-8') if decoded else url
-            return stdlib_urlparse(original_url, input_scheme)
-
-        parse_url(url, url_scheme, &parsed)
+        parse_url(url, &parsed)
 
         def _get_attr(self, prop):
             return extra_attr(self, prop, url, parsed, decoded, True)
