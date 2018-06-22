@@ -1,3 +1,6 @@
+from libcpp cimport bool
+
+
 cdef extern from "../vendor/gurl/url/third_party/mozilla/url_parse.h" namespace "url":
     cdef struct Component:
         int begin
@@ -13,6 +16,3 @@ cdef extern from "../vendor/gurl/url/third_party/mozilla/url_parse.h" namespace 
         Component path
         Component query
         Component ref
-
-    cdef void ParseStandardURL(const char* url, int url_len, Parsed* parsed)
-    cdef void ParseFileURL(const char* url, int url_len, Parsed* parsed)
