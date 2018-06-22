@@ -29,7 +29,7 @@ cdef bytes slice_component(bytes pyurl, Component comp):
     if comp.len <= 0:
         return b""
 
-    return pyurl[comp.begin-len(pyurl):(comp.begin-len(pyurl)) + comp.len]
+    return pyurl[comp.begin:comp.begin + comp.len]
 
 
 cdef bytes cslice_component(char * url, Component comp):
@@ -46,11 +46,11 @@ cdef bytes build_netloc(bytes url, Parsed parsed):
 
     # Nothing at all
     elif parsed.username.len <= 0 and parsed.password.len <= 0 and parsed.port.len <= 0:
-        return url[parsed.host.begin-len(url): parsed.host.begin-len(url) + parsed.host.len]
+        return url[parsed.host.begin: parsed.host.begin + parsed.host.len]
 
     # Only port
     elif parsed.username.len <= 0 and parsed.password.len <= 0 and parsed.port.len > 0:
-        return url[parsed.host.begin-len(url): parsed.host.begin-len(url) + parsed.host.len + 1 + parsed.port.len]
+        return url[parsed.host.begin: parsed.host.begin + parsed.host.len + 1 + parsed.port.len]
 
     # Only username
     elif parsed.username.len > 0 and parsed.password.len <= 0 and parsed.port.len <= 0:
@@ -80,9 +80,8 @@ cdef bytes unicode_handling(str):
         bytes_str = <bytes>str
     return bytes_str
 
-cdef void parse_url(bytes url, Parsed * parsed):
-    cdef string string_url = string(url)
-    cdef StdStringCanonOutput * output = new StdStringCanonOutput(&string_url)
+cdef void parse_url(char* url, Parsed * parsed, string * output_url):
+    cdef StdStringCanonOutput * output = new StdStringCanonOutput(output_url)
     cdef bool is_valid_ = Canonicalize(url, len(url), True, NULL, output, parsed)
     output.Complete()
 
@@ -216,19 +215,20 @@ class SplitResultNamedTuple(tuple):
     def __new__(cls, bytes url, input_scheme, decoded=False):
 
         cdef Parsed parsed
+        cdef string parsed_url = string()
 
-        parse_url(url, &parsed)
+        parse_url(url, &parsed, &parsed_url)
 
         def _get_attr(self, prop):
-            return extra_attr(self, prop, url, parsed, decoded)
+            return extra_attr(self, prop, parsed_url, parsed, decoded)
 
         cls.__getattr__ = _get_attr
 
-        scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
-                                            build_netloc(url, parsed),
-                                            slice_component(url, parsed.path),
-                                            slice_component(url, parsed.query),
-                                            slice_component(url, parsed.ref))
+        scheme, netloc, path, query, ref = (slice_component(parsed_url, parsed.scheme).lower(),
+                                            build_netloc(parsed_url, parsed),
+                                            slice_component(parsed_url, parsed.path),
+                                            slice_component(parsed_url, parsed.query),
+                                            slice_component(parsed_url, parsed.ref))
         if scheme == '' and input_scheme != '':
             scheme = input_scheme
 
@@ -250,22 +250,23 @@ class SplitResultNamedTuple(tuple):
 class ParsedResultNamedTuple(tuple):
     __slots__ = ()  # prevent creation of instance dictionary
 
-    def __new__(cls, bytes url, input_scheme, decoded=False):
+    def __new__(cls, char * url, input_scheme, decoded=False):
 
         cdef Parsed parsed
+        cdef string parsed_url = string()
 
-        parse_url(url, &parsed)
+        parse_url(url, &parsed, &parsed_url)
 
         def _get_attr(self, prop):
-            return extra_attr(self, prop, url, parsed, decoded, True)
+            return extra_attr(self, prop, parsed_url, parsed, decoded, True)
 
         cls.__getattr__ = _get_attr
 
-        scheme, netloc, path, query, ref = (slice_component(url, parsed.scheme).lower(),
-                                            build_netloc(url, parsed),
-                                            slice_component(url, parsed.path),
-                                            slice_component(url, parsed.query),
-                                            slice_component(url, parsed.ref))
+        scheme, netloc, path, query, ref = (slice_component(parsed_url, parsed.scheme).lower(),
+                                            build_netloc(parsed_url, parsed),
+                                            slice_component(parsed_url, parsed.path),
+                                            slice_component(parsed_url, parsed.query),
+                                            slice_component(parsed_url, parsed.ref))
         if scheme == '' and input_scheme != '':
             scheme = input_scheme
 
