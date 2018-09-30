@@ -50,7 +50,7 @@ make docker_test
 
 ## Benchmarks
 
-We are testing the following librairies on a sample of 100k URLs from Blink and DMOZ:
+We are testing the following libraries on a sample of 100k URLs from Blink and DMOZ:
 
  - urlparse4 ;-)
  - [CPython's urlparse](https://github.com/python/cpython/blob/2.7/Lib/urlparse.py)
